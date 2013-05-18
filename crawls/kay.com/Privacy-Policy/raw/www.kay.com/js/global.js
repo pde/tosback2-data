@@ -30,7 +30,7 @@ function BrowserObj(){
 	this.chrome = (navigator.userAgent.indexOf('Chrome') > -1) ? true : false;
 	this.safari = (navigator.userAgent.indexOf('Safari') > -1) ? true : false;
 	this.ie = (name.indexOf('microsoft internet explorer')!=-1) ? true : false;
-	this.ff2 = (navigator.userAgent.indexOf('Firefox/2') > -1) ? true : false;
+	this.ff2 = (navigator.userAgent.indexOf('Firefox/2.') > -1) ? true : false;
 	this.ns4 = (this.ns && parseInt(ver)==4) ? true : false;
 	this.ns5 = (this.ns && parseInt(ver)==5) ? true : false;
 	this.ie4 = (this.ie && info.indexOf('msie 4')!=-1) ? true : false;

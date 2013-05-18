@@ -222,7 +222,7 @@
 
 
 
-<meta NAME="DCSext.sessionid" CONTENT="DsyfRT4BDnnRJlNV2Gvm7FTy!465153052!1368275073410" >
+<meta NAME="DCSext.sessionid" CONTENT="08xBRXzRLvrv8zdyvdfbP1vr!-125691587!1368879921360" >
 <meta name="DCSext.buyflowtype" content="NEW">
 
 	
@@ -516,7 +516,7 @@
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = 'DsyfRT4BDnnRJlNV2Gvm7FTy!465153052!1368275073410';
+			var pSessionId = '08xBRXzRLvrv8zdyvdfbP1vr!-125691587!1368879921360';
 			return pSessionId;
 		};
 
@@ -554,7 +554,7 @@
 		var forceFlashDebugMode = false;
 		var getTimeOffset = function() {
 			var offset = new Number();
-			var servertime = 1368275080892;
+			var servertime = 1368879928932;
 			var clientdateObj = new Date();
 			var clienttime = clientdateObj.getTime();
 			offset = clienttime - servertime;
@@ -934,7 +934,7 @@
 			/* 
 		        IE Browsers found so check if
 		        version is less than we support
-		        Updated as of: 3/1/2013 
+		        Updated as of: 4/11/2013 
 		    */
 		    if(BrowserDetect.browser == 'Explorer') {
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist())
@@ -944,7 +944,7 @@
 					var myCookieGNSESS = getCookie("GNSESS");
 
 					if (myCookieGNSESS == null) {
-						// cookie doesn't exist
+						// cookie doesn't exist so show message
 						jQuery(".ge5p_z0-message-container").slideToggle('slow');
 					}
 		        }
@@ -953,15 +953,32 @@
 		    /* 
 		        Modern Browsers are found so check if
 		        version is less than we support
-		        Updated as of: 3/1/2013 
+		        Updated as of: 4/11/2013 
 		    */
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) {
+		    if(BrowserDetect.browser == 'Firefox') {
 		    
+		        if(BrowserDetect.version < 17)
+		        {
+					var myCookieGNSESS = getCookie("GNSESS");
+
+					if (myCookieGNSESS == null) {
+						// cookie doesn't exist so show message
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
 		    } 
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) {
+		        }
 		    
+		    } 
+		    if(BrowserDetect.browser == 'Chrome') {
+		    
+		        if(BrowserDetect.version < 23)
+		        {
+					var myCookieGNSESS = getCookie("GNSESS");
+
+					if (myCookieGNSESS == null) {
+						// cookie doesn't exist so show message
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
+		    }   
+		}
 		    }   
 		}
 	});

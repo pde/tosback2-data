@@ -23,7 +23,8 @@
 			set_ord_val: function(){ 
 				return Math.ceil( Math.random() * 10000000000000000);
 			},
-            get_elem_height: function(elem){ return jQuery(elem).css('height').replace('px','');
+            get_elem_height: function(elem){
+            	return jQuery(elem).outerHeight(true);
             },
             count_down : function(vars){
                 var takeover_i = 1;
@@ -40,20 +41,41 @@
                 setTimeout(_StartCountDown,1000);
             },
             set_up_time: function(elem){
-            var gthght_i = 0,
-                t_interval = setInterval(function() {
-                var _elem = jQuery('#'+elem.id);
-                var _pelem = _elem.parent();
-                var hgt = jQuery.blzads.util.get_elem_height('#'+elem.id);
-                if(hgt >= elem.height || elem.failover < gthght_i ) {
+            	var gthght_i = 0,
+            	t_interval = setInterval(function() {
+                    var _elem = jQuery('#'+elem.id);
+                    var _pelem = _elem.parent();
+                    _pelem.show();
+                    var hgt = jQuery.blzads.util.get_elem_height('#'+elem.id);
+                    _pelem.hide();
+                    if(hgt >= elem.height || elem.failover < gthght_i ) {
                     clearInterval(t_interval);
                     if(hgt >= elem.height){
-                        _elem.slideDown(1000); _pelem.css({'margin-bottom':'25px'});
-                        var closeAdfunc = elem.id+'closeAdfunc', openAdfunc = elem.id+'openAdfunc';
-                        window[closeAdfunc] =function(){ _elem.slideUp(1000,function(){ $(this).css({'display':'none','visibility':'hidden'}); }); _pelem.find('.close_link').hide(); _pelem.find('.open_link').show(); return false;};
-                        window[openAdfunc]  =function(){ _elem.slideDown(1000,function(){ $(this).css({'display':'block','visibility':'visible'}); }); _pelem.find('.close_link').show(); _pelem.find('.open_link').hide(); return false; };
-                        _pelem.prepend('<div id="billboard_options"><a href="#" onClick="'+closeAdfunc+'();return false;" class="close_link" style="float:right;">Close [x]</a><a id="" href="#" onClick="'+openAdfunc+'();return false;" class="open_link" style="float:right; display:none;">Open [x]</a></div>');
-                        jQuery.blzads.util.count_down({idname:'#takeover_time', time:elem.time,close_ad_func:closeAdfunc})
+
+                        _elem.slideDown(1000); _pelem.css({'margin-bottom':'25px'}).show();
+                        if(elem.minimizes || elem.time > 0 ){
+                            var closeAdfunc = elem.id+'closeAdfunc', openAdfunc = elem.id+'openAdfunc';
+                            window[closeAdfunc] = function(){
+                                _elem.slideUp(1000, function(){
+                                    $(this).hide();
+                                });
+                                _pelem.find('.close_link').hide();
+                                _pelem.find('.open_link').show();
+                                return false;
+                            };
+                            window[openAdfunc] = function(){
+                                _elem.slideDown(1000, function(){
+                                    $(this).css({'display':'block'}); });
+                                    _pelem.find('.close_link').show();
+                                    _pelem.find('.open_link').hide();
+                                    return false;
+                                };
+                            _pelem.prepend('<div id="billboard_options"><a href="#" onClick="'+closeAdfunc+'();return false;" class="close_link" style="float:right;">Close [x]</a><a id="" href="#" onClick="'+openAdfunc+'();return false;" class="open_link" style="float:right; display:none;">Open [x]</a></div>');
+                            if(elem.time > 0){
+                                jQuery.blzads.util.count_down({idname:'#takeover_time', time:elem.time,close_ad_func:closeAdfunc});
+                            }
+                        }
+
                     }
                 }
                 gthght_i++;
@@ -64,9 +86,9 @@
 				create : function(w, h, id) {
 					var ifrm = document.createElement('iframe');
 					ifrm.setAttribute('id', 'iframe-' + id);
-					ifrm.setAttribute('border', 0);
+					ifrm.setAttribute('border', '0');
 					ifrm.setAttribute('scrolling', 'no');
-					ifrm.setAttribute('frameBorder', 0);
+					ifrm.setAttribute('frameBorder', '0');
 					ifrm.setAttribute('width', w);
 					ifrm.setAttribute('height', h);
 					return ifrm;
@@ -145,8 +167,9 @@
 			//this.util.iframe.closeDoc(doc, 0);
 			this.tile += 1;
             var time_close = refresh.close || false;
-            if(time_close){
-                this.util.set_up_time({id:id,failover:100,height:h,time:time_close});
+            var minmze = refresh.minimizes || false;
+            if(time_close || minmze){
+                this.util.set_up_time({id:id,failover:100,height:h,time:time_close,minimizes:minmze});
             }
 		},
 		create_iframe_ad : function(id,url,w,h,params,xparams,refresh){
@@ -245,6 +268,18 @@
 		}
 	};
 	$.blzads.init(); 
-//	$.blzads.create_takeover_ad(); 
-	
+/*	$.blzads.create_takeover_ad();
+
+ close:20,minimizes:true
+ id,url,w,h,params,xparams,refresh
+ jQuery.blzads.create_script_ad(
+    id      = 'billboard_970x250'
+  , url     = 'http://ad.doubleclick.net/adj/prnd/prn-theblaze'
+  , w       = 970
+  , h       = 250
+  , params  = window.ads_params
+  , xparams = {sz:'970x250,300x600',pos:'topo',txtmisc:crtg_content}
+  , refresh = {enabled:false,close:20,minimizes:true}
+ );
+*/
 })(jQuery);

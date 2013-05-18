@@ -485,7 +485,7 @@ siNav.load({
 	"boxmma" : [
 		{ "u": "/mma/news/20130117/mma-schedule-results/?eref=sinav",			"l":"MMA Schedules &amp; Results" },
 		{ "u": "/mma/news/20130206/upcoming-boxing-schedule/?eref=sinav",			"l":"Boxing Schedules &amp; Results" },
-		{ "u": "/2011/mma/boxing/pound-for-pound-ratings/index.html",			"l":"Pound-for-Pound Ratings" }
+		{ "u": "/mma/news/20130507/pound-for-pound-rankings-boxing/",			"l":"Pound-for-Pound Ratings" }
 	],
 	"tennis" : [
 		{ "u": "http://sports.sportsillustrated.cnn.com/tennisfront.asp?tour=ATP&eref=sinav",			"l":"ATP",

@@ -1,10 +1,14 @@
+/* jshint strict: true */
+/* global $js */
+
 if (!window.bam) {
 	window.bam = {};
 }
 
 // Enables required pattern for module loading
 (function($, bam, undef) {
-	var registry = {},
+	"use strict";
+	var registry = window.registry = {},
 		OBJECT = "object",
 		FUNCTION = "function",
 		STRING = "string",
@@ -15,7 +19,7 @@ if (!window.bam) {
 		everythingAfterLastSlash = /\/([^\/]*)$/,
 		requireVariableRegExp = /^function([\s]+)?\(([\s]+)?([\w]+)/,
 		commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
-		buildRegExp = /^\/?(baseball|bridge)\//;
+		buildRegExp = /^\/?(baseball\/|bridge\/|tpl\!|text\!)/;
 
 	/* Modules path - home path for all the modules */
 	var moduleHome = "shared/scripts/bam/";
@@ -48,6 +52,9 @@ if (!window.bam) {
 		function F() {}
 
 		return function(obj) {
+			if (typeof obj === STRING) {
+				return obj;
+			}
 			if (typeof(obj) === FUNCTION) {
 				return obj;
 			} else if (typeof(obj) === OBJECT) {
@@ -56,6 +63,55 @@ if (!window.bam) {
 			}
 		};
 	})();
+
+	function warn( str ) {
+		if( window.console && console.warn ) {
+			console.warn( str );
+		}
+	}
+
+	var delayedScripts = [];
+	var delayedScriptMap = {};
+	var delayTimer = null;
+	function loadWithDelay( scripts ) {
+		for (var i = 0; i < scripts.length; i += 1) {
+			if (!(scripts[i] in delayedScriptMap)) {
+				delayedScriptMap[scripts[i]] = true;
+				delayedScripts.push(scripts[i]);
+			}
+		}
+		if (!delayTimer) {
+			delayTimer = setTimeout(function() {
+				// IE8 will execute cached scripts immediately
+				// instead of putting them in the event queue.
+				// Because of this the state has to be reset
+				// before scripts are loaded.
+				var localDelay = delayedScripts.slice();
+				delayedScripts = [];
+				delayedScriptMap = {};
+				delayTimer = null;
+				$js.load(localDelay);
+			}, 4);
+		}
+	}
+
+	function getDeferredForModule( identifier, version ) {
+		if (!registry[identifier]) {
+			registry[identifier] = {};
+		}
+		if (!registry[identifier][version]) {
+			registry[identifier][version] = $.Deferred();
+		}
+		return registry[identifier][version];
+	}
+
+	function removePluginType( identifier ) {
+		var indexOfBang = identifier.indexOf('!');
+		if (indexOfBang !== -1) {
+			return identifier.substr(indexOfBang+1);
+		}
+		return identifier;
+	}
 
 	function fillRelativePath( path, relativeTo ) {
 		if (typeof relativeTo === 'string') {
@@ -85,22 +141,14 @@ if (!window.bam) {
 			modulePathArray = [];
 		}
 		// normalize dependency array
-		for (var i = 0, dependency; dependency = dependencies[i]; i++ ) {
+		for (var i = 0, dependency; i < dependencies.length; i++ ) {
+			dependencies[i] = dependency = removePluginType( dependencies[i] );
 			if (dependency === 'require' || dependency === 'exports' || dependency === 'module') {
 				dependencies.splice(i, 1);
 				i--;
-			}
-			if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
-				if (dependency.indexOf('.css') !== -1) {
-					dependency = dependency.split('!')[1];
-					dependency = fillRelativePath( dependency, modulePathArray );
-					registry['require.css']['1'].load( dependency, {toUrl: function(a){return a}}, $.noop, {});
-					dependencies.splice(i,1);
-					i -= 1;
-					continue;
-				}
+			} else if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
 				if (dependency.charAt(0) === '/') {
-					window.console && console.warn && console.warn('Please remove leading slashes from require() calls.\nModule: '+modulePathAndName+'\nrequire('+dependency+')');
+					warn('Please remove leading slashes from require() calls.\nModule: '+modulePathAndName+'\nrequire('+dependency+')');
 					dependency = dependency.substr(1);
 				}
 				if (dependency.charAt(0) === '.') {
@@ -118,14 +166,14 @@ if (!window.bam) {
 			} else if (typeof dependency === 'string') {
 				//dependencies[i] = parseModule( dependency ).path;
 			}
-		};
+		}
 		return dependencies;
 	}
 
 	function getDependenciesFromFunction(fn, modulePathAndName) {
 		var fnString = fn.toString().replace(commentRegExp, '');
-		var requireResult = requireVariableRegExp.exec(fnString)
-		var dependenceis;
+		var requireResult = requireVariableRegExp.exec(fnString);
+		var dependencies;
 		if (requireResult) {
 			var requireVariable = requireResult[3];
 			var requireRegex = new RegExp("[^\\w\\.]"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
@@ -264,13 +312,14 @@ if (!window.bam) {
 				pollInterval: 1
 			};
 			this.context = function ctx(lib){ 
+				lib = removePluginType( lib );
 				if (lib.indexOf('/') !== -1) {
 					if (lib.charAt(0) === '.') {
 						lib = fillRelativePath( lib, that.context.path );
 					}
 					lib = getNameAndVersionFromPath(lib).name;
 				}
-				if (lib.indexOf('-')) {
+				if (!buildRegExp.test(lib) && lib.indexOf('-')) {
 					lib = lib.split('-')[0];
 				}
 				if (that.context[lib]) {
@@ -302,41 +351,17 @@ if (!window.bam) {
 				moduleName = moduleTokens[1];
 				module = moduleName.split('.').slice(-1).toString();
 				version = moduleTokens[2]; //only parseFloat guarantees NaN for "" value (IE7 bug)
-				//If version is embedded in the module name (ex. module-1.0)
-				if (version) {
-					//If module is registered in the manifest
-					if (moduleName in manifest) {
-						manifestEntry = manifest[moduleName];
-					}
 
-					//Version is not specified (assuming that we want to use the latest version available w/in major version release)
-				} else {
-					//If module is registered in the manifest
-					if (moduleName in manifest) {
-						manifestEntry = manifest[moduleName];
-						//We check if versions atbat and ondeck are a part of minor upgrade, else we pick atbat version and issue a warning
+				if (moduleName in manifest) {
+					manifestEntry = manifest[moduleName];
+					if (!version) {
 						version = manifestEntry.atbat || 1;
-					} else {
-						throw new ModuleError("Unable to find module", moduleName, version, null);
 					}
 				}
-				//If current version listed in manifest is greater than the version used
-				if (manifestEntry) {
-					if (manifestEntry.atbat + '' > version) {
-						window.console && console.warn && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
-						bam.trackDeprecated({
-							module: module,
-							version: version,
-							method: "*"
-						});
-						//Else, check if a possible upgrade version is available
-					} else if ((onDeck in manifestEntry) && version < manifestEntry.ondeck + '') {
-						window.console && console.warn && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
-					}
-				}
+
 				version = IS_NUMERIC.test(version) ? parseFloat(version) : version;
 				pathVersion = typeof(version) !== STRING ? (version % 1 === 0) ? Number(version).toPrecision(2) : Number(version).toString() : version;
-				modulePath = (moduleName.split('.').slice(0, -1).length ? moduleName.split('.') : [moduleName]).concat(pathVersion, module).join('/');
+				modulePath = moduleName.split('.').concat(pathVersion, module).join('/');
 				out = {
 					name: moduleName,
 					version: version,
@@ -349,7 +374,7 @@ if (!window.bam) {
 				$.each(module, function(name, path) {
 					out.name = name;
 					out.version = getNameAndVersionFromPath(path).version;
-					out.path = path;
+					out.path = buildRegExp.test(path) ? '/shared/builds'+path : path;
 					return false;
 				});
 			}
@@ -390,97 +415,50 @@ if (!window.bam) {
 
 		var scriptUrl, that = this,
 			t = 0,
-			onDeck = 'ondeck',
-			registeredModule, remaining = [],
-			orderedModuleNames = [],
+			deferreds = [],
 			unregistered = [],
-			output, promise = $.bindable(this.deferred.promise());
+			promise = $.bindable(this.deferred.promise());
 
 		//Loop through all required script modules
 		for (var i = 0, module, l = modules.length; l > i; i++) {
 			//Parses module declaration (i.e. string-1.0) and extracts metadata associated with this module
 			module = parseModule(modules[i]);
-			orderedModuleNames.push(module.name);
-
-			//Check if module is already registered (meaining executed and cached)
-			registeredModule = (module.name in registry) ? registry[module.name][module.version] : undef;
 
 			//If module w/ the right version is already registered
-			if (registeredModule) {
-				//Get the isolated version of the module (protects cached value from being overriden)
-				if (typeof registeredModule !== 'string') {
-					this.context[module.name] = isolate(registeredModule);
-				} else {
-					this.context[module.name] = registeredModule;
-				}
-				
-				that.context[module.name].ver = module.version;
-				(function(module) {
-					setTimeout( function() {
-						promise.trigger("onModuleReady", [module, that.context[module.name]]);
-					}, 0);
-				})(module)
-			} else {
-				//Get a path to module (ex.: /shared/scripts/bam/module/1.0/module) ".js" is ommited
-				scriptUrl = module.path;
-				//Load file asynchronously
-				if (buildRegExp.test(scriptUrl)) {
-					scriptUrl = '/shared/builds'+scriptUrl;
-				}
-				unregistered.push(scriptUrl);
-				remaining.push(module);
+			if ( !(module.name in registry) || !registry[module.name][module.version]) {
+				unregistered.push(module.path);
 			}
-		} //End loop
-		//If there are no unregistered modules (all present and cached)
-		if (!unregistered.length) {
-			output = this.config.useArguments ? $.map(orderedModuleNames, function(n) {
-				return that.context[n];
-			}) : [this.context];
-			this.deferred.resolveWith(this.context, output);
-			this.config.callback.apply(this.context, output);
-		} else {
-			//Load all unregistered modules in paralell
-			$js.load(unregistered, function jsLoaded() {
-				var timerId, rLen, i;
-				//Start polling for module presence
-				timerId = setTimeout(function poll() {
-					rLen = remaining.length;
-					if (rLen) {
-						for (i = 0, module; rLen > i; i++) {
-							//Remove registered item from remaining queue
-							module = remaining.shift();
-							if (module) {
-								registeredModule = (module.name in registry) && (module.version in registry[module.name]) && registry[module.name][module.version];
-								if (registeredModule) {
-									that.context[module.name] = isolate(registeredModule);
-									that.context[module.name].ver = module.version;
-									promise.trigger("onModuleReady", [module, that.context[module.name]]);
-								} else {
-									//Module is not yet registered, put it back in a queue
-									remaining.push(module);
-								}
-							}
-						}
-						//Endless loop timeout. If timeout is set to 0, this heck will not be performed and loop will be endless.
-						if (that.config.timeout > 0 && t++ === that.config.timeout) {
-							clearTimeout(timerId);
-							that.deferred.rejectWith(that, [new RequireError("Require block has timed out", that.config.timeout, remaining)]);
-							throw new RequireError("Require block has timed out", that.config.timeout, remaining);
-							//return;
-						}
+			var moduleDeferred = getDeferredForModule( module.name, module.version );
+			moduleDeferred.done((function( module ) {
+				return function( loadedModule ) {
+					that.context[module.name] = isolate(loadedModule);
+					that.context[module.name].ver = module.version;
+					// setTimeout because the module may already be loaded, causing 
+					// the done to exectute before there is a chance to add listners.
+					setTimeout(function() {
+						promise.trigger("onModuleReady", [module, that.context[module.name]]);
+					}, 4);
+				};
+			})(module));
+			deferreds.push( moduleDeferred );
+		}
 
-						timerId = setTimeout(arguments.callee, that.config.pollInterval);
-					} else {
-						t = 0;
-						output = that.config.useArguments ? $.map(orderedModuleNames, function(n) {
-							return that.context[n];
-						}) : [that.context];
-						clearTimeout(timerId);
-						that.deferred.resolveWith(that.context, output);
-						that.config.callback.apply(that.context, output);
-					}
-				}, that.config.pollInterval); //DO NOT SET THIS TO 0 - WILL BREAK IN IE!!!
-			});
+		$.when.apply($, deferreds).done( function() {
+			var loadedModules = Array.prototype.slice.apply(arguments);
+			// setTimeout ensures that onModuleReady will be called first.
+			setTimeout(function() {
+				if (that.config.useArguments) {
+					that.deferred.resolveWith(that.context, loadedModules);
+					that.config.callback.apply(that.context, loadedModules);
+				} else {
+					that.deferred.resolveWith(that.context, [that.context]);
+					that.config.callback.call(that.context, that.context);
+				}
+			}, 4);
+		});
+		//If there are no unregistered modules (all present and cached)
+		if (unregistered.length) {
+			loadWithDelay( unregistered );
 		}
 		return promise;
 	};
@@ -513,8 +491,10 @@ if (!window.bam) {
 	 */
 	bam.register = function(name, version, module) {
 		if (typeof(name) === STRING) {
-			registry[name] = registry[name] || {};
-			registry[name][version || 1] = module;
+			version = version || 1;
+			var deferred = getDeferredForModule( name, version );
+			deferred.module = module;
+			deferred.resolve( module );
 		} else {
 			throw new ModuleError("Unable to register a module", name, version, module);
 		}
@@ -544,6 +524,8 @@ if (!window.bam) {
 		if (typeof identifier !== 'string') {
 			throw new TypeError('Module identifiers must be a string');
 		}
+
+		identifier = removePluginType( identifier );
 
 		// bamDependencies is the dependencies with 'require', 'exports', and 'module' stripped out.
 		var bamDependencies;
@@ -580,6 +562,8 @@ if (!window.bam) {
 			version = +splitId[1] || null;
 		}
 
+		getDeferredForModule( identifier, version );
+		
 		function registerModule() {
 			if (typeof moduleConstructor === 'function') {
 				
@@ -588,9 +572,6 @@ if (!window.bam) {
 				var ctx = this;
 				ctx.path = path || identifier;
 				var require = function require(lib){ 
-					if (lib.indexOf('.css') !== -1) {
-						return '';
-					}
 					return ctx(lib); 
 				};
 				
@@ -625,19 +606,22 @@ if (!window.bam) {
 		if (bamDependencies && bamDependencies.length) {
 			bam.require(bamDependencies, {useArguments:true}).done(registerModule);
 		} else {
-			registerModule();
+			registerModule.apply(window);
 		}
-	}
+	};
 
 	bam.require.getNameAndVersionFromPath = getNameAndVersionFromPath;
 
 	window.define = bam.define;
 	window.define.amd = true;
 
-	window.requirejs = function( requirements, callback ) {
+	window.requirejs = window.require = function( requirements, callback ) {
+		if (requirements.length === 1 && requirements[0] === '') {
+			requirements = [];
+		}
 		requirements = convertArrayOfStringsToRequirementObjects( requirements, 'requirejs statement' );
-		bam.require(requirements, {useArguments:true}).done(callback);
+		bam.require(requirements, {useArguments:true}).done(callback || function(){});
 	};
 
-	define('jquery', [], function() { return $ });
+	define('jquery', [], function() { return $; });
 })(jQuery, bam);

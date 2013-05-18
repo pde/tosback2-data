@@ -2188,9 +2188,9 @@ if(urlValueSplit[4].match('business')){
 			$('.ecom-sm-btn span').css("font-size", "10px");
 		}
 		if( urlValueSplit[6].match('NP680Z5E-X01US') ){
-			$('.flagship-cta a span').text('Pre-order');
-			$('.ecom-sm-btn span').text('Pre-order');
-			$('.ecom-sm-btn span').css("font-size", "10px");
+			//$('.flagship-cta a span').text('Pre-order');
+			//$('.ecom-sm-btn span').text('Pre-order');
+			//$('.ecom-sm-btn span').css("font-size", "10px");
 		}
 });
 

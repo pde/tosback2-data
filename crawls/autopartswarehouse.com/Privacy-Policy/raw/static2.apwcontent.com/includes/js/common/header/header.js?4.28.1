@@ -1,0 +1,211 @@
+function validateSearch(form_name,search_name,search_type){
+    var Search = document.getElementById(form_name);
+    var Ntt = document.getElementById(search_name);
+    
+    if(Ntt.value=="" || Ntt.value=="Keyword, category or part number" || Ntt.value=="Enter product name"){
+        alert("You must enter a search term");
+        return false;
+    } 
+}
+
+//load navHover on  IE6 only
+function menuTabCheck() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf ( "MSIE " );
+    if (msie > 0) {
+        vernum = parseInt(ua.substring (msie+5, ua.indexOf (".", msie )));
+        if (vernum < 7) {
+            navHover();
+        }
+    }
+}
+
+/*
+* @function: setOnclickAnalytics()
+* @author: rsta.teresa@usautoparts.com
+* @date:  07-07-2011
+* @description : onclick event change the value of omniture tagging with the given fields/values
+* @param: fields (array/string)
+* @param: values (array/string)
+* @return null
+*/
+function setOnclickAnalytics(fields, values) {
+    //if fields and values are string convert to array
+    if (typeof fields == "string" && typeof values == "string") {
+        fields = fields.split();
+        values = values.split();
+    }
+    //if fields and values are string convert to array
+    var setLinkTrackVars = '';
+    var setLinkTrackEvents = '';
+    for (var i in fields) {
+        if (fields[i] == "events") {
+            if (setLinkTrackEvents != '') {
+                setLinkTrackEvents += ",";
+            }
+            setLinkTrackEvents += values[i];
+        }
+        if (setLinkTrackVars != '') {
+            setLinkTrackVars += ",";
+        }
+        setLinkTrackVars += fields[i];
+    }
+    //set the fields for onlick event
+    s.linkTrackVars = setLinkTrackVars == '' ? 'None' : setLinkTrackVars ;
+    s.linkTrackEvents = setLinkTrackEvents == '' ? 'None' : setLinkTrackEvents ;
+    //set the fields and the values
+    //this will set the events
+    eval("s.events = \"" + setLinkTrackEvents + "\"; \n");
+    for (var i in fields) {
+        if (fields[i] != "events") {
+            //this will set the evar and prop
+            eval("s." + fields[i] + " = \"" + values[i] + "\"; \n");
+        }
+    }
+    //this will fire the omniture click event
+    //location is the current url
+    s.tl(this, 'o', location);
+    
+    //this will clear the tagging after onclick event
+    eval("s.events = \"\"; \n");
+    for (var i in fields) {
+        if (fields[i] != "events") {
+            //this will set the evar and prop
+            eval("s." + fields[i] + " = \"\"; \n");
+        }
+    }
+    
+}
+
+/*
+* @function: setClickLetsTalk()
+* @author: rsta.teresa@usautoparts.com
+* @date:  07-29-2011
+* @description : onclick event for Let's Talk Pop-up
+* @param: numbers (int)
+* @return null
+*/
+function setClickLetsTalk() {
+    var tagKey      = new Array(
+        'events',
+        'pageName',
+        'channel',
+        'prop3'
+        );
+    var tagValue    = new Array(
+        'event35',
+        'Let\'s Talk Pop-up',
+        'Let\'s Talk Pop-up',
+        'Let\'s Talk Pop-up'
+        );
+    setOnclickAnalytics(tagKey,tagValue);
+}
+/*
+* @function: setAnalyticsTabsCookie()
+* @description : onclick event on header tabs sets cookie value for omniture tagging
+* @param: fields (array/string)
+* @param: values (array/string)
+* @return null
+*/
+function setAnalyticsTabsCookie(componentName) {
+
+    var cookieVal = '';
+    var today = new Date();
+    today.setTime( today.getTime() );
+
+    var expire = new Date();
+    expire.setTime(today.getTime() + (60000) );
+    // componentName
+    if (componentName.length > 0) {
+        document.cookie = 'anlytxtab=' + escape(componentName) + "; expires=" + expire.toGMTString()+";path=/ ";
+    }
+}
+
+
+
+function showCategoryMenu() {
+	
+	// Prepare URL and params
+    var ajaxUrl = "/navigation/menu-navigation/?";
+   
+    $.ajax({
+        url: ajaxUrl,
+        dataType: "json",
+        success: function(data){
+            	// Load content to recomm container
+            	$("#hCategoryMenu").html(data['html']);
+            	
+            	$('.cat-flyout li').hover(
+            			function() {
+            				$(this).children('.second-cat-flyout').show();
+            			},
+            			function() {
+            				$(this).children('.second-cat-flyout').hide();
+            			}
+            	);
+            	
+       },
+        error: function(){
+            console.log("Found Error !");
+        }
+    });
+
+}
+
+
+
+
+
+$(function(){
+	
+	// welcome banner
+	if ($('#coupon-info').length) { 
+	$('#coupon-info').html(getCouponExplainer());
+	}
+	
+	var jsCurrentUrlProtocol = window.location.protocol;
+	var jsCurrentUrlHost = window.location.host;
+	$('.headerFreeShipping').click(function() {
+	    var URL =  jsCurrentUrlProtocol + "//" + jsCurrentUrlHost  + "/policy.html#shipping";
+	    var name = "_blank";
+		var left = (screen.width/2)-(1000/2);
+		var top  = (screen.height/2)-(800/2);
+	    setTemporaryCookieHolder('Shipping Information');
+	    var specs =' toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=1000, height=800, top='+top+', left='+left;
+	    window.open(URL,name,specs);
+	});
+	
+	if ($('#hCartSummary').length) { 
+		var new_total_items = getCookie('total_items');
+		new_total_items = ( new_total_items != null ) ? new_total_items : 0;
+	    is_new_number = !(new_total_items % 1);
+	    
+	    if(is_new_number && new_total_items > 0 ){
+	    	new_total_items = '<a href="'+urlsObj.basket+'" class="active">Cart <strong>' + new_total_items + '</strong></a>';
+	    } else {
+	    	new_total_items = '<a style="cursor:default" class="empty">Cart <strong> 0 </strong></a>';
+	    }
+	    
+	    $('#hCartSummary').html(new_total_items);
+	    
+	 }
+	
+	if ($('#hAccountLogin').length) { 
+		var fname = userGetFirstNameTrimmed();
+		
+		if( userIsLoggedIn() ){
+			header_account_message = 'Hi, <em>' + fname + '</em>';
+			header_account_instruction = '<span> Not ' + fname + '? <a href="' + urlsObj.my_account_logout+ '" class="redColor">Logout</a></span>';
+			header_account_link = '<a href="'+urlsObj.my_account_index+'">Your Account</a>';
+	    }else{
+	    	header_account_message = 'Welcome. <em>Sign In.</em>';
+			header_account_instruction = '<a href="'+urlsObj.my_account_index+'" class="btn-signin newredbtn">Sign In</a><span><a href="'+urlsObj.my_account_index+'" class="blackColor">New Customer? </a><a href="'+urlsObj.my_account_index+'?mascp=42" class="redColor">Register here</a>.</span>';
+			header_account_link = '<a href="'+urlsObj.my_account_index+'?mascp=44">Login</a>';
+	    }
+	    
+		$('#hAccountLink').html(header_account_link);
+		$('#hAccountLogin').html(header_account_message);
+		$('#hAccountLoginInstruction').html(header_account_instruction);
+	}
+
+});

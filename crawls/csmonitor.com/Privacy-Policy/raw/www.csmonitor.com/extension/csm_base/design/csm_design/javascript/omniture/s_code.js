@@ -4,15 +4,13 @@ More info available at http://www.omniture.com */
 
 var s=s_gi(s_account);
 
-/***** click tracking ***********/
+/***** click tracking *****/
 var getQueryParamValue = new RegExp( '[\\?&]nav=([^&#]*)' )
 var queryParamValue = window.location.href.match( getQueryParamValue );
-
 if( queryParamValue )
 {
 	queryParamValue = queryParamValue[ 1 ];
 	queryParamValue = queryParamValue.split('-');
-	
 	s.prop31 = queryParamValue[0] + '-' + queryParamValue[2];
 	s.prop32 = queryParamValue[0];
 	s.prop33 = queryParamValue[2];
@@ -20,15 +18,15 @@ if( queryParamValue )
 	s.prop35 = queryParamValue[1];
 }
 
-/* linkCode for omniture click tracking */
+/***** linkCode for click tracking *****/
 function linkCode(obj,title) {
 	s.linkTrackVars='prop3,prop4,prop5,prop21';
 	s.linkTrackEvents='None';
 	s.tl(obj,'o',title);
 }
 
-/************* Do not track & Ad blocker ****************/
-s.prop37 = ( (typeof navigator.doNotTrack != 'undefined' || typeof navigator.msDoNotTrack != 'undefined') && (navigator.doNotTrack || navigator.msDoNotTrack)) ? '1' : '0';
+/***** Do not track & Ad blocker *****/
+s.prop37 = "D=DNT";
 s.prop38 = ( typeof googletag == 'undefined' || typeof googletag.pubads == 'undefined' ) ? '1' : '0';
 
 /************************** CONFIG SECTION **************************/
@@ -45,7 +43,6 @@ s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
 /* Plugin Config */
-
 s.usePlugins=true
 
 /* Page Name Plugin Config */
@@ -118,31 +115,44 @@ function s_doPlugins(s) {
 
   /*Copy prop6 to channel*/
   s.channel=s.prop6;
-  
+
+  s.prop10=s.eVar27=s.getDaysSinceLastVisit('s_lv');
+  s.prop16=s.getVisitNumExpire(45);
+  s.prop17=s.getVisitNum('m','s_vmonthnum','s_monthinvisit'); 
+  s.prop18=s.rollingVisitNum('rvd',45);
+  s.prop19= s.getNewRepeat(45);
+  s.prop29=s.getCookieValue("s_depth");
+  s.prop41=s.eVar41="D=s_vi";
+  s.prop42=s.eVar42="D=t";
+  s.eVar43="D=useragent";
+  s.eVar44="D=p";
+
   /* Copy props to eVars */
-  if(s.pageName&&!s.eVar2) s.eVar2=s.pageName;
-  if(s.prop3&&!s.eVar3) s.eVar3=s.prop3;
-  if(s.prop4&&!s.eVar4) s.eVar4=s.prop4;
-  if(s.prop5&&!s.eVar5) s.eVar5=s.prop5;
-  if(s.prop6&&!s.eVar6) s.eVar6=s.prop6;
-  if(s.prop7&&!s.eVar7) s.eVar7=s.prop7;
-  if(s.prop8&&!s.eVar8) s.eVar8=s.prop8;
-  if(s.prop9&&!s.eVar9) s.eVar9=s.prop9;
-  if(s.prop11&&!s.eVar11) s.eVar11=s.prop11;
-  if(s.prop12&&!s.eVar12) s.eVar12=s.prop12;
-  if(s.prop13&&!s.eVar13) s.eVar13=s.prop13;
-  if(s.prop14&&!s.eVar25) s.eVar25=s.prop14;
-  if(s.prop15&&!s.eVar26) s.eVar26=s.prop15;
-  if(s.prop21&&!s.eVar32) s.eVar32=s.prop21;
-  if(s.prop22&&!s.eVar33) s.eVar33=s.prop22;
-  if(s.prop28&&!s.eVar34) s.eVar34=s.prop28;
-  if(s.prop40&&!s.eVar40) s.eVar40=s.prop40;
-
-  s.prop19=s.eVar19 = s.getNewRepeat(45);
-
+  if(s.pageName&&!s.eVar2) s.eVar2="D=pageName";
+  if(s.prop3&&!s.eVar3) s.eVar3="D=c3";
+  if(s.prop4&&!s.eVar4) s.eVar4="D=c4";
+  if(s.prop5&&!s.eVar5) s.eVar5="D=c5";
+  if(s.prop6&&!s.eVar6) s.eVar6="D=c6";
+  if(s.prop7&&!s.eVar7) s.eVar7="D=c7";
+  if(s.prop8&&!s.eVar8) s.eVar8="D=c8";
+  if(s.prop9&&!s.eVar9) s.eVar9="D=c9";
+  if(s.prop11&&!s.eVar11) s.eVar11="D=c11";
+  if(s.prop12&&!s.eVar12) s.eVar12="D=c12";
+  if(s.prop13&&!s.eVar13) s.eVar13="D=c13";
+  if(s.prop14&&!s.eVar25) s.eVar25="D=c14";
+  if(s.prop15&&!s.eVar26) s.eVar26="D=c15";
+  if(s.prop16&&!s.eVar28) s.eVar28="D=c16";
+  if(s.prop17&&!s.eVar29) s.eVar29="D=c17";
+  if(s.prop18&&!s.eVar30) s.eVar30="D=c18";
+  if(s.prop19&&!s.eVar19) s.eVar19="D=c19";
+  if(s.prop21&&!s.eVar32) s.eVar32="D=c21";
+  if(s.prop22&&!s.eVar33) s.eVar33="D=c22";
+  if(s.prop28&&!s.eVar34) s.eVar34="D=c28";
+  if(s.prop40&&!s.eVar40) s.eVar40="D=c40";
+  
 /* channelManager v2.0	*/ 
 s.channelManager('cmpid,rss');
-s.eVar21=s._campaign;
+s.eVar21="D=v0";
 s.eVar22=s._keywords;
 s.eVar23=s._channel;
 s.eVar24=s._referringDomain;
@@ -151,8 +161,6 @@ s.eVar24=s._referringDomain;
 if (s._referringDomain) {
 	s.eVar31=s.domainClassifications();
 }
-
-s.prop18=s.eVar30=s.rollingVisitNum('rvd',45);
 
 //s.bounceCheck(s.eVar21,'event11','event12')   // Come back to this...
 
@@ -176,21 +184,16 @@ else if (s.pdvalue==2)
 	s.events=s.apl(s.events,'event12',',',2);
 }
 
-s.prop10=s.eVar27=s.getDaysSinceLastVisit('s_lv');
-
-s.prop16=s.eVar28=s.getVisitNumExpire(45);
-
-s.prop17=s.eVar29=s.getVisitNum('m','s_vmonthnum','s_monthinvisit');
-s.prop29=s.getCookieValue("s_depth");
 
 // Page URL excluding Query Strings
-	s.prop30=location.protocol + "//" + location.host + location.pathname	
-	s.eVar35=s.prop30
+	s.prop30=location.protocol + "//" + location.host + location.pathname;
+	s.eVar35="D=c30";
 
 // Sets hierarchy to be equal to the pageName
 	s.hier1=s.pageName;	
 	
 }
+
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */

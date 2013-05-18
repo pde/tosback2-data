@@ -5781,6 +5781,6 @@ $(window).load(function() {
                     socialAnalytics('close-window');        
                     s.tl(true,"o",'SP Event');
                 });
-            },
+            }
         });
     });

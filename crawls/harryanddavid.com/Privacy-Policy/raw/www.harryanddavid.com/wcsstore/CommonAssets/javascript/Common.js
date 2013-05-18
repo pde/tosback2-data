@@ -16,7 +16,6 @@ dojo.require("bec.util.search");
 dojo.require("bec.analytics.Coremetrics");
 dojo.require("bec.vendors.Tealeaf");
 dojo.require("bec.widget.Button");
-dojo.require("bec.widget.EasyButton");
 dojo.require("bec.widget.PopupDialog");
 dojo.require("bec.product.AddToCart");
 dojo.require("bec.product.AddToCartButton");
@@ -30,7 +29,6 @@ dojo.require("bec.order.CommonCartServices");
 dojo.require("bec.menu.MenuContentPane");
 dojo.require("bec.widget.PopupPanelContainer");
 dojo.require("bec.widget.PopupPanel");
-dojo.require("bec.espot.ClickInfo");
 dojo.require("bec.widget.iScroller");
 dojo.require("bec.user.EmailSignUp");
 
@@ -79,7 +77,7 @@ dojo.addOnLoad(function()
 function dojoParseButtons()
 {
 	// Nodelist of parseable buttons within the BODY element.
-	var parseableButtons = dojo.query("[dojoType='bec.widget.Button'],[dojoType='bec.product.AddToCartButton'],[dojoType='bec.widget.EasyButton']", dojo.query("body")[0]);
+	var parseableButtons = dojo.query("[dojoType='bec.widget.Button'],[dojoType='bec.product.AddToCartButton']", dojo.query("body")[0]);
 	
 	parseableButtons.forEach(function(button,idx,buttons)
 	{

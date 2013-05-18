@@ -845,6 +845,7 @@ var Class = (function() {
       this.ratioHeight      = Math.ceil(this.targetContWidth * ratio);
       this.playerContainer  = $('.player-container', this.$targetCont);
       this.playHeadTime     = 0;
+      this.ipadAdjustment   = 35;
 
       $actionElm.bind('click', function(e) {
         e.preventDefault();
@@ -889,7 +890,9 @@ var Class = (function() {
 
     adjustForIpadInsert: function(that) {
       if (TNF.ipad){
-        that.playerContainer.animate({'padding-top': '35px' });
+        height = that.ratioHeight + that.ipadAdjustment;
+        that.$targetCont.height( height );
+        that.playerContainer.animate({'padding-top': that.ipadAdjustment+'px' });
         $('a.video-interface-close', that.playerContainer).css({"border-radius": '10px 10px 0 0'});
       }
     },
@@ -1747,20 +1750,22 @@ $.TNF.BRAND.Gallery.Standard = {};
       this.body.bind('hero_gallery_popup_opened', this.fadePopup);
       this.body.bind('hero_gallery_flyout_opened', this.fadePopup);
       this.body.bind('hero_gallery_paged', this.fadePopup);
-      this.markerIndicator.bind('mouseover', function() {
-        return _this.markerCircle.animate({
-          top: 0,
-          left: 0,
-          width: _this.markerSize,
-          height: _this.markerSize
-        }, 100, 'easeInOutSine');
-      });
-      this.markerIndicator.bind('mouseout', function() {
-        if (_this.showing) {
-          return;
-        }
-        return _this.deactivateMarker();
-      });
+      if (!TNF.ipad) {
+        this.markerIndicator.bind('mouseover', function() {
+          return _this.markerCircle.animate({
+            top: 0,
+            left: 0,
+            width: _this.markerSize,
+            height: _this.markerSize
+          }, 100, 'easeInOutSine');
+        });
+        this.markerIndicator.bind('mouseout', function() {
+          if (_this.showing) {
+            return;
+          }
+          return _this.deactivateMarker();
+        });
+      }
       this.markerIndicator.bind('click', this.showPopup);
       return this.popup.find('a.hero-gallery-callout-popup-close').click(this.fadePopup);
     };
@@ -1943,20 +1948,22 @@ $.TNF.BRAND.Gallery.Standard = {};
       this.body.bind('hero_gallery_popup_opened', this.fadePopup);
       this.body.bind('hero_gallery_flyout_opened', this.fadePopup);
       this.body.bind('hero_gallery_paged', this.fadePopup);
-      this.markerIndicator.bind('mouseover', function() {
-        return _this.markerCircle.animate({
-          top: 0,
-          left: 0,
-          width: _this.markerSize,
-          height: _this.markerSize
-        }, 100, 'easeInOutSine');
-      });
-      this.markerIndicator.bind('mouseout', function() {
-        if (_this.showing) {
-          return;
-        }
-        return _this.deactivateMarker();
-      });
+      if (!TNF.ipad) {
+        this.markerIndicator.bind('mouseover', function() {
+          return _this.markerCircle.animate({
+            top: 0,
+            left: 0,
+            width: _this.markerSize,
+            height: _this.markerSize
+          }, 100, 'easeInOutSine');
+        });
+        this.markerIndicator.bind('mouseout', function() {
+          if (_this.showing) {
+            return;
+          }
+          return _this.deactivateMarker();
+        });
+      }
       return this.markerIndicator.bind('click', this.showPopup);
     };
 

@@ -221,7 +221,7 @@
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = 'XKB1RT4bDTZCfp1HMyCHhwHp!-378239975!1368275035144';
+			var pSessionId = '7BGvRXzRTyLbqQRTZZqnlQ5h!-1466155823!1368879889575';
 			return pSessionId;
 		};
 
@@ -259,7 +259,7 @@
 		var forceFlashDebugMode = false;
 		var getTimeOffset = function() {
 			var offset = new Number();
-			var servertime = 1368275040876;
+			var servertime = 1368879896625;
 			var clientdateObj = new Date();
 			var clienttime = clientdateObj.getTime();
 			offset = clienttime - servertime;
@@ -661,7 +661,7 @@
 			/* 
 		        IE Browsers found so check if
 		        version is less than we support
-		        Updated as of: 3/1/2013 
+		        Updated as of: 4/11/2013 
 		    */
 		    if(BrowserDetect.browser == 'Explorer') {
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist())
@@ -671,7 +671,7 @@
 					var myCookieGNSESS = getCookie("GNSESS");
 
 					if (myCookieGNSESS == null) {
-						// cookie doesn't exist
+						// cookie doesn't exist so show message
 						jQuery(".ge5p_z0-message-container").slideToggle('slow');
 					}
 		        }
@@ -680,15 +680,32 @@
 		    /* 
 		        Modern Browsers are found so check if
 		        version is less than we support
-		        Updated as of: 3/1/2013 
+		        Updated as of: 4/11/2013 
 		    */
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) {
+		    if(BrowserDetect.browser == 'Firefox') {
 		    
+		        if(BrowserDetect.version < 17)
+		        {
+					var myCookieGNSESS = getCookie("GNSESS");
+
+					if (myCookieGNSESS == null) {
+						// cookie doesn't exist so show message
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
 		    } 
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) {
+		        }
 		    
+		    } 
+		    if(BrowserDetect.browser == 'Chrome') {
+		    
+		        if(BrowserDetect.version < 23)
+		        {
+					var myCookieGNSESS = getCookie("GNSESS");
+
+					if (myCookieGNSESS == null) {
+						// cookie doesn't exist so show message
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow');
+		    }   
+		}
 		    }   
 		}
 	});
@@ -769,10 +786,31 @@
 							
 							
 						
-						<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../../../www.att.com/index.html"><span>Personal</span></a></li>
+						<li>
+							<a id="segMenuItemPersonal" class="segMenuItem " href="../../../www.att.com/index.html"><span>Personal</span></a>
+							<div class="segSubMenu" id="segSubMenuPersonal">
+								<ul>
+									
+										
+									
+										
+											<li><a href="../../../www.att.com/index.html">att.com</a></li>
+										
+									
+										
+											<li><a href="../../../www.att.net/index.html">att.net</a></li>
+										
+									
+										
+											<li><a href="../../../uverseonline.att.net/index.html">uverse.com</a></li>
+										
+									
+								</ul>
+							</div>
+						</li>
 						<li>
 							<a id="segMenuItemBusiness" class="segMenuItem " href="../../../www.att.com/gen/general%3Fpid=11627.html"><span>Empresas</span></a>
-							<div class="segSubMenu" >
+							<div class="segSubMenu" id="segSubMenuBusiness">
 								<ul>
 									
 										
@@ -805,12 +843,12 @@
 						
 
 					
-						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="wireless-terms.jsp%3Flocale=es_US.html" target="_new"><span style="color:#fff;"></span></a></li>
-						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="../../coverageviewer/index.html#?type=voice"><span>Mapas de cobertura de servicio m&oacute;vil</span></a></li>
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../coverageviewer/index.html#?type=voice" target="_new"><span style="color:#fff;">Mapas de cobertura de servicio m&oacute;vil<span class="segMenuNewWin">&nbsp;</span></span></a></li>
+						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="http://www.att.com/maps/es/store-locator.html"><span>Buscar tienda</span></a></li>
 						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="wireless-terms.jsp%3Flocale=es_US.html#"><span>
 									Idioma
 								</span></a>
-							<div class="segSubMenu">
+							<div class="segSubMenu" id="segSubMenuLanguage">
 								<ul>
 									
 										

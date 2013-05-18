@@ -1908,7 +1908,7 @@ $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
   $("input:checkbox[name=filter_option]:checked").each(function() {
 	  	   var inputObj = this;
            var labelObj = $(this).next();
-		   var labelTxt = $(labelObj).text()
+		   var labelTxt = $(labelObj).attr('title');
 		   labelTxt = $.trim(labelTxt);
        if(ss_check.indexOf(labelTxt) == -1 ){
 		   s_checkboxes.push(labelTxt);
@@ -1921,7 +1921,7 @@ $("input:checkbox[name=filter_option]:not(:checked)").each(function() {
            s.eVar11 = s.prop17 = s.pageName + ">left_cat_filter>category_filter_check";
            s.eVar20 = '+1';
 		   s.events = 'event73';
-		   s.eVar55 = "check_type:" + labelTxt.toLowerCase();
+		   s.eVar55 = labelTxt.toLowerCase();
 		   
 		   s.tl(this,'o','category_filter_check');
 	   }//if all-products

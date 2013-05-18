@@ -446,17 +446,17 @@ $(window).load(function() {
 	dynamicRatings();
 	//cartConfModal();
 	// Add the fancybox close catcher
-	$('.fbClose a').live('click', function() {
+	$(document).delegate('.fbClose a','click touchend', function() {
 		$.fancybox.close();
 		return false;
 	});
 	//Cart Modal Trigger.
-	$("body").delegate(".overlayCartTrigger", "click", function(event){
-    event.preventDefault();    
-	var setCartUrl = $(this).attr('href')+'&addToCartConfirmation=true';
-    var cartModelURL = $.extend({}, CartModelConfig);
+	$(document).delegate(".overlayCartTrigger", "click touchend", function(event){
+		event.preventDefault();    
+		var setCartUrl = $(this).attr('href')+'&addToCartConfirmation=true';
+    	var cartModelURL = $.extend({}, CartModelConfig);
     	cartModelURL.href = setCartUrl;
-	$.fancybox(cartModelURL);
+    	$.fancybox(cartModelURL);
 	});
 });
 // QC-26552 this js fires later than the above jQuery method, also the 

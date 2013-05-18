@@ -1,0 +1,3270 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+	<head>
+				<!-- Version: 5.4.21.2 -->
+
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width">
+
+<!-- 3rd party meta tags -->
+		<meta name="og:type" content="website" />
+		<meta name="og:title" content="Home" />
+		<meta name="twitter:title" content="Home" />
+		<meta name="og:description" content="Welcome to Uverse.com! Watch over 300,000 FREE videos for everyone, with thousands more for U-verse TV members." />
+		<meta name="twitter:url" content="http://uverseonline.att.net/" />
+		<meta name="twitter:description" content="Welcome to Uverse.com! Watch over 300,000 FREE videos for everyone, with thousands more for U-verse TV members." />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@Uverse" />
+		<meta name="og:url" content="http://uverseonline.att.net/" />
+		<link rel="image_src" href="index.html" />
+
+		<title> Home -
+AT&amp;T U-verse</title>
+
+			<!--[if lte IE 8]>
+				<link rel="stylesheet" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?cache=5.4.21.2" />
+			<![endif]-->
+			<!--[if gte IE 9]><!-->
+				<link rel="stylesheet" href="web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fcache=5.4.21.2.css" />
+			<!--<![endif]-->
+
+
+			<script src="web_files/NEXTGEN/web_files/nes/js/lib/mootools/mootools-core-1.4.5.min.js%3Fcache=true"></script>
+			<script src="web_files/NEXTGEN/web_files/nes/js/lib/mootools/mootools-more-1.4.0.1.min.js%3Fcache=true"></script>
+
+<script type="text/javascript">
+		(function() {
+			var cgate = Cookie.read('ATTNETSSOCKSTR')
+			var nxtgn = Cookie.read('NEXTGEN_NAME');
+			var shortCode = Cookie.read('NEXTGEN_SITE_AREA');
+			
+			var href = window.location.href;
+			var hash = window.location.hash;
+			
+			if(!!hash) {
+				href = window.location.protocol +"//" + window.location.host;
+				if (hash.charAt(1) === "/") {
+					if (hash.substr(1) === "/") {
+						href = href + window.location.pathname;
+					} else {
+						href = href + hash.substr(1);
+					}
+				} else {
+					href = href + window.location.pathname + "?" + hash.substr(1);
+				}
+			}
+			
+			if ((!nxtgn) && (cgate && cgate != '') && (window.location.href.indexOf('login.html') == -1)) {
+				window.location = 'http://uverseonline.att.net/login.html?return=' + href;
+			} 
+			
+			var prefix = '';
+			if (shortCode && (shortCode != '' && shortCode != '""')) {
+				prefix = '/' + shortCode;
+			}
+			
+			if (prefix != '') {
+				window.location = 'http://uverseonline.att.net/login.html?return=' + href;
+			}
+		})();
+</script>
+<script>
+	var Uverse = {
+		config: {
+			entitlement: {}
+		}
+		, controls: {}
+		, utils: {}
+		, widgets: {
+			epg: {}
+		}
+		, players: {}
+		, playerExtensions: {}
+		, Enums: {}
+	};
+</script>
+
+<script>
+
+		Uverse.config.consoleEnabled = false;
+
+	Uverse.config.dvr = {
+		dvrMode:  'dvrItems' 
+	};
+
+	Uverse.config.buildVersion = "5.4.21.2";
+	Uverse.config.scriptPath = "/web_files/NEXTGEN/web_files/nes/js/src/";
+	Uverse.config.vendorPath = "/web_files/NEXTGEN/web_files/nes/vendors/";
+	Uverse.config.jsLibPath = "/web_files/NEXTGEN/web_files/nes/js/lib/";
+	Uverse.config.requestPath =  '/ng' ;
+	Uverse.config.pageOptions = {
+		pageContainerId: 'pageContainer1'
+		,modalManagerOptions: {
+			modalContainerId: 'modalContainer1'
+			,modalShadowId: 'modalShadow1'
+		}
+	};
+	Uverse.config.cltDomainList = null;
+	Uverse.config.cltAppName = null;
+
+	Uverse.config.personalization = {
+		urls: {
+			saveUserSetting: '/personalisationSetting.json'
+		}
+	};
+
+	Uverse.config.favorite = {
+		urls: {
+			save: '/favorites.addItem'
+			,remove: '/favorites.removeItem'
+		}
+	};
+
+	Uverse.config.notification = {
+		urls: {
+			create: '/notification/episode.json'
+		}
+	};
+
+	// TODO: move to messages_en:
+	Uverse.config.messages = {
+		error: {
+			generic: '<p>Sorry, there was an error.</p><p>Please try again later.</p>'
+			, invalidEmail: '<p>You entered an invalid email address.</p><p>Please try again.</p>'
+		}
+	};
+
+	Uverse.config.templates = {
+		bannersPrefix: 'bannersTemplate-'
+	};
+
+	Uverse.config.token = {
+		urls: {
+			token: '/rest/token/?videoKey={key}' // Currently used by Turner / TokenHandler
+			,tokenFoxLive: '{remoteUrl}/rest/token/?videoKey={itemId}'
+		}
+	};
+
+	Uverse.config.unsupportedBrowsers = {
+		
+			'MSIE [1-6]\\.': {name: 'Internet Explorer', src: 'unsupported-browser.png', url: '/unsupported-browser'},
+			'Firefox\\/[0-6]\\.': {name: 'firefox', src: 'unsupported-browser.png', url: 'http://getfirefox.com'},
+			'iPad': {name: 'iPad', src: 'ipad-banner.png', url: 'http://itunes.apple.com/us/app/at-t-u-verse/id410354613?mt=8#'},
+			'Safari(.*)Version\\/4': {'name': 'Safari', src: 'unsupported-browser.png', url: 'http://www.apple.com/safari/'},
+			'android|Android': {name: 'Android', src: 'android-banner.png', url: 'https://play.google.com/store/apps/details?id=com.att.android.uverse&feature=nav_result#?t=W251bGwsMSwxLDMsImNvbS5hdHQuYW5kcm9pZC51dmVyc2UiXQ'}
+		
+	};
+
+		Uverse.config.clickTracking = {
+			enable: true
+			, url : '/report/click_tracking_nes.json'
+		};
+
+	Uverse.config.players = {
+		callbacks: {
+			cbs: {}
+			, mtv: {}
+			, extend: {}
+			, hbo: {}
+			, disney: {}
+			, espn: {}
+		}
+	};
+
+	Uverse.config.drawer = {
+		headers: {
+			recording: {
+				'classname': 'recordingTitle'
+				, text: 'Record'
+			}
+			, notification: {
+				'classname': 'notificationsTitle'
+				, text: 'Notifications'
+			}
+			, favorite: {
+				'classname': 'favoritesTitle'
+				, text: 'Favorites'
+			}
+			, information: {
+				'classname': 'informationTitle'
+				, text: 'More Info'
+			}
+			, signIn: {
+				'classname': 'notLoggedInTitle'
+				, text: 'Sign In'
+			}
+		}
+	};
+
+	Uverse.config.liveTiles = {
+		progressBarInterval: 20000
+		, scheduleSizeWindowSizeMinutes: 960
+		, expirationToast: {
+			infoAlert: ''
+			, infoMessage: 'Due to a lack of activity, this information is out of date. Please refresh the browser.'
+			, buttonText: 'Refresh'
+		}
+		, simulated: {
+			enable: false
+			, date: null
+			, dateDiff: 0
+			, repopulateMethods: []
+			, updateDate: function(date) {
+				Uverse.config.liveTiles.simulated.date = date;
+				Uverse.config.liveTiles.simulated.dateDiff = date - (new Date());
+				Uverse.config.liveTiles.simulated.repopulateMethods.each(function(method) { method(); });
+			}
+		}
+	}
+</script>
+
+<script>
+	Uverse.config.google_analytics = {
+		code: 'UA-6309852-3'
+	};
+
+		// webtrends
+		Uverse.config.webtrends = {
+			baseTags: '.*'
+			, dcsid: 'dcsdshp8jvz5bdb39sgvab11n_6j6h'
+			, domain: 'statse.webtrendslive.com'
+			, onsitedoms: 'uverseonline.att.net'
+		};
+
+	// foresee
+		Uverse.config.foresee = {
+			sp: 7
+			, lf: 1
+		};
+</script>
+			<script src="web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.min.js%3Fcache=5.4.21.2"></script>
+
+
+		
+
+
+<meta name="description" content="Welcome to Uverse.com! Presenting more than 250,000 FREE videos for everyone, with thousands more for U-verse TV subscribers.">
+<meta name="fragment" content="!">
+	
+
+
+		<script src="web_files/NEXTGEN/web_files/nes/js/lib/modernizr/modernizr-2.5.3.min.js%3Fcache=true"></script>
+	</head>
+
+	<body class="pageType-Tile not-logged-in">
+		<section id="pageContainer1" class="page-container">
+
+
+
+
+
+
+<div id="masthead" class="masthead track-hasCategory" data-clicktrack-category="Header">
+	<div class="wrapper">
+		<div class="global-navigation needsPageWidth track-hasSubcategory" data-clicktrack-subcategory="Global">
+			<div class="global-tabs">
+				<ul class="global-links">
+						<li class="global-link "><a href="http://att.net/" class="track" data-clicktrack-action="att.net" data-trk-cat="Top navigation" data-trk-act="att.net">att.net</a></li>
+						<li class="global-link "><a href="http://www.att.com/?shopFilterId=100004&source=EC00uv000000001UL&wtExtndSource=uv_hdr_att" class="track" data-clicktrack-action="att.com" data-trk-cat="Top navigation" data-trk-act="att.com">att.com</a></li>
+						<li class="global-link  current "><a href="index.html" class="track" data-clicktrack-action="uverse.com" data-trk-cat="Top navigation" data-trk-act="uverse.com">uverse.com</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="main-navigation needsPageWidth track-hasSubcategory" data-clicktrack-subcategory="Main">
+			<div class="main-logo-wrapper">
+				<a href="index.html" class="track" data-clicktrack-action="U-verse Logo"  data-trk-cat="Top navigation" data-trk-act="U-verse Logo">
+					<img class="main-logo" src="web_files/NEXTGEN/web_files/nes/styles/images/branding/logo.png" alt="AT&amp;T">
+				</a>
+			</div>
+			<div class="main-links-wrapper track-hasSubcategory" data-clicktrack-subcategory="Main">
+				<ul id="mainLinks" class="main-links">
+
+						<li class="main-link  current ">
+							<a href="index.html" style="background-image: url(web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksWatchNow.png)" class="track"  data-clicktrack-action="Watch Now"  data-trk-cat="Top navigation" data-trk-act="Watch Now">Watch Now
+									<div class="badge  hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
+						</li>
+
+						<li class="main-link ">
+							<a href="http://uverseonline.att.net/uverse" style="background-image: url(web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksAboutUverse.png)" class="track"  data-clicktrack-action="U-verse TV"  data-trk-cat="Top navigation" data-trk-act="U-verse TV">U-verse TV
+									<div class="badge  hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
+						</li>
+
+						<li class="main-link ">
+							<a href="http://uverseonline.att.net/guide" style="background-image: url(web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksChannelGuide.png)" class="track"  data-clicktrack-action="TV Listings"  data-trk-cat="Top navigation" data-trk-act="TV Listings">TV Listings
+									<div class="badge  hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
+						</li>
+
+						<li class="main-link ">
+							<a href="http://uverseonline.att.net/settings/account" style="background-image: url(web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksMyAccount.png)" class="track"  data-clicktrack-action="My Account"  data-trk-cat="Top navigation" data-trk-act="My Account">My Account
+									<div class="badge favoritesCount hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
+						</li>
+				</ul>
+			</div>
+			<div class="profile-links-wrapper track-hasSubcategory"  data-clicktrack-subcategory="Profile">
+				<ul id="profile-links" class="profile-links">
+					<li class="login-link hidden">
+						<a id="logInLink" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2F" class="track" data-clicktrack-action="Sign In" data-trk-cat="Top navigation" data-trk-act="Sign In">Hi, Please sign in</a>
+						<span class="profile-links-split">|</span>
+						<a href="https://attreg.att.net/PortalRegWeb/PortalRegController?callingAppId=ME&returnurl=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank" class="track external" data-clicktrack-action="Sign Up" data-trk-cat="Top navigation" data-trk-act="Sign Up">Sign up</a>
+					</li>
+					<li class="current-user-gretting hidden">
+						<a href="http://uverseonline.att.net/uverse/account" class="track"  data-clicktrack-action="Account" data-trk-cat="Top navigation" data-trk-act="Account">Hi <span class="current-user-name"></span></a>
+					</li>
+					<li class="logout-link hidden">
+						<span class="profile-links-split">|</span>
+						<a href="http://www.att.net/globalssosignout?returnurl=http://uverseonline.att.net/logout.html?return=http://uverseonline.att.net/" class="track"  data-clicktrack-action="Sign Out" data-trk-cat="Top navigation" data-trk-act="Sign Out">Log Out</a>
+					</li>
+				</ul>
+				<ul id="support-links" class="support-links">
+					<li class="support-link">
+						<a href="http://www.att.com/esupport/index.jsp?App_ID=PBY" target="_blank" class="track external"  data-clicktrack-action="AT&amp;T Support"  data-trk-cat="Top navigation" data-trk-act="AT&amp;T Support">AT&amp;T Support</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="sections-navigation" class="sections-navigation needsPageWidth track-hasSubcategory" data-clicktrack-subcategory="Navigation">
+			<div id="secondaryNavigation">
+				<ul class="main-nav-list">
+					<li id="quickSearch" class="quick-search track-hasSubcategory" data-clicktrack-subcategory="Search">
+						<form action='http://uverseonline.att.net/search' method="post" class='track-hasAction' data-trk-cat='Search' data-trk-act='Query - Basic' data-clicktrack-action="Submit Query">
+							<span class="quick-search-active">Searching</span>
+<input type="text" name="query" value="" class="U-control U-control-textbox quick-search-textbox"
+maxlength="64"
+autocomplete="off"
+placeholder="Search U-verse"
+/>							<div class="quick-search-magnify"><button type="submit"></button></div>
+
+							<div class="quick-search-results-container hidden track-hasAction" data-clicktrack-action="Search Suggestion">
+							</div>
+
+						</form>
+					</li>
+									<li class="main-nav-item   current">
+
+	<a href="index.html" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="All"  data-trk-cat="Top navigation" data-trk-act="All">All</a>
+									</li>
+									<li class="main-nav-item   ">
+
+	<a href="http://uverseonline.att.net/live" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Live TV"  data-trk-cat="Top navigation" data-trk-act="Live TV">Live TV</a>
+									</li>
+									<li class="main-nav-item  with-dropdown  ">
+
+	<a href="http://uverseonline.att.net/tv" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="TV Shows"  data-trk-cat="Top navigation" data-trk-act="TV Shows">TV Shows</a>
+										<ul class="main-nav-menu menu">
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/popular" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - Most Popular" data-trk-cat="Top navigation" data-trk-act="TV Shows - Most Popular">Most Popular</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/new" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - Recently Added" data-trk-cat="Top navigation" data-trk-act="TV Shows - Recently Added">Recently Added</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/tv/all" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - All TV Shows" data-trk-cat="Top navigation" data-trk-act="TV Shows - All TV Shows">All TV Shows</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/tv/es" class="main-nav-menu-item-label track" data-clicktrack-action="TV Shows - En Español" data-trk-cat="Top navigation" data-trk-act="TV Shows - En Español">En Español</a></li>
+										</ul>
+									</li>
+									<li class="main-nav-item  with-dropdown  ">
+
+	<a href="http://uverseonline.att.net/movies" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Movies"  data-trk-cat="Top navigation" data-trk-act="Movies">Movies</a>
+										<ul class="main-nav-menu menu">
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/movies/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Movies - Most Popular" data-trk-cat="Top navigation" data-trk-act="Movies - Most Popular">Most Popular</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/movies/new" class="main-nav-menu-item-label track" data-clicktrack-action="Movies - Recently Added" data-trk-cat="Top navigation" data-trk-act="Movies - Recently Added">Recently Added</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/movies/all" class="main-nav-menu-item-label track" data-clicktrack-action="Movies - All Movies" data-trk-cat="Top navigation" data-trk-act="Movies - All Movies">All Movies</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/movies/es" class="main-nav-menu-item-label track" data-clicktrack-action="Movies - En Español" data-trk-cat="Top navigation" data-trk-act="Movies - En Español">En Español</a></li>
+										</ul>
+									</li>
+									<li class="main-nav-item  with-dropdown  ">
+
+	<a href="http://uverseonline.att.net/music" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Music"  data-trk-cat="Top navigation" data-trk-act="Music">Music</a>
+										<ul class="main-nav-menu menu">
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Music - Most Popular" data-trk-cat="Top navigation" data-trk-act="Music - Most Popular">Most Popular</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/new" class="main-nav-menu-item-label track" data-clicktrack-action="Music - Recently Added" data-trk-cat="Top navigation" data-trk-act="Music - Recently Added">Recently Added</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/all" class="main-nav-menu-item-label track" data-clicktrack-action="Music - All Artists" data-trk-cat="Top navigation" data-trk-act="Music - All Artists">All Artists</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/music/es" class="main-nav-menu-item-label track" data-clicktrack-action="Music - En Español" data-trk-cat="Top navigation" data-trk-act="Music - En Español">En Español</a></li>
+										</ul>
+									</li>
+									<li class="main-nav-item  with-dropdown  ">
+
+	<a href="http://uverseonline.att.net/sports" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Sports"  data-trk-cat="Top navigation" data-trk-act="Sports">Sports</a>
+										<ul class="main-nav-menu menu">
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/sports/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - Most Popular" data-trk-cat="Top navigation" data-trk-act="Sports - Most Popular">Most Popular</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/sports/new" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - Recently Added" data-trk-cat="Top navigation" data-trk-act="Sports - Recently Added">Recently Added</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/sports/all" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - All Sports" data-trk-cat="Top navigation" data-trk-act="Sports - All Sports">All Sports</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/network/fanzone" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - Fan Zone" data-trk-cat="Top navigation" data-trk-act="Sports - Fan Zone">Fan Zone</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/network/teamusa" class="main-nav-menu-item-label track" data-clicktrack-action="Sports - Team USA" data-trk-cat="Top navigation" data-trk-act="Sports - Team USA">Team USA</a></li>
+										</ul>
+									</li>
+									<li class="main-nav-item  with-dropdown last-child ">
+
+	<a href="http://uverseonline.att.net/networks" class="main-nav-item-label track " data-authenticated-index="" data-clicktrack-action="Networks"  data-trk-cat="Top navigation" data-trk-act="Networks">Networks</a>
+										<ul class="main-nav-menu menu">
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/networks/premium" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - Premium Networks" data-trk-cat="Top navigation" data-trk-act="Networks - Premium Networks">Premium Networks</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/networks/tv" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - TV Networks" data-trk-cat="Top navigation" data-trk-act="Networks - TV Networks">TV Networks</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/networks/studios" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - Movie Studios" data-trk-cat="Top navigation" data-trk-act="Networks - Movie Studios">Movie Studios</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/networks/online" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - Online Networks" data-trk-cat="Top navigation" data-trk-act="Networks - Online Networks">Online Networks</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/networks/es" class="main-nav-menu-item-label track" data-clicktrack-action="Networks - En Español" data-trk-cat="Top navigation" data-trk-act="Networks - En Español">En Español</a></li>
+										</ul>
+									</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="secondaryNavigationFlyouts" class="flyout-content-container">
+	</div>
+</div>
+
+<div class="masthead-placeholder"></div>
+
+<script type="text/javascript">
+	Uverse.load({
+		moduleName: 'Uverse.widgets.SecondaryNavigation'
+		, id: 'secondaryNavigation'
+		, options: { flyoutsContainerId: 'secondaryNavigationFlyouts' }
+	});
+
+	Uverse.load({
+		moduleName: 'Uverse.widgets.MainLinks'
+		, id: 'mainLinks'
+		, options: { }
+	});
+
+	Uverse.load({
+		moduleName: 'Uverse.widgets.QuickSearch'
+		,id: 'quickSearch'
+		, options: {
+			searchUrl: '/search/quickSearch.html'
+			,searchKey: 'letters'
+			,minCharacters: 1
+		}
+	});
+
+	Uverse.load({
+		moduleName: 'Uverse.widgets.FixedHeader'
+		,id: 'sections-navigation'
+	});
+
+	Uverse.load({
+		moduleName: 'Uverse.widgets.LogInLinks'
+		,id: 'profile-links'
+	});
+</script>
+
+
+			<div role="main" id="main">
+
+				
+
+
+<div id="hiddenTemplates" class="hidden">
+	<section id="recordingOptionsTemplate" class="hidden">
+	<div class="drawer-recording record">
+		<form class="recording-issue">
+			<p class="description"></p>
+			<p class="options"></p>
+			<p class="time"></p>
+			<p class="channel"><span class="number"></span> <span class="name"></span></p>
+<button type="submit" class="U-control U-control-button control-drawer control-recordings track"
+name="RecordToDVR"
+value="true"
+data-clicktrack-action="Record to DVR">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Record to DVR</span><span class="slice-two">&nbsp;</span>
+</span> </button>		</form>
+	</div>
+	<div class="drawer-recording setToRecord hidden">
+		<form class="recording-issue">
+			<p class="description successful"></p>
+			<p class="time"></p>
+			<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			<p class="manage"><a href="http://uverseonline.att.net/guide/scheduled-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
+		</form>
+	</div>
+	<div class="drawer-recording recorded">
+		<form class="recording-issue">
+			<p class="description successful"></p>
+			<p class="time"></p>
+			<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			<p class="manage"><a href="http://uverseonline.att.net/guide/scheduled-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
+		</form>
+	</div>
+	<div class="drawer-recording cannotBeRecorded">
+		<p class="description recording-issue">Sorry, you cannot record this because it is no longer available in the channel guide.</p>
+	</div>
+	<div class="drawer-recording cannotBeRecorded-local">
+		<p class="description recording-issue">Sorry, this recording is not available in your area.</p>
+	</div>
+	<div class="drawer-recording genericError">
+		<p class="description recording-issue">Sorry, this recording is not available.</p>
+	</div>
+	<div class="drawer-recording labels">
+		<div class="record">
+			<div class="tv">
+				<span class="description">Record new episodes to your DVR as soon as they are available.</span>
+				<span class="options">
+<label class="U-control U-control-checkbox control-recordings track" tabIndex="0" data-clicktrack-action="Include Reruns" data-clicktrack-label="">
+<span class="U-control-checkbox-check-wrapper">
+<span class="U-control-checkbox-check"></span>
+<input type="checkbox" name="includeReruns" value="true" />
+</span>
+Include Reruns
+</label>				</span>
+			</div>
+			<div class="movies">
+				<span class="description">Record this movie to your DVR on:</span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+			<div class="sports">
+				<span class="description">Record new episodes to your DVR as soon as they are available.</span>
+				<span class="options">
+<label class="U-control U-control-checkbox control-recordings track" tabIndex="0" data-clicktrack-action="Include Reruns" data-clicktrack-label="">
+<span class="U-control-checkbox-check-wrapper">
+<span class="U-control-checkbox-check"></span>
+<input type="checkbox" name="includeReruns" value="true" />
+</span>
+Include Reruns
+</label>				</span>
+			</div>
+		</div>
+		<div class="setToRecord">
+			<div class="tv">
+				<span class="description">Your DVR is set to record new episodes<span class="reruns"> and reruns</span></span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+			<div class="movies">
+				<span class="description">Your DVR is set to record this movie on:</span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+			<div class="sports">
+				<span class="description">Your DVR is set to record new episodes<span class="reruns"> and reruns</span></span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+		</div>
+		<div class="recorded">
+			<div class="tv">
+				<span class="description">Your DVR recorded this series on:</span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+			<div class="movies">
+				<span class="description">Your DVR recorded this movie on:</span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+			<div class="sports">
+				<span class="description">Your DVR recorded this series on:</span>
+				<p class="time"></p>
+				<p class="channel"><span class="number"></span> <span class="name"></span></p>
+			</div>
+		</div>
+		<div class="cannotBeRecorded">
+			<div class="tv">
+				<p class="description"></p>
+			</div>
+			<div class="movies">
+				<p class="description"></p>
+			</div>
+			<div class="sports">
+				<p class="description"></p>
+			</div>
+			<div class="music">
+				<p class="description"></p>
+			</div>
+		</div>
+		<div class="cannotBeRecorded-local">
+			<div class="tv">
+				<p class="description"></p>
+			</div>
+			<div class="movies">
+				<p class="description"></p>
+			</div>
+			<div class="sports">
+				<p class="description"></p>
+			</div>
+			<div class="music">
+				<p class="description"></p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section id="favoriteOptionsTemplate" class="hidden">
+	<div class="drawer-favorites favorite-add hidden">
+		<form class="save">
+			<p class="description">
+Access all your best-loved videos by adding them to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="options">
+<label class="U-control U-control-checkbox control-favorites track" tabIndex="0" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On">
+<span class="U-control-checkbox-check-wrapper">
+<span class="U-control-checkbox-check"></span>
+<input type="checkbox" name="oneClickFavorites" value="true" checked="checked" />
+</span>
+<span class='is-checked'>ON</span><span class='not-checked'>OFF</span> | One-click favoriting
+</label>			</p>
+			<div class="button-container">
+<button type="submit" class="U-control U-control-button control-drawer control-favorites track"
+name=""
+value=""
+data-clicktrack-action="Add to Favorites">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Add to Favorites</span><span class="slice-two">&nbsp;</span>
+</span> </button>			</div>
+		</form>
+	</div>
+	<div class="drawer-favorites favorite-remove hidden">
+		<form>
+			<p class="description successful video">
+This video has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="description successful show">
+This show has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="description successful movie">
+This movie has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="description successful artist">
+This artist has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+
+			<p class="options">
+<label class="U-control U-control-checkbox control-favorites track" tabIndex="0" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On">
+<span class="U-control-checkbox-check-wrapper">
+<span class="U-control-checkbox-check"></span>
+<input type="checkbox" name="oneClickFavorites" value="true" checked="checked" />
+</span>
+<span class='is-checked'>ON</span><span class='not-checked'>OFF</span> | One-click favoriting
+</label>			</p>
+			<div class="button">
+<button type="submit" class="U-control U-control-button control-drawer control-favorites track"
+name=""
+value=""
+data-clicktrack-action="Remove from Favorites">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Remove from Favorites</span><span class="slice-two">&nbsp;</span>
+</span> </button>			</div>
+		</form>
+	</div>
+	<div class="drawer-favorites favorite-remove-confirmation drawer-overlay-contents hidden">
+		<form>
+			<span class="drawer-overlay-message">
+Are you sure you want to remove this from favorites?			</span>
+			<div class="drawer-overlay-buttons">
+<button type="submit" class="U-control U-control-button drawer-overlay-button control-drawer control-cancel "
+name="result"
+value="cancel"
+data-clicktrack-action="">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Cancel</span><span class="slice-two">&nbsp;</span>
+</span> </button><button type="submit" class="U-control U-control-button drawer-overlay-button control-drawer control-confirm control-favorites "
+name="result"
+value="confirm"
+data-clicktrack-action="">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Remove</span><span class="slice-two">&nbsp;</span>
+</span> </button>			</div>
+		</form>
+	</div>
+</section><section id="notificationOptionsTemplate" class="hidden">
+	<div class="drawer-notifications set">
+		<form>
+			<p class="description">Receive email notifications for all episodes when available.</p>
+			<p><a href="../www.att.com/privacy/index.html" target="_blank" class="track" data-clicktrack-action="Drawer - Notify - Privacy Policy">Privacy Policy</a></p>
+			<table class="text-and-button">
+				<tbody><tr><td class="text-and-button-text">
+<input type="text" name="email" value="" class="U-control U-control-textbox control-drawer"
+maxlength=""
+autocomplete=""
+/>				</td><td class="text-and-button-spacer"></td><td class="text-and-button-button">
+<button type="submit" class="U-control U-control-button control-drawer control-notifications track"
+name=""
+value=""
+data-clicktrack-action="Set">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Set</span><span class="slice-two">&nbsp;</span>
+</span> </button>				</td></tr></tbody>
+			</table>
+		</form>
+	</div>
+	<div class="hasBeenSet hidden">
+		<form>
+			<p class="description successful">Notifications will be sent to <span class="email"></span></p>
+			<p class="manage"><a href="http://uverseonline.att.net/settings/online/p/tab/notifications" class="track" data-clicktrack-action="Drawer - Notify - Manage My Notifications">Manage My Notifications</a></p>
+		</form>
+	</div>
+</section>
+<section id="informationOptionsTemplate" class="hidden">
+	<div class="drawer-information">
+		<p class="description"></p>
+	</div>
+</section>
+<div id="entitlementTemplate" class="notLoggedIn">
+	<form>
+		<p class="description"></p>
+		
+<a href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2F" target="_self" class="U-control U-control-button control-drawer control-entitlement track" data-clicktrack-action="Button - Log In">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </a>	</form>
+</div>
+<div id="entitlementTemplateItems">
+	<p class="recording">You must be signed in to record to your DVR.</p>
+	<p class="favorite">You must be signed in to use Favorites.</p>
+	<p class="notification">You must be signed in to use Notifications.</p>
+</div>
+<div id="entitlementOrderTemplate" class="entitlementOrder">
+	<form>
+		<p class="description"><span class="base"></span> <span class="custom"></span></p>
+<a href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003" target="_blank" class="U-control U-control-button control-drawer control-entitlement track" data-clicktrack-action="Button - Order">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>	</form>
+</div>
+<div id="entitlementUpgradeTemplate" class="entitlementUpgrade">
+	<form>
+		<p class="description"><span class="base"></span> <span class="custom"></span></p>
+<a href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003" target="_blank" class="U-control U-control-button control-drawer control-entitlement track" data-clicktrack-action="Button - Upgrade">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </a>	</form>
+</div>
+<div id="entitlementUpgradeItemsTemplate">
+	<form>
+		<p class="recording">to record to your DVR.</p>
+	</form>
+</div><div id="tileDrawerLoadingTemplate" class="drawer-overlay loading">
+	<span class="drawer-overlay-contents">
+		<img class="loading-image hidden" src="web_files/NEXTGEN/web_files/nes/styles/images/icons/loading.gif" alt="Loading..." />
+	</span>
+</div><div id="tileDrawerMessageTemplate" class="drawer-overlay message">
+	<span class="drawer-overlay-contents drawer-overlay-message errorMessage"></span>
+</div><div id="tileDrawerHeadersTemplate">
+	<div class="drawer-header"><div class="drawer-close" data-clicktrack-action="Drawer Close"></div></div>
+</div><div id="tileDrawerGenericTemplate" class="drawer-overlay generic">
+
+</div><script id="bannersTemplate-default" type="text/html">
+	<img src="http://uverseonline.att.net/{src}" alt="{alt}" />
+</script>
+
+<script id="bannersTemplate-defaultWithLink" type="text/html">
+	<a href="http://uverseonline.att.net/{link}" target="{target}" class="track" data-clicktrack-action="Promo Banner"><img src="http://uverseonline.att.net/{src}" /></a>
+</script>
+
+<script id="bannersTemplate-unsupportedBrowser" type="text/html">
+	<a class="unsupported-browser-banner" href="http://uverseonline.att.net/{url}" target="{target}"  data-clicktrack-action="Message Banner" data-clicktrack-label="Unsupported Browser: {browser}">
+		<img src="http://uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/images/unsupportedBrowsers/{src}" />
+	</a>
+</script><div id="scrollBarTemplate" class="U-control-scrollbar ">
+<div class="U-control-scrollbar-track">
+<div class="slice-one"></div>
+<div class="slice-two"></div>
+<div class="slice-three"></div>
+</div>
+<div class="U-control-scrollbar-thumb">
+<div class="slice-one"></div>
+<div class="slice-two"></div>
+<div class="slice-three"></div>
+</div>
+</div>
+	<div id="playerTemplate" class="modal-player track-hasSubcategory track-hasCategory  " data-clicktrack-subcategory="Player Modal" data-clicktrack-category="Modal">
+		<div class="modal-player-header">
+			<div class="modal-player-header-network playerLoader-network">
+			</div>
+			<div class="modal-player-header-title">
+				<span class="modal-player-header-title-text playerLoader-title playerLoader-shrink">
+						(TITLE)
+				</span>
+			</div>
+	<a class="modal-close-button track-hasAction track" href="index.html#" data-clicktrack-action="Close Button">x</a>
+		</div>
+
+		<div class="modal-player-media">
+			<div class="extensionPanels">
+	<div class="player-extension  hidden  loadingError-extension player-extension-error">
+		<div class="player-extension-icon">&nbsp;</div>
+		<div class="player-extension-title">  Oops... An error has occurred   </div>
+
+		<div class="player-extension-contents">
+		<p>
+We apologize for the inconvenience. If the problem persists <br /> please visit our 				<a href="http://www.att.com/esupport/article.jsp?sid=KB401143&cv=803" target="_blank" class="track" data-clicktrack-action="Error Support Link">
+AT&amp;T U-verse Support page				</a>
+ for further troubleshooting.		</p>
+		</div>
+	</div>
+			</div>
+			<div class="player-loading player-loading-icon-wrapper">
+				<span class="player-loading-icon">Loading...</span>
+			</div>
+		</div>
+
+		<div class="modal-player-meta-container">
+			<div class="modal-player-meta">
+				<div class="modal-player-meta-info">
+					<h2 class="modal-player-meta-info-episode playerLoader-subtitle">
+					</h2>
+					<div class="modal-player-meta-info-description">
+						<p class="playerLoader-description"></p>
+					</div>
+					<div class="modal-player-meta-info-share socialLinks">
+					</div>
+				</div>
+
+				<div class="modal-player-meta-sidebar">
+					<div class="modal-player-meta-sidebar-ad companionAd">
+					</div>
+					<div class="modal-player-meta-sidebar-menu">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-player-footer">
+		</div>
+
+	</div>
+</div>
+
+		<section class="promotional-container hidden">
+
+			<div class="wrapper needsPageWidth">
+
+				<header>SOME PROMO TITLE</header>
+
+				<article>THINGS ABOUT THE TITLE</article>
+
+				<footer>PROMO FOOTER</footer>
+
+			</div>
+
+		</section>
+
+
+
+
+
+
+	<section id="myFluidLayout_0" class="tiles-section">
+
+<div id="targeted-ads" class="targeted-ads track-hasCategory track-hasSubcategory" data-clicktrack-category="Promotional" data-clicktrack-subcategory="Banner">
+</div>
+
+<script type="text/javascript">
+	Uverse.load({
+		moduleName: 'Uverse.widgets.Banners',
+		id: 'targeted-ads'
+	});
+</script>
+
+
+		<section class="tiles-reloading-container hidden">
+			<span class="tiles-reloading-spinner"></span>
+		</section>
+
+		<section class="tile-groups needsPageWidth fluid">
+			<div class="tile-group clearfix">
+
+				<div class="column columnTemplate"></div>
+
+			</div>
+		</section>
+		<section class="tiles-loading-container">
+			<span class="tiles-loading-spinner"></span>
+		</section>
+
+	</section>
+
+	<div id="initial-tiles" class="hidden ">
+
+		
+
+
+
+<section 
+	id="minitron_id_361351116047654" 
+	class="tile minitron two-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Minitron" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Minitron Tile"
+	data-clicktrack-label=""
+	data-information=""
+>
+	<div class="tileWrapper">
+		
+		<article>
+		<ul class="minitronItems">
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<li id="minitron_/ng/tv/show/the-office-nav" class="minitronItem eventTrack tv active" data-entitlement="" data-entitlement-message-upgrade="An AT&amp;T U-verse package is required" data-eventtrack-category="NBC" data-eventtrack-action="Network Minitron" data-eventtrack-label="The Office">
+		<img src="web_files/NEXTGEN/web_files/images/minitron/Featured&#32;Image/NBC/the_office_051713.png" alt="" />
+		<section class="metadata">
+				<span class="tile-tag free">Free</span>
+
+	<div class="data">
+		<h1 class="title"><a href="http://uverseonline.att.net/tv/show/the-office" class="track" data-clicktrack-action="Title">The Office</a></h1>
+		<h2 class="subtitle ellipsis singleLine">Season Finale</h2>
+		<p class="description ellipsis multiLine">Months after the airing of the documentary, the workers of Dunder Mifflin, past and present, gather for a wedding and a final round of interviews.</p>
+		<p class="footer ellipsis singleLine">		<span class="networkLink">
+			<a href="http://uverseonline.att.net/tv/network/nbc" class="track" data-clicktrack-action="Network" data-clicktrack-label="NBC">NBC</a>
+		</span>
+		 <span class="light">|</span> TV-PG
+		
+</p>
+	</div>
+	<div class="standard">
+		<div class="actions">
+<a href="http://uverseonline.att.net/tv/show/the-office?play=latest" target="" class="U-control U-control-button action event video-play-link track" data-clicktrack-action="Button - Play">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Watch Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>		</div>
+	</div>
+		</section>
+	</li>
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<li id="minitron_/ng/tv/show/scandal-nav" class="minitronItem eventTrack tv " data-entitlement="" data-entitlement-message-upgrade="An AT&amp;T U-verse package is required" data-eventtrack-category="ABC" data-eventtrack-action="Network Minitron" data-eventtrack-label="Scandal">
+		<img src="web_files/NEXTGEN/web_files/images/minitron/Featured&#32;Image/ABC/scandal_051713b.png" alt="" />
+		<section class="metadata">
+				<span class="tile-tag free">Free</span>
+
+	<div class="data">
+		<h1 class="title"><a href="http://uverseonline.att.net/tv/show/scandal" class="track" data-clicktrack-action="Title">Scandal</a></h1>
+		<h2 class="subtitle ellipsis singleLine">Season Finale</h2>
+		<p class="description ellipsis multiLine">As they get closer to uncovering the mole's identity, Olivia and her team find themselves in an increasingly dangerous situation.</p>
+		<p class="footer ellipsis singleLine">		<span class="networkLink">
+			<a href="http://uverseonline.att.net/tv/network/abc" class="track" data-clicktrack-action="Network" data-clicktrack-label="ABC">ABC</a>
+		</span>
+		 <span class="light">|</span> TV-14
+		
+</p>
+	</div>
+	<div class="standard">
+		<div class="actions">
+<a href="http://uverseonline.att.net/tv/show/scandal?play=latest" target="" class="U-control U-control-button action event video-play-link track" data-clicktrack-action="Button - Play">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Watch Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>		</div>
+	</div>
+		</section>
+	</li>
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<li id="minitron_/ng/tv/show/elementary-nav" class="minitronItem eventTrack tv " data-entitlement="" data-entitlement-message-upgrade="An AT&amp;T U-verse package is required" data-eventtrack-category="CBS" data-eventtrack-action="Network Minitron" data-eventtrack-label="Elementary">
+		<img src="web_files/NEXTGEN/web_files/images/minitron/Featured&#32;Image/CBS/elementary_051713.png" alt="" />
+		<section class="metadata">
+				<span class="tile-tag free">Free</span>
+
+	<div class="data">
+		<h1 class="title"><a href="http://uverseonline.att.net/tv/show/elementary" class="track" data-clicktrack-action="Title">Elementary</a></h1>
+		<h2 class="subtitle ellipsis singleLine">Season Finale</h2>
+		<p class="description ellipsis multiLine">As Sherlock reels at the reappearance of his former lover, Irene Adler, a series of flashbacks unravel the tumultuous events that led to his downfall into addiction. Meanwhile, he and Joan once again find themselves in the cross hairs of the enigmatic Moriarty.</p>
+		<p class="footer ellipsis singleLine">		<span class="networkLink">
+			<a href="http://uverseonline.att.net/tv/network/cbs" class="track" data-clicktrack-action="Network" data-clicktrack-label="CBS">CBS</a>
+		</span>
+		 <span class="light">|</span> TV-14
+		
+</p>
+	</div>
+	<div class="standard">
+		<div class="actions">
+<a href="http://uverseonline.att.net/tv/show/elementary?play=latest" target="" class="U-control U-control-button action event video-play-link track" data-clicktrack-action="Button - Play">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Watch Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>		</div>
+	</div>
+		</section>
+	</li>
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<li id="minitron_sz___SZ_TITL0450000000778887_ASSET-nav" class="minitronItem eventTrack movies hasEntitlement " data-entitlement="U::U300,U::U300la,U::U400,U::U450,U::U450la,P::STRENC,P::STRENC_apid,P::STARZ,P::STARZ_apid,P::MOVIE,P::MOVIE_apid" data-entitlement-message-upgrade="U300/Higher or Starz package is required" data-eventtrack-category="STARZ" data-eventtrack-action="Studio Minitron" data-eventtrack-label="Kill Bill Vol. 1">
+		<img src="web_files/NEXTGEN/web_files/images/minitron/Featured&#32;Image/Starz/kill_bill_vol1.png" alt="" />
+		<section class="metadata">
+				<span class="tile-tag premium">Premium</span>
+
+	<div class="data">
+		<h1 class="title"><a href="http://uverseonline.att.net/movies/movie/kill-bill-vol-1" class="track" data-clicktrack-action="Title">Kill Bill Vol. 1</a></h1>
+		<h2 class="subtitle ellipsis singleLine">Movie &#124;		Kill Bill Vol. 1
+</h2>
+		<p class="description ellipsis multiLine">The Bride was an elite assassin, but her boss wouldn't let her quit to get married. Awakening from a five-year coma after being left for dead,</p>
+		<p class="footer ellipsis singleLine">		<span class="networkLink">
+			<a href="http://uverseonline.att.net/movies/studio/starz" class="track" data-clicktrack-action="Network" data-clicktrack-label="STARZ">STARZ</a>
+		</span>
+		 <span class="light">|</span> R
+		
+</p>
+	</div>
+	<div class="standard">
+		<div class="actions">
+<a href="http://uverseonline.att.net/movies/movie/kill-bill-vol-1?play=sz___SZ_TITL0450000000778887_ASSET" target="" class="U-control U-control-button action event video-play-link track" data-clicktrack-action="Button - Play">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Watch Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>		</div>
+	</div>
+	<div class="entitlement clearfix">
+		<div class="entitlementWrapper actions clearfix">
+<a href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fmovies%2Fmovie%2Fkill-bill-vol-1%3Fplay%3Dsz___SZ_TITL0450000000778887_ASSET" target="_self" class="U-control U-control-button action login locked control-entitlement event track" data-clicktrack-action="Button - Login">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </a><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003" target="_blank" class="U-control U-control-button action upgrade locked control-entitlement event track" data-clicktrack-action="Button - Upgrade">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </a><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003" target="_blank" class="U-control U-control-button action order locked control-entitlement event track" data-clicktrack-action="Button - Order">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>
+			<span class="icon lock">&nbsp;</span>
+			<p class="entitlementMessage ellipsis singleLine">U300/Higher or Starz package is required</p>
+		</div>
+	</div>
+		</section>
+	</li>
+		<script type="text/javascript">
+			//<![CDATA[
+				Uverse.config.entitlement['sz___SZ_TITL0450000000778887_ASSET-nav'] = 'U>U300,U>U300la,U>U400,U>U450,U>U450la,P>STRENC,P>STRENC_apid,P>STARZ,P>STARZ_apid,P>MOVIE,P>MOVIE_apid';
+			//]]>
+		</script>
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<li id="minitron_h___60216914-nav" class="minitronItem eventTrack tv " data-entitlement="" data-entitlement-message-upgrade="An AT&amp;T U-verse package is required" data-eventtrack-category="Univision" data-eventtrack-action="Network Minitron" data-eventtrack-label="Porque el Amor Manda">
+		<img src="web_files/NEXTGEN/web_files/images/minitron/Featured&#32;Image/Univision/porque_el_amor_manda_051713.png" alt="" />
+		<section class="metadata">
+				<span class="tile-tag free">Free</span>
+
+	<div class="data">
+		<h1 class="title"><a href="http://uverseonline.att.net/tv/show/porque-el-amor-manda" class="track" data-clicktrack-action="Title">Porque el Amor Manda</a></h1>
+		<h2 class="subtitle ellipsis singleLine">					S1 &#124; Ep48:
+				
+		Escapada Descubierta
+</h2>
+		<p class="description ellipsis multiLine">Rogelio logra zafarse de Alma para irse de fin de semana con Patricia pero su querido suegro lo descubre.</p>
+		<p class="footer ellipsis singleLine">		<span class="networkLink">
+			<a href="http://uverseonline.att.net/tv/network/univision" class="track" data-clicktrack-action="Network" data-clicktrack-label="Univision">Univision</a>
+		</span>
+		 <span class="light">|</span> TV-14
+		
+</p>
+	</div>
+	<div class="standard">
+		<div class="actions">
+<a href="http://uverseonline.att.net/tv/show/porque-el-amor-manda?play=h___60216914" target="" class="U-control U-control-button action event video-play-link track" data-clicktrack-action="Button - Play">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Vea Ahora</span><span class="slice-two">&nbsp;</span>
+</span> </a>		</div>
+	</div>
+		</section>
+	</li>
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<li id="minitron_hbom___GOROSTGP38865-nav" class="minitronItem eventTrack movies hasEntitlement " data-entitlement="U::U450,U::U450la,P::HBO,P::HBO_apid,P::HBOCIN,P::HBOCIN_apid" data-entitlement-message-upgrade="U450 or HBO package is required" data-eventtrack-category="HBO" data-eventtrack-action="Studio Minitron" data-eventtrack-label="Bridesmaids">
+		<img src="web_files/NEXTGEN/web_files/images/minitron/Featured&#32;Image/HBO/bridesmaids.png" alt="" />
+		<section class="metadata">
+				<span class="tile-tag premium">Premium</span>
+
+	<div class="data">
+		<h1 class="title"><a href="http://uverseonline.att.net/movies/movie/bridesmaids" class="track" data-clicktrack-action="Title">Bridesmaids</a></h1>
+		<h2 class="subtitle ellipsis singleLine">Movie &#124;		Bridesmaids
+</h2>
+		<p class="description ellipsis multiLine">Maid of Dishonor is more like it for hapless Kristen Wiig as she leads soon-to-be-wed best friend Maya Rudolph on a comically disastrous path to the altar in this hit comedy.</p>
+		<p class="footer ellipsis singleLine">		<span class="networkLink">
+			<a href="http://uverseonline.att.net/movies/studio/hbo" class="track" data-clicktrack-action="Network" data-clicktrack-label="HBO">HBO</a>
+		</span>
+		 <span class="light">|</span> R
+		
+</p>
+	</div>
+	<div class="standard">
+		<div class="actions">
+<a href="http://uverseonline.att.net/movies/movie/bridesmaids?play=hbom___GOROSTGP38865" target="" class="U-control U-control-button action event video-play-link track" data-clicktrack-action="Button - Play">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Watch Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>		</div>
+	</div>
+	<div class="entitlement clearfix">
+		<div class="entitlementWrapper actions clearfix">
+<a href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fmovies%2Fmovie%2Fbridesmaids%3Fplay%3Dhbom___GOROSTGP38865" target="_self" class="U-control U-control-button action login locked control-entitlement event track" data-clicktrack-action="Button - Login">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </a><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003" target="_blank" class="U-control U-control-button action upgrade locked control-entitlement event track" data-clicktrack-action="Button - Upgrade">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </a><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003" target="_blank" class="U-control U-control-button action order locked control-entitlement event track" data-clicktrack-action="Button - Order">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </a>
+			<span class="icon lock">&nbsp;</span>
+			<p class="entitlementMessage ellipsis singleLine">U450 or HBO package is required</p>
+		</div>
+	</div>
+		</section>
+	</li>
+		<script type="text/javascript">
+			//<![CDATA[
+				Uverse.config.entitlement['hbom___GOROSTGP38865-nav'] = 'U>U450,U>U450la,P>HBO,P>HBO_apid,P>HBOCIN,P>HBOCIN_apid';
+			//]]>
+		</script>
+
+
+			
+		</ul>
+		<ul class="pagination">
+				<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
+				<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+				<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+				<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+				<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+				<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+		</ul>
+		</article>
+		
+	</div>
+</section>
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/tv/show/american-idol" 
+	class="tile category
+tv
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/tv/show/american-idol" 
+	data-favorite-id="/ng/tv/show/american-idol" 
+	data-content-type="tv" 
+	data-program-title="american-idol" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Tv - American Idol"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../ibdp.huluim.com/video/60217652%3Fsize=512x288" alt="American Idol" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/american-idol?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Latest Clip</span></p>
+			</a>
+		</div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/american-idol" class="track" data-clicktrack-action="Title">American Idol</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">805 Clips &nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">After months of searching, we have our next American Idol! With a night that included performances from the Top 10, tonight was one for the ages! Watch the night's best highlights!</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/fox" class="track" data-clicktrack-action="Network" data-clicktrack-label="FOX">FOX</a>
+<span class="light">|</span> NR</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/tv/show/spartacus" 
+	class="tile category
+tv
+one-column
+hasEntitlement track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/tv/show/spartacus" 
+	data-favorite-id="/ng/tv/show/spartacus" 
+	data-content-type="tv" 
+	data-program-title="spartacus" 
+	data-episode-title="" 
+	data-entitlement="U::U300,U::U300la,U::U400,U::U450,U::U450la,P::STRENC,P::STRENC_apid,P::STARZ,P::STARZ_apid,P::MOVIE,P::MOVIE_apid" 
+	data-entitlement-message-upgrade="U300/Higher or Starz package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Tv - Spartacus"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper showImage">
+		<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/852854_ep310victory_additional_image_1.jpg" alt="Spartacus" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/spartacus?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Latest Episode</span></p>
+			</a>
+		</div>
+			<div class="entitlement"><span class="login action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Login" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fuv%2Ftv%2Fshow%2Fspartacus%23play%3Dlatest"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="order action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Order Now" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="upgrade action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Upgrade" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span></div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/spartacus" class="track" data-clicktrack-action="Title">Spartacus</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">35 Episodes <span class="light">|</span> 30 Clips
+&nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">A Thracian warrior is captured and enslaved by Romans, then placed in gladiator school, where he battles to save his life, gain his freedom and become reunited with his wife, who was also condemned to slavery.</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/starz" class="track" data-clicktrack-action="Network" data-clicktrack-label="STARZ">STARZ</a>
+<span class="light">|</span> TV-MA
+<span class="light">|</span> HD</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag premium">Premium</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr " data-icon-class="dvr ">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr  track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+<section 
+	id="" 
+	class="tile promo one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Promo" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Promo Tile"
+	data-clicktrack-label="Order Uverse"
+>
+	<div class="tileWrapper">
+				<a class="promoLink track"  target="_blank"  href="http://www.att.com/shop/tv.html?source=ECSFU90000000000L&wtExtndSource=ordertv_tile" data-clicktrack-action="Promo Image">
+			<img class="promoImage" src="web_files/NEXTGEN/web_files/images/promo/230X332_TV_GIF.gif" alt="Order Uverse" />
+		</a>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+<section 
+	id="live_live_FNC_fxl___1241186546001" 
+	class="tile live
+one-column
+hasEntitlement track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Live" 
+	data-video-id="" 
+	data-category-path="/ng/tv/show/fox-news" 
+	data-favorite-id="live_FNC_fxl___1241186546001" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="U::U200,U::U200la,U::U300,U::U300la,U::U400,U::U450,U::U450la," 
+	data-entitlement-message-upgrade="U200/Higher package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Live Tile"
+	data-clicktrack-label="Live - Fox News: "
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/fox-news_90x85.png" alt="Fox News" />
+		<div class="watch-live-caption watch-live">Watch Live</div>
+		<div class="watch-live-caption off-air">Next On Air <span class="time"></span></div>
+		<div class="watch-live-caption no-data">Off Air</div>
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/live?play=fxl___1241186546001" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+			<div class="entitlement"><span class="login action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U200/Higher <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Login" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fuv%2Flive%23play%3Dfxl___1241186546001"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="order action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U200/Higher <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Order Now" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="upgrade action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U200/Higher <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Upgrade" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span></div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine"></h1>
+	<h2 class="tile-header-subtitle videoInfo-subtitle ellipsis singleLine hide"><span class='time-startDate'></span>-<span class='time-endDate'></span></h2>
+		</header>
+
+		<article>
+				<p class="description videoInfo-description"></p>
+
+	<p class="meta ellipsis singleLine videoInfo-network">Fox News</p>
+		<figure class="live-progress-bar">
+			<figcaption class="live-progress-bar-thumb"></figcaption>
+		</figure>
+
+	<div class="live-metadata hidden">{&quot;id&quot;:&quot;live_FNC_fxl___1241186546001&quot;,&quot;type&quot;:&quot;live&quot;,&quot;title&quot;:&quot;FNC&quot;,&quot;titleHighlight&quot;:&quot;FOX &amp; Friends Saturday  (Fox News)&quot;,&quot;descriptionHighlight&quot;:null,&quot;channelKey&quot;:&quot;FNC&quot;,&quot;categoryPath&quot;:&quot;/ng/tv/show/fox-news&quot;,&quot;categoryName&quot;:&quot;Fox News&quot;,&quot;associatedNetworkPaths&quot;:[&quot;/ng/tv/network/fox-news&quot;,&quot;/ng/tv/genre/news-and-information&quot;,&quot;/ng/network/fox-news&quot;],&quot;tileType&quot;:&quot;live&quot;,&quot;isPlayContent&quot;:false,&quot;sdStream&quot;:null,&quot;hdStream&quot;:{&quot;id&quot;:&quot;/templatedata/configuration/live_channel/data/FNC&quot;,&quot;description&quot;:&quot;Fox News Live Feed.&quot;,&quot;callLetters&quot;:&quot;FNC&quot;,&quot;channelName&quot;:&quot;Fox News&quot;,&quot;imageUrl&quot;:&quot;http://uverseonline.att.net/web_files/NEXTGEN/web_files/images/Network Logos/network-page/fox-news_90x85.png&quot;,&quot;entitlementLevel&quot;:&quot;U&gt;U200,U&gt;U200la,U&gt;U300,U&gt;U300la,U&gt;U400,U&gt;U450,U&gt;U450la,&quot;,&quot;parentPath&quot;:&quot;&quot;,&quot;virtualSafeKey&quot;:&quot;fxl___1241186546001&quot;,&quot;guideInfo&quot;:[{&quot;description&quot;:&quot;Hosts Alisyn Camerota and Clayton Morris take a look at the day's news, sports and weather from a different perspective.&quot;,&quot;title&quot;:&quot;FOX &amp; Friends Saturday &quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368878400000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368882000000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Hosts Alisyn Camerota and Clayton Morris take a look at the day's news, sports and weather from a different perspective.&quot;,&quot;title&quot;:&quot;FOX &amp; Friends Saturday &quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368882000000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368885600000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Brenda Buttner goes inside the events that shape the markets and explain them.&quot;,&quot;title&quot;:&quot;Bulls &amp; Bears&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368885600000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368887400000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;From CEOs to Wall Street leaders, each week Neil Cavuto sits down with the captains of industry to give insight on what is impacting the market.&quot;,&quot;title&quot;:&quot;Cavuto on Business&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368887400000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368889200000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;A fast-moving roundtable debate features Forbes columnists, reporters and editors, with segments on key world events, inside business scoops, a debate over current stocks and \&quot;the flip side,\&quot; offering an alternative viewpoint.&quot;,&quot;title&quot;:&quot;Forbes on FOX&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368889200000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368891000000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Host Eric Bolling helps viewers find out what they need to know to make their money grow and how to keep what they already have earned.&quot;,&quot;title&quot;:&quot;Cashin' In&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368891000000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368892800000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;The anchors' mix of hard news and features includes commentary and debates.&quot;,&quot;title&quot;:&quot;America's News HQ (DC)&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368892800000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368896400000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;The anchors deliver hard news and feature stories along with commentary.&quot;,&quot;title&quot;:&quot;America's News HQ &quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368896400000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368900000000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Respected journalists join host and moderator Paul Gigot as they take a look at the events of the week and discuss the latest news, featuring a panel discussion from Wall Street Journal editorial writers who speculate on the coming week's news.&quot;,&quot;title&quot;:&quot;The Journal Editorial Report&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368900000000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368901800000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;FOX News hosts and panelists seek to unearth media bias in news coverage.&quot;,&quot;title&quot;:&quot;FOX News Watch&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368901800000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368903600000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Award-winning newsman John Stossel and a panel of experts bring a libertarian perspective to reports on domestic and international topics such as civil liberties, Social Security and the business aspects of the health care industry.&quot;,&quot;title&quot;:&quot;Stossel&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368903600000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368907200000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Hard news and feature stories are presented by knowledgeable anchors.&quot;,&quot;title&quot;:&quot;America's News HQ &quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368907200000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368914400000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;A mix of hard news and feature stories includes commentary and short debates.&quot;,&quot;title&quot;:&quot;America's News HQ &quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368914400000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368918000000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Harris Faulkner wraps up the day's events in a fast-paced hour of news.&quot;,&quot;title&quot;:&quot;FOX Report Saturday&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368918000000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368921600000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;The ordained Baptist minister and former governor of Arkansas welcomes guests from the worlds of news, politics and pop culture for discussions on a wide range of issues, occasionally playing his guitar with the house band.&quot;,&quot;title&quot;:&quot;Huckabee&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368921600000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368925200000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Former judge and prosecutor Jeanine Pirro talks about the week's news and presents her takes on court cases that are receiving large amounts of media coverage, also discussing the latest issues and trends in the world of criminal justice.&quot;,&quot;title&quot;:&quot;Justice with Judge Jeanine&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368925200000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368928800000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Fox news correspondent-at-large Geraldo Rivera and his team discuss current topics in world affairs, reporting from a wide variety of locations as they focus on the stories behind the news and interview the people making the headlines.&quot;,&quot;title&quot;:&quot;Geraldo at Large&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368928800000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368932400000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Respected journalists join host and moderator Paul Gigot as they take a look at the events of the week and discuss the latest news, featuring a panel discussion from Wall Street Journal editorial writers who speculate on the coming week's news.&quot;,&quot;title&quot;:&quot;The Journal Editorial Report&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368932400000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368934200000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;FOX News hosts and panelists seek to unearth media bias in news coverage.&quot;,&quot;title&quot;:&quot;FOX News Watch&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368934200000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368936000000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Former judge and prosecutor Jeanine Pirro talks about the week's news and presents her takes on court cases that are receiving large amounts of media coverage, also discussing the latest issues and trends in the world of criminal justice.&quot;,&quot;title&quot;:&quot;Justice with Judge Jeanine&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368936000000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368939600000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0},{&quot;description&quot;:&quot;Greg Gutfeld hosts a late-night roundtable discussion of the day's current events with his repulsive sidekick, Bill Schulz, and various guests, as TV's own Andrew Levy fulfills his ombudsman duties with half time and pre and post game analysis.&quot;,&quot;title&quot;:&quot;Red Eye&quot;,&quot;rating&quot;:&quot;&quot;,&quot;seasonNumber&quot;:0,&quot;startDate&quot;:1368939600000,&quot;episodeTitle&quot;:&quot;&quot;,&quot;endDate&quot;:1368946800000,&quot;playerParameter&quot;:&quot;&quot;,&quot;episodeNumber&quot;:0}]},&quot;signature&quot;:&quot;live-live_FNC_fxl___1241186546001-FNC&quot;}</div>
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag members">Members</span>
+		<div class="actions clearfix">
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+<section 
+	id="video_h___60217642" 
+	class="tile video
+tv
+one-column
+clip track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Video" 
+	data-video-id="h___60217642" 
+	data-category-path="/ng/tv/show/american-idol" 
+	data-favorite-id="h___60217642" 
+	data-content-type="tv" 
+	data-program-title="american-idol" 
+	data-episode-title="and-your-new-american-idol-is…" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Video Tile"
+	data-clicktrack-label="Tv - American Idol: And Your New American Idol Is…"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../ibdp.huluim.com/video/60217642%3Fsize=512x288" alt="And Your New American Idol Is…" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/american-idol?play=h___60217642" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/american-idol" class="track" data-clicktrack-action="Title">
+			American Idol
+		</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine"><span class="videoInfo-subtitle">
+Clip <span class="light">|</span>
+And Your New American Idol Is…
+</span>
+&nbsp;</h2>
+
+		</header>
+
+		<article>
+				<p class="description videoInfo-description">
+			After incredible journey, find out who is your American Idol for Season 12!
+		</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/fox" class="track" data-clicktrack-action="Network" data-clicktrack-label="FOX">FOX</a>
+<span class="light">|</span> NR</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section 
+	id="video_h___60217597" 
+	class="tile video
+tv
+one-column
+clip track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Video" 
+	data-video-id="h___60217597" 
+	data-category-path="/ng/tv/show/the-office" 
+	data-favorite-id="h___60217597" 
+	data-content-type="tv" 
+	data-program-title="the-office" 
+	data-episode-title="no-place-like-the-office" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Video Tile"
+	data-clicktrack-label="Tv - The Office: No Place Like the Office"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../ibdp.huluim.com/video/60217597%3Fsize=512x288" alt="No Place Like the Office" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/the-office?play=h___60217597" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/the-office" class="track" data-clicktrack-action="Title">
+			The Office
+		</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine"><span class="videoInfo-subtitle">
+Clip <span class="light">|</span>
+No Place Like the Office
+</span>
+&nbsp;</h2>
+
+		</header>
+
+		<article>
+				<p class="description videoInfo-description">
+			The staff realizes that they're all in it together - and always have been.
+		</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/nbc" class="track" data-clicktrack-action="Network" data-clicktrack-label="NBC">NBC</a>
+<span class="light">|</span> NR</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr " data-icon-class="dvr ">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr  track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/tv/show/who-gets-the-last-laugh" 
+	class="tile category
+tv
+one-column
+hasEntitlement track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/tv/show/who-gets-the-last-laugh" 
+	data-favorite-id="/ng/tv/show/who-gets-the-last-laugh" 
+	data-content-type="tv" 
+	data-program-title="who-gets-the-last-laugh" 
+	data-episode-title="" 
+	data-entitlement="U::U100,U::U200,U::U200la,U::U200D,U::U300,U::U300la,U::U400,U::U450,U::U450la" 
+	data-entitlement-message-upgrade="U100/Higher package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Tv - Who Gets the Last Laugh?"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper showcardVertical">
+		<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/TBS/Who&#32;gets&#32;the&#32;last&#32;Laugh/_derived_jpg_q90_444x444_m0/23179_001_4756_R_V1.jpg" alt="Who Gets the Last Laugh?" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/who-gets-the-last-laugh?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Latest Episode</span></p>
+			</a>
+		</div>
+			<div class="entitlement"><span class="login action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U100/Higher <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Login" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fuv%2Ftv%2Fshow%2Fwho-gets-the-last-laugh%23play%3Dlatest"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="order action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U100/Higher <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Order Now" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="upgrade action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U100/Higher <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Upgrade" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span></div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/who-gets-the-last-laugh" class="track" data-clicktrack-action="Title">Who Gets the Last Laugh?</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">4 Episodes &nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">Comedians battle against one another in prank challenges in this hidden-camera reality series.</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/tbs" class="track" data-clicktrack-action="Network" data-clicktrack-label="TBS">TBS</a>
+<span class="light">|</span> TV-14</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag members">Members</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr " data-icon-class="dvr ">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr  track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="video_h___60217134" 
+	class="tile video
+tv
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Video" 
+	data-video-id="h___60217134" 
+	data-category-path="/ng/tv/show/scandal" 
+	data-favorite-id="h___60217134" 
+	data-content-type="tv" 
+	data-program-title="scandal" 
+	data-episode-title="white-hat-s-back-on" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Video Tile"
+	data-clicktrack-label="Tv - Scandal: White Hat's Back On"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../ibdp.huluim.com/video/60217134%3Fsize=512x288" alt="White Hat's Back On" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/scandal?play=h___60217134" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/scandal" class="track" data-clicktrack-action="Title">
+			Scandal
+		</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine"><span class="videoInfo-subtitle">
+S2 <span class="light">|</span>
+Ep22: White Hat's Back On
+</span>
+&nbsp;</h2>
+
+		</header>
+
+		<article>
+				<p class="description videoInfo-description">
+			As they get closer to uncovering the mole's identity, Olivia and her team find themselves in an increasingly dangerous situation.
+		</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/abc" class="track" data-clicktrack-action="Network" data-clicktrack-label="ABC">ABC</a>
+<span class="light">|</span> TV-14</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+<section 
+	id="network_UID" 
+	class="tile  network one-column  premium  track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Network" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Network Tile"
+	data-clicktrack-label="HBO"
+>
+	<div class="tileWrapper">
+		<header>
+			<div class="imageWrapper imageType-network">
+				<ul class="networkTileItems">
+					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="web_files/NEXTGEN/web_files/images/category_overrides/HBO/game_of_thrones_210x280.jpg" alt="Game of Thrones" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/game-of-thrones" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Game of Thrones</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/HBO/Veep/_derived_jpg_q90_444x444_m0/Veep-Season2-ShowcardVertical.jpg" alt="Veep" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/veep" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Veep</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../i.hbo.lv3.hbogo.com/images/hbo/asset/722465/722465_1605128_754x424.jpg" alt="Abraham Lincoln: Vampire Hunter" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/abraham-lincoln-vampire-hunter" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Abraham Lincoln: Vampire Hunter</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+	<div class="networkLogoContainer">
+		<a class="networkLogoLink track" href="http://uverseonline.att.net/network/hbo"  data-clicktrack-action="Network"  data-clicktrack-label="HBO">
+			<span class="networkLogoWrapper">
+				<img src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/hbo_207x85.png" alt="HBO" class="networkLogo" />
+			</span>
+		</a>
+	</div>
+		</header>
+		<footer>
+			<div class="bottomBar clearfix">
+
+					<ul class="pagination">
+						<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+					</ul>
+
+			</div>
+
+		</footer>
+	</div>
+</section>
+
+
+
+
+
+
+<section 
+	id="network_UID" 
+	class="tile  network one-column  track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Network" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Network Tile"
+	data-clicktrack-label="TBS"
+>
+	<div class="tileWrapper">
+		<header>
+			<div class="imageWrapper imageType-network">
+				<ul class="networkTileItems">
+					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/CBS/Big&#32;Bang&#32;Theory/_derived_jpg_q90_444x444_m0/BigBangTheory-Showcard1.jpg" alt="The Big Bang Theory" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/the-big-bang-theory" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">The Big Bang Theory</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/TBS/Men&#32;at&#32;Work/_derived_jpg_q90_444x444_m0/MenatWork-Showcard1.jpg" alt="Men at Work" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/men-at-work" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Men at Work</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/Warner&#32;Brothers&#32;Distribution/Friends/_derived_jpg_q90_444x444_m0/File_4102001_141832_112.jpg" alt="Friends" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/friends" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Friends</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+	<div class="networkLogoContainer">
+		<a class="networkLogoLink track" href="http://uverseonline.att.net/network/tbs"  data-clicktrack-action="Network"  data-clicktrack-label="TBS">
+			<span class="networkLogoWrapper">
+				<img src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/tbs_80x85.png" alt="TBS" class="networkLogo" />
+			</span>
+		</a>
+	</div>
+		</header>
+		<footer>
+			<div class="bottomBar clearfix">
+
+					<ul class="pagination">
+						<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+					</ul>
+
+			</div>
+
+		</footer>
+	</div>
+</section>
+
+
+
+
+
+
+<section 
+	id="network_UID" 
+	class="tile  network one-column  track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Network" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Network Tile"
+	data-clicktrack-label="CNN"
+>
+	<div class="tileWrapper">
+		<header>
+			<div class="imageWrapper imageType-network">
+				<ul class="networkTileItems">
+					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="web_files/NEXTGEN/web_files/images/teaseroverride/140x80-cnn-live.jpg" alt="CNN Live" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/cnn-live" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">CNN Live</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+	<div class="networkLogoContainer">
+		<a class="networkLogoLink track" href="http://uverseonline.att.net/network/cnn"  data-clicktrack-action="Network"  data-clicktrack-label="CNN">
+			<span class="networkLogoWrapper">
+				<img src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/cnn_186x85.png" alt="CNN" class="networkLogo" />
+			</span>
+		</a>
+	</div>
+		</header>
+		<footer>
+			<div class="bottomBar clearfix">
+
+
+			</div>
+
+		</footer>
+	</div>
+</section>
+
+
+
+
+
+
+<section 
+	id="network_UID" 
+	class="tile  network one-column  track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Network" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Network Tile"
+	data-clicktrack-label="Fox News"
+>
+	<div class="tileWrapper">
+		<header>
+			<div class="imageWrapper imageType-network">
+				<ul class="networkTileItems">
+					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="web_files/NEXTGEN/web_files/images/teaseroverride/140x80-foxnews.jpg" alt="Fox News" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/fox-news" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Fox News</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../ibdp.huluim.com/video/60208170%3Fsize=512x288" alt="Bill O'Reilly's Talking Points" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/bill-oreillys-talking-points" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Bill O'Reilly's Talking Points</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../ibdp.huluim.com/video/60215648%3Fsize=512x288" alt="FOX News Sunday" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/fox-news-sunday" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">FOX News Sunday</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+	<div class="networkLogoContainer">
+		<a class="networkLogoLink track" href="http://uverseonline.att.net/network/fox-news"  data-clicktrack-action="Network"  data-clicktrack-label="Fox News">
+			<span class="networkLogoWrapper">
+				<img src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/fox-news_90x85.png" alt="Fox News" class="networkLogo" />
+			</span>
+		</a>
+	</div>
+		</header>
+		<footer>
+			<div class="bottomBar clearfix">
+
+					<ul class="pagination">
+						<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+					</ul>
+
+			</div>
+
+		</footer>
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/movies/movie/brave" 
+	class="tile category
+movies
+one-column
+hasEntitlement
+exclusive track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/movies/movie/brave" 
+	data-favorite-id="/ng/movies/movie/brave" 
+	data-content-type="movies" 
+	data-program-title="brave" 
+	data-episode-title="" 
+	data-entitlement="U::U300,U::U300la,U::U400,U::U450,U::U450la,P::STRENC,P::STRENC_apid,P::STARZ,P::STARZ_apid,P::MOVIE,P::MOVIE_apid" 
+	data-entitlement-message-upgrade="U300/Higher or Starz package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Movies - Brave"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+		<div class="exclusiveHeader">STARZ®</div>
+	<div class="imageWrapper showImage">
+		<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/838526_braveextra_additional_image_1.jpg" alt="Brave" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/movies/movie/brave?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Movie</span></p>
+			</a>
+		</div>
+			<div class="entitlement"><span class="login action has-clip">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Login" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fuv%2Fmovies%2Fmovie%2Fbrave%23play%3Dlatest"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+<a class="button-promo-clip track video-play-link" data-clicktrack-action="Image - Login Promo Clip" href="http://uverseonline.att.net/movies/movie/brave?play=dk%3Adk_stz_bravee_may13.mp4"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>PLAY CLIP</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="order action has-clip">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Order Now" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+<a class="button-promo-clip track video-play-link" data-clicktrack-action="Image - Order Now Promo Clip" href="http://uverseonline.att.net/movies/movie/brave?play=dk%3Adk_stz_bravee_may13.mp4"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>PLAY CLIP</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="upgrade action has-clip">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Upgrade" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+<a class="button-promo-clip track video-play-link" data-clicktrack-action="Image - Upgrade Promo Clip" href="http://uverseonline.att.net/movies/movie/brave?play=dk%3Adk_stz_bravee_may13.mp4"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>PLAY CLIP</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span></div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/movies/movie/brave" class="track" data-clicktrack-action="Title">Brave</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">Movie <span class="light">|</span> 16 Clips
+&nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">Princess Merida enjoys riding and archery, and isn't interested in marriage - but when a witch casts a beastly spell on her mother the Queen, only Merida can come to the rescue! An animated treat from Pixar.</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/movies/studio/starz" class="track" data-clicktrack-action="Network" data-clicktrack-label="STARZ">STARZ</a>
+<span class="light">|</span> PG
+<span class="light">|</span> HD</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag premium">Premium</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr " data-icon-class="dvr ">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr  track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+<section 
+	id="network_UID" 
+	class="tile  network one-column  track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Network" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Network Tile"
+	data-clicktrack-label="CBS"
+>
+	<div class="tileWrapper">
+		<header>
+			<div class="imageWrapper imageType-network">
+				<ul class="networkTileItems">
+					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/CBS/NCIS/_derived_jpg_q90_444x444_m0/NCIS-Showcard1.jpg" alt="NCIS" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/ncis" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">NCIS</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/CBS/NCIS&#32;Los&#32;Angeles/_derived_jpg_q90_444x444_m0/NCISLosAngeles-Showcard1.jpg" alt="NCIS: Los Angeles" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/ncis-los-angeles" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">NCIS: Los Angeles</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/CBS/Elementary/_derived_jpg_q90_444x444_m0/Elementary-Showcard.jpg" alt="Elementary" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/elementary" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Elementary</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+	<div class="networkLogoContainer">
+		<a class="networkLogoLink track" href="http://uverseonline.att.net/network/cbs"  data-clicktrack-action="Network"  data-clicktrack-label="CBS">
+			<span class="networkLogoWrapper">
+				<img src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/cbs_282x85.png" alt="CBS" class="networkLogo" />
+			</span>
+		</a>
+	</div>
+		</header>
+		<footer>
+			<div class="bottomBar clearfix">
+
+					<ul class="pagination">
+						<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+					</ul>
+
+			</div>
+
+		</footer>
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/movies/movie/jack-reacher" 
+	class="tile category
+movies
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/movies/movie/jack-reacher" 
+	data-favorite-id="/ng/movies/movie/jack-reacher" 
+	data-content-type="movies" 
+	data-program-title="jack-reacher" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Movies - Jack Reacher"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_ond_jackre_may13.jpg" alt="Jack Reacher" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/movies/movie/jack-reacher?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Clip</span></p>
+			</a>
+		</div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/movies/movie/jack-reacher" class="track" data-clicktrack-action="Title">Jack Reacher</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">Clip &nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">Available starting May 7 on U-verse Movies, Same Day as DVD!  Ex-military investigator Jack Reacher (Tom Cruise) leaps off the pages of Lee Child’s bestselling novel and onto the big screen in this explosive thriller.  When an unspeakable crime is committed, all evidence points to the suspect in custody who offers up a single note in defense: “Get Jack Reacher!”  $5 or $6 (HD). 2-day rental. Run Time: 131 minutes.</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/movies/studio/u-verse-movies" class="track" data-clicktrack-action="Network" data-clicktrack-label="U-verse Movies">U-verse Movies</a>
+<span class="light">|</span> NR</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+<section 
+	id="" 
+	class="tile promo one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Promo" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Promo Tile"
+	data-clicktrack-label="attwifi_B"
+>
+	<div class="tileWrapper">
+				<a class="promoLink track"  target="_blank"  href="http://www.att.com/go?utm_source=uv&utm_medium=promo&utm_campaign=attwifi" data-clicktrack-action="Promo Image">
+			<img class="promoImage" src="web_files/NEXTGEN/web_files/images/promo/attwifipromob.png" alt="attwifi_B" />
+		</a>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+<section 
+	id="video_sz___SZ_TITL0450000000776586_ASSET" 
+	class="tile video
+movies
+one-column
+hasEntitlement track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Video" 
+	data-video-id="sz___SZ_TITL0450000000776586_ASSET" 
+	data-category-path="/ng/movies/movie/touchback" 
+	data-favorite-id="sz___SZ_TITL0450000000776586_ASSET" 
+	data-content-type="movies" 
+	data-program-title="touchback" 
+	data-episode-title="touchback" 
+	data-entitlement="U::U300,U::U300la,U::U400,U::U450,U::U450la,P::STRENC,P::STRENC_apid,P::STARZ,P::STARZ_apid,P::MOVIE,P::MOVIE_apid" 
+	data-entitlement-message-upgrade="U300/Higher or Starz package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Video Tile"
+	data-clicktrack-label="Movies - Touchback: Touchback"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/starz/776586_touchback_poster.jpg" alt="Touchback" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/movies/movie/touchback?play=sz___SZ_TITL0450000000776586_ASSET" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+			<div class="entitlement"><span class="login action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Login" href="http://www.att.net/globalssosignin?returnurl=http%3A%2F%2Fuverseonline.att.net%2Fuv%2Fmovies%2Fmovie%2Ftouchback%23play%3Dsz___SZ_TITL0450000000776586_ASSET"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Sign In</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="order action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Order Now" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Order Now</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span>
+<span class="upgrade action ">
+<span class="icon lock">&nbsp;</span>
+<p><span>U300/Higher or Starz <br /> package is required</span></p>
+<a class="track button-overlay" data-clicktrack-action="Image - Upgrade" href="https://www.att.com/olam/passthroughAction.myworld?actionType=TvProductLandingPage&gnLinkId=s1003"><span class="U-control U-control-button control-entitlement control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
+</span> </span></a>
+</span></div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/movies/movie/touchback" class="track" data-clicktrack-action="Title">
+			Touchback
+		</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine"><span class="videoInfo-subtitle">
+Movie </span>
+&nbsp;</h2>
+
+		</header>
+
+		<article>
+				<p class="description videoInfo-description">
+			A man's life and farm are sliding downhill as he reflects on the injury that ended a promising football career twenty years ago. Then he is given the chance to relive that game - can he change his fate?
+		</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/movies/studio/starz" class="track" data-clicktrack-action="Network" data-clicktrack-label="STARZ">STARZ</a>
+<span class="light">|</span> PG-13
+<span class="light">|</span> HD</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag premium">Premium</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/tv/show/oasis-10-years-of-noise-and-confusion" 
+	class="tile category
+tv
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/tv/show/oasis-10-years-of-noise-and-confusion" 
+	data-favorite-id="/ng/tv/show/oasis-10-years-of-noise-and-confusion" 
+	data-content-type="tv" 
+	data-program-title="oasis-10-years-of-noise-and-confusion" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Tv - Oasis  10 Years of Noise and Confusion"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_exc_oasiss_may13.jpg" alt="Oasis  10 Years of Noise and Confusion" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/oasis-10-years-of-noise-and-confusion?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Latest Clip</span></p>
+			</a>
+		</div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/oasis-10-years-of-noise-and-confusion" class="track" data-clicktrack-action="Title">Oasis  10 Years of Noise and Confusion</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">Clip &nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">Catch live concerts every weekend starting at 10pm ET on the Showcase Channel 1800. This month, we’re featuring the greatest rock and roll ban of recent history, Oasis, with their charismatic live performance at Glasgow's celebrated Barrowlands venue.</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/att-u-verse" class="track" data-clicktrack-action="Network" data-clicktrack-label="AT&T U-verse">AT&T U-verse</a>
+<span class="light">|</span> NR</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="video_dk___dk_ond_6souls_may13.mp4" 
+	class="tile video
+movies
+one-column
+clip track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Video" 
+	data-video-id="dk___dk_ond_6souls_may13.mp4" 
+	data-category-path="/ng/movies/movie/6-souls" 
+	data-favorite-id="dk___dk_ond_6souls_may13.mp4" 
+	data-content-type="movies" 
+	data-program-title="6-souls" 
+	data-episode-title="trailer" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Video Tile"
+	data-clicktrack-label="Movies - 6 Souls: Trailer"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/dk/dk_ond_6souls_may13.jpg" alt="Trailer" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/movies/movie/6-souls?play=dk___dk_ond_6souls_may13.mp4" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/movies/movie/6-souls" class="track" data-clicktrack-action="Title">
+			6 Souls
+		</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine"><span class="videoInfo-subtitle">
+Clip <span class="light">|</span>
+Trailer
+</span>
+&nbsp;</h2>
+
+		</header>
+
+		<article>
+				<p class="description videoInfo-description">
+			Available now on U-verse Movies, Watch While in Theaters! Julianne Moore stars in this haunting thriller about a psychiatrist who finds herself in grave danger as she unravels a mystery involving a patient with multiple personalities. $8 (HD Only) . 2-day rental. Run Time: 113 minutes.
+		</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/movies/studio/u-verse-movies" class="track" data-clicktrack-action="Network" data-clicktrack-label="U-verse Movies">U-verse Movies</a>
+<span class="light">|</span> NR</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+<section 
+	id="network_UID" 
+	class="tile  network one-column  premium  track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Network" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Network Tile"
+	data-clicktrack-label="Showtime"
+>
+	<div class="tileWrapper">
+		<header>
+			<div class="imageWrapper imageType-network">
+				<ul class="networkTileItems">
+					<li class="networkTileItem active">
+						<img class="tile-thumbnail" src="web_files/NEXTGEN/web_files/images/category_overrides/Showtime/nurse_jackie_210x280.jpg" alt="Nurse Jackie" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/nurse-jackie" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Nurse Jackie</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="web_files/NEXTGEN/web_files/images/category_overrides/Showtime/the_big_c_210x280.jpg" alt="Big C, The" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/tv/show/big-c-the" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Big C, The</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+					<li class="networkTileItem ">
+						<img class="tile-thumbnail" src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/nextgen/images/showtime/Man_On_A_Ledge_141709_00_210x280.jpg" alt="Man On A Ledge" />
+						<div class="image-overlay">
+							<div class="standard"><a href="http://uverseonline.att.net/movies/movie/man-on-a-ledge" class="action track" data-clicktrack-action="Image - Link">
+<p class="categoryTitle">Man On A Ledge</p>
+<span class="U-control U-control-button control-overlay">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>ALL VIDEOS</span><span class="slice-two">&nbsp;</span>
+</span> </span> </a></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+	<div class="networkLogoContainer">
+		<a class="networkLogoLink track" href="http://uverseonline.att.net/network/showtime"  data-clicktrack-action="Network"  data-clicktrack-label="Showtime">
+			<span class="networkLogoWrapper">
+				<img src="web_files/NEXTGEN/web_files/images/Network&#32;Logos/network-page/showtime.png" alt="Showtime" class="networkLogo" />
+			</span>
+		</a>
+	</div>
+		</header>
+		<footer>
+			<div class="bottomBar clearfix">
+
+					<ul class="pagination">
+						<li class="paginationItem icon dot track active" data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+						<li class="paginationItem icon dot track " data-clicktrack-action="Pagination Dot">&nbsp;</li>
+					</ul>
+
+			</div>
+
+		</footer>
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/music/artist/miranda-lambert" 
+	class="tile category
+music
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/music/artist/miranda-lambert" 
+	data-favorite-id="/ng/music/artist/miranda-lambert" 
+	data-content-type="music" 
+	data-program-title="miranda-lambert" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Music - Miranda Lambert"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper showImage">
+		<img class="tile-thumbnail" src="../cache.vevo.com/Content/VevoImages/artist/52BAEB6FD87A69175C2A02E5FCC6D831.jpg" alt="Miranda Lambert" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/music/artist/miranda-lambert?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Latest Video</span></p>
+			</a>
+		</div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/music/artist/miranda-lambert" class="track" data-clicktrack-action="Title">Miranda Lambert</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">23 Music Videos &nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">Ears bored? Entertain them on Uverse.com with free videos from Miranda Lambert!</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/music/network/vevo" class="track" data-clicktrack-action="Network" data-clicktrack-label="Vevo">Vevo</a>
+<span class="light">|</span> NON-EXPLICIT</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+<section 
+	id="" 
+	class="tile promo one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Promo" 
+	data-video-id="" 
+	data-category-path="" 
+	data-favorite-id="" 
+	data-content-type="" 
+	data-program-title="" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Promo Tile"
+	data-clicktrack-label="Uverse Bundles"
+>
+	<div class="tileWrapper">
+				<a class="promoLink track"  target="_blank"  href="http://www.att.com/u-verse/shop/index.jsp?source=ECSFU90000000000L&wtExtndSource=uvbundle_tile" data-clicktrack-action="Promo Image">
+			<img class="promoImage" src="web_files/NEXTGEN/web_files/images/promo/Uverse-$79-TV-Internet-Phone.png" alt="Uverse Bundles" />
+		</a>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+<section 
+	id="category_/ng/tv/show/scandal" 
+	class="tile category
+tv
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Category" 
+	data-video-id="" 
+	data-category-path="/ng/tv/show/scandal" 
+	data-favorite-id="/ng/tv/show/scandal" 
+	data-content-type="tv" 
+	data-program-title="scandal" 
+	data-episode-title="" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Category Tile"
+	data-clicktrack-label="Tv - Scandal"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper showcardVertical">
+		<img class="tile-thumbnail" src="../cps-static.rovicorp.com/2/Open/ABC/Scandal/Season&#32;One/_derived_jpg_q90_444x444_m0/scandalverticalshowcard.jpg" alt="Scandal" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/scandal?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+				<p><span>Play Latest Episode</span></p>
+			</a>
+		</div>
+	</div>
+	</div>
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/scandal" class="track" data-clicktrack-action="Title">Scandal</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine">5 Episodes <span class="light">|</span> 52 Clips
+&nbsp;</h2>
+		</header>
+
+		<article>
+				<p class="description">A former White House communications director opens a Washington, D.C. crisis-management firm in this drama based on the work of crisis manager Judy Smith, whose clients have included Monica Lewinsky and Justice Clarence Thomas.</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/abc" class="track" data-clicktrack-action="Network" data-clicktrack-label="ABC">ABC</a>
+<span class="light">|</span> TV-14</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr hidden" data-icon-class="dvr hidden">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+<section 
+	id="video_c___Qx5_GUMufoXq" 
+	class="tile video
+tv
+one-column track-hasCategory track-hasSubcategory track-hasLabel" 
+	data-tile-class="Video" 
+	data-video-id="c___Qx5_GUMufoXq" 
+	data-category-path="/ng/tv/show/elementary" 
+	data-favorite-id="c___Qx5_GUMufoXq" 
+	data-content-type="tv" 
+	data-program-title="elementary" 
+	data-episode-title="the-woman/heroine" 
+	data-entitlement="" 
+	data-entitlement-message-upgrade="An AT&amp;amp;T U-verse package is required" 
+	data-clicktrack-category="Tile" 
+	data-clicktrack-subcategory="Video Tile"
+	data-clicktrack-label="Tv - Elementary: Elementary - The Woman/Heroine"
+	data-information=""
+>
+	<div class="tileWrapper">
+				<header>
+	<div class="imageWrapper thumbnail">
+		<img class="tile-thumbnail" src="../thumbnails.cbsig.net/CBS_Production_Entertainment_VMS/352/1014/2013/05/16/30433859560/CBS_ELEMENTARY_122_123_IMAGE_thumb_140x80.jpg" alt="Elementary - The Woman/Heroine" />
+	<div class="image-overlay">
+		<div class="standard">
+			<a href="http://uverseonline.att.net/tv/show/elementary?play=c___Qx5_GUMufoXq" class="action track video-play-link" data-clicktrack-action="Image - Play">
+				<span class="icon play">&nbsp;</span>
+			</a>
+		</div>
+	</div>
+	</div>
+
+	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
+		<a href="http://uverseonline.att.net/tv/show/elementary" class="track" data-clicktrack-action="Title">
+			Elementary
+		</a>
+	</h1>
+	<h2 class="tile-header-subtitle ellipsis singleLine"><span class="videoInfo-subtitle">
+S1 <span class="light">|</span>
+Ep23: Elementary - The Woman/Heroine
+</span>
+&nbsp;</h2>
+
+		</header>
+
+		<article>
+				<p class="description videoInfo-description">
+			As Sherlock reels at the reappearance of his former lover, Irene Adler, a series of flashbacks unravel the tumultuous events that led to his downfall into addiction. Meanwhile, he and Joan once again find themselves in the cross hairs of the enigmatic Moriarty. (TV-14 L, V)
+		</p>
+		<p class="meta ellipsis singleLine"><a href="http://uverseonline.att.net/tv/network/cbs" class="track" data-clicktrack-action="Network" data-clicktrack-label="CBS">CBS</a>
+<span class="light">|</span> TV-14</p>
+
+		</article>
+		<footer>
+	<div class="drawer"></div>
+	<div class="bottomBar clearfix">
+				<span class="tile-tag free">Free</span>
+		<div class="actions clearfix">
+				<div class="iconContainer dvr " data-icon-class="dvr ">
+					<span class="icon-arrow"></span>
+					<span class="icon dvr  track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer notify" data-icon-class="notify">
+					<span class="icon-arrow"></span>
+					<span class="icon notify track" data-clicktrack-action="Drawer - Notify - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+				<div class="iconContainer favorite" data-icon-class="favorite">
+					<span class="icon-arrow"></span>
+					<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+				</div>
+		</div>
+	</div>
+</footer>
+
+	</div>
+</section>
+
+
+
+
+	</div>
+
+
+	<script type="text/javascript">
+		Uverse.load({
+			moduleName: 'Uverse.widgets.TileManager'
+			, id: 'myFluidLayout_0'
+			, options: {
+				initialTilesId: 'initial-tiles'
+				, initialFilter: ''
+				, tileLoaderOptions: {
+					siteArea: ''
+				}
+				, filterBarId: ''
+				, tileExtensions: [    ]
+				, tileOptions: null
+			}
+		});
+	</script>
+
+
+
+	<div class="ooImages">
+	</div>
+	
+
+			</div>
+
+<div id="mastfooter" class="mastfooter track-hasCategory" data-clicktrack-category="Footer">
+	<div class="wrapper">
+		<div class="mastfooter-permanent-wrapper">
+			<div class="mastfooter-permanent needsPageWidth">
+				<div class="att-logo-wrapper">
+					<img src="web_files/NEXTGEN/web_files/nes/styles/images/branding/mastfoot-att-logo.png" alt="at&amp;t" />
+				</div>
+
+				<div class="mastfooter-permanent-items-wrapper track-hasSubcategory" data-clicktrack-subcategory="Footer Main">
+					<ul class="mastfooter-permanent-items">
+						<li>
+							<!-- Removed class track -->
+							<a href="index.html#" id="open-footer-button" class="track" data-clicktrack-action="AT&amp;T on the Web" data-trk-cat="Footer" data-trk-act="AT&amp;T on the Web">
+								<strong>Expand for more info</strong>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.att.com/?shopFilterId=100004&source=EC00uv000000001UL&wtExtndSource=uv_ftr_att" target="_blank"  class="track" data-clicktrack-action="att.com" data-trk-cat="Footer" data-trk-act="att.com">
+								<strong>att.com</strong>
+								<span>Shop. Service. Support.</span>
+							</a>
+						</li>
+						<li>
+							<a href="http://att.net" target="_blank" class="track" data-clicktrack-action="att.net" data-trk-cat="Footer" data-trk-act="att.net">
+								<strong>att.net</strong>
+								<span>E-mail, News, Weather &amp; More</span>
+							</a>
+						</li>
+						<li>
+							<a href="http://www.att.com/u-verse/shop/index.jsp?source=ECSFU90000000000L&wtExtndSource=uv_connect_ftr" target="_blank" class="track shop-uverse" data-clicktrack-action="Shop Uverse" data-trk-cat="Footer" data-trk-act="Shop Uverse">
+								<strong>Order AT&T U-verse&reg;</strong>
+								<span>More ways to connect and save</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="mastfooter-back-to-top-wrapper">
+					<a href="index.html#top" class="mastfooter-back-to-top track" data-clicktrack-subcategory="Back to Top" data-clicktrack-action="Back to Top Button" data-trk-cat="Footer" data-trk-act="Back to Top Button">
+						<span class="label">Back to top</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="mastfooter-content-wrapper">
+			<div class="mastfooter-content needsPageWidth  track-hasSubcategory" data-clicktrack-subcategory="Footer More">
+				<div class="mastfooter-content">
+					<ul class="mastfooter-content-sections">
+						<li>
+							<a href="http://www.att.com/shop/u-verse?source=ECSFU90000000000L&wtExtndSource=shop_uv_ftr_learn" target="_blank"  class="track hijacks" data-clicktrack-action="About U-verse" data-trk-cat="Footer" data-trk-act="About U-verse">
+About U-verse							</a>
+						</li>
+						<li>
+							<a href="http://www.att.com/esupport/article.jsp?sid=KB401143&cv=803" target="_blank"  class="track" data-clicktrack-action="U-verse Support" data-trk-cat="Footer" data-trk-act="U-verse Support">
+U-verse Support							</a>
+						</li>
+						<li>
+							<a href="http://uverseonline.att.net/uverse/legal-details" target="_blank"  class="track" data-clicktrack-action="U-verse Legal" data-trk-cat="Footer" data-trk-act="U-verse Legal">
+U-verse Legal							</a>
+						</li>
+						<li>
+							<a href="http://www.att.com/u-verse/att-terms-of-service.jsp?source=EC00uv000000001UL&wtExtndSource=uv_ftr_tos" target="_blank"  class="track" data-clicktrack-action="U-verse Terms of Service" data-trk-cat="Footer" data-trk-act="U-verse Terms of Service">
+U-verse Terms of Service							</a>
+						</li>
+						<li>
+							<a href="http://www.att.com/gen/corporate-citizenship?pid=5882" target="_blank"  class="track" data-clicktrack-action="Copyright" data-trk-cat="Footer" data-trk-act="Copyright">
+Copyright							</a>
+						</li>
+						<li>
+							<a href="../www.att.com/privacy/index.html" target="_blank"  class="track" data-clicktrack-action="Privacy" data-trk-cat="Footer" data-trk-act="Privacy">
+Privacy							</a>
+						</li>
+						<li>
+							<a href="../www.att.com/gen/general%3Fpid=11561.html" target="_blank"  class="track" data-clicktrack-action="Terms of Use" data-trk-cat="Footer" data-trk-act="Terms of Use">
+Website Terms of Use							</a>
+						</li>
+						<li>
+							<a href="http://preferences-mgr.truste.com/?type=att02&affiliateId=107" target="_blank"  class="track" data-clicktrack-action="About Our Ads" data-trk-cat="Footer" data-trk-act="About Our Ads">
+About Our Ads							</a>
+						</li>
+					</ul>
+					<p>All non-AT&amp;T names and images are copyrights or trademarks of their respective owners. <a href="http://uverseonline.att.net/uverse/copyright-notices" target="_blank" class="track" data-clicktrack-action="Trademark">Click here</a> for details.<br>Some content on this site may be inappropriate for children under 14. Geographic and service restrictions apply to AT&amp;T U-verse. <a href="http://www.att.com/u-verse/availability/index.jsp?source=EC00uv000000001UL&wtExtndSource=uv_rfrl_ftr#fbid=azhch6fNMEf" target="_blank" class="track" data-clicktrack-action="Geographic Restrictions">Click here</a> to see if you qualify.<br><br><a href="../www.att.com/gen/privacy-policy%3Fpid=2587.html" target="_blank" class="track" data-clicktrack-action="Copyright 2012 AT&amp;T Intellectual Property">Copyright 2012 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T and the AT&amp;T logo are trademarks of AT&amp;T Intellectual Property.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="mastfooter-social-wrapper">
+			<div class="mastfooter-social needsPageWidth  track-hasSubcategory" data-clicktrack-subcategory="Stay in Contact">
+				<div class="mastfooter-social">
+					<h2 class="social-title">Stay In Contact</h2>
+					<ul class="social-icons">
+						<li>	<a class="social-icon social-icon-facebook track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=facebook&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank"  data-clicktrack-action="Facebook">Facebook</a>
+</li>
+						<li>	<a class="social-icon social-icon-twitter track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=twitter&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank"  data-clicktrack-action="Twitter">Twitter</a>
+</li>
+						<li>	<a class="social-icon social-icon-googleplus track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=googleplus&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank"  data-clicktrack-action="Googleplus">Google+</a>
+</li>
+						<li>	<a class="social-icon social-icon-linkedin track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=linkedin&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank"  data-clicktrack-action="Linkedin">LinkedIn</a>
+</li>
+						<li>	<a class="social-icon social-icon-delicious track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=delicious&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank"  data-clicktrack-action="Delicious">Delicious</a>
+</li>
+						<li>	<a class="social-icon social-icon-digg track" href="http://rest.sharethis.com/share/sharer.php?pub_key=a3cce920-3a6b-47a8-a890-d27d55cbc9e8&access_key=512db7bf2cce2acb63fad31b31067e27&destination=digg&via=Uverse&title=&url=http%3A%2F%2Fuverseonline.att.net%2F" target="_blank"  data-clicktrack-action="Digg">Digg</a>
+</li>
+					</ul>
+
+
+							<a href="../www.att.net/teamusa.html" target="_blank" class="team-usa-button track" data-clicktrack-action="Olympic Sponsor" data-clicktrack-subcategory="Footer More"  data-trk-cat="Footer" data-trk-act="Olympic Sponsor">
+Proud sponsor of the U.S Olympic Team							</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="mastfooter-placeholder"></div>
+<script type="text/javascript">
+	Uverse.load({
+		moduleName: 'Uverse.widgets.Footer'
+		, id: 'mastfooter'
+	});
+</script>
+		</section>
+
+
+<div id='modalShadow1' class="modal-shadow hidden"></div>
+
+<div id='modalContainer1' class="modal-container hidden track-hasCategory track-hasSubcategory" data-clicktrack-category="Modal" data-clicktrack-subcategory="Wrapper">
+    <div class="modal-contents-wrapper">
+        <div class="modal-contents"></div>
+    </div>
+</div>
+<div id="pageBlocker" class="page-blocker hidden">
+	<div class="vertically-centered-wrapper">
+		<span class="page-blocker-spinner"></span>
+		<div class="page-blocker-message-wrapper">
+			<span class="page-blocker-message"></span>
+		</div>
+	</div>
+</div>	<!-- Webtrends -->
+	<noscript><img alt="dcsimg" id="dcsimg" width="1" height="1" src="http://statse.webtrendslive.com/dcsslzoj37dv0hctv586rtbcg_1v7w/njs.gif?dcsuri=/nojavascript&amp;WT.js=No&amp;WT.tv=10.2.0&amp;dcssip=www.beta.att.yahoo.com"/></noscript>
+
+
+<div id="toast" class="toast">
+	<div class="toast-button">
+		<span class="slice-one"></span>
+		<span class="slice-two"></span>
+	</div>
+	<span class="toast-message">
+		<span class="toast-message-alert"></span>
+		<span class="toast-message-text"></span>
+	</span>
+</div>	</body>
+
+</html>

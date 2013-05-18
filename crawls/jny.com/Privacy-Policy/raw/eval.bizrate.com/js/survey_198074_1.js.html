@@ -215,7 +215,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
 
 (function ($) {
     var bizrate, Base64;
-    var cdnPath = (("https:" == document.location.protocol) ? 'https://images.bizrate.com/s2static/us/eval/e88f685d' : 'http://images.bizrate.com/s2static/us/eval/e88f685d');
+    var cdnPath = (("https:" == document.location.protocol) ? 'https://images.bizrate.com/s2static/us/eval/0e15d9a4' : 'http://images.bizrate.com/s2static/us/eval/0e15d9a4');
 	var logoPath= (("https:" == document.location.protocol) ? '' : '');
 
     bizrate = {
@@ -242,15 +242,14 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
         	mid: 198074,
         	type: 1,
             altImageText: 'Tell Us What You Think!',
-            surveyUrl: 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13682749778766805498702010302021639&rid=1368274977020207265&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
-            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1368274977020207265',
+            surveyUrl: 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13688798323034154789302030301021189&rid=1368879832010107920&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
+            touchpointURL:'https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1368879832010107920',
             inviteImageUrl: 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/198074.gif',
             merchantLogoUrl: ((logoPath === '') ? '' : (logoPath + 198074 +'.gif')),
             buttonImageUrl:'',
             transparentImageUrl: cdnPath + '/images/transparent.gif',
             inviteWidth: '180',
             inviteHeight: '150',
-            inviteUrl: 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&browserAndVersion=Firefox 3.5.3&browserType=Browser&osAndVersion=Windows XP',
             closeWindowText: '[Close]'
         },
 
@@ -292,6 +291,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                     settings = $.extend({
                         titleText: '',
                         closeText: '[Close]',
+                        inviteImageUrl: 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/198074.gif',
                         x: 0,
                         y: 0,
                         z: 99999,
@@ -300,11 +300,14 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                     }, options || {});
                     return this.each(function () {
                         var $this, brdWin, brdHead, brdTitle,
-                            brdBody, brdClose, bod;
+                            brdBody, brdClose, bodanchor,
+                            container = (document.getElementById('dynamicBzSurveyContents')
+                                && settings.inviteImageUrl === 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/template_multi_no_logo.gif')
+                                ? $(document.getElementById('dynamicBzSurveyContents'))
+                                : $('<div>');
                         $this = $(this);
                         bod = $(document.body);
-                        brdWin =
-                            $("<div>").addClass('brdialog-win').css({
+                        brdWin = container.addClass('brdialog-win').css({
                                 zIndex: settings.z.toString(10),width: settings.width.toString(10) + 'px',position: 'absolute',left: settings.x.toString(10) + 'px',top: settings.y.toString(10) + 'px',border: '1px solid #ccc',
                                 boxSizing: 'border-box',
                                 MozBoxSizing: 'border-box',
@@ -360,7 +363,32 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                             cursor: 'move'
                         });
                         $this.data('brd', brdWin);
-                        bod.append(brdWin);
+                        if (settings.inviteImageUrl === 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/template_multi_no_logo.gif') {
+                            brdWin.css('display','block');
+                        } else if (settings.inviteImageUrl === 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/template_multi.gif') {
+
+                            anchor = $(document.createElement('a'));
+                            anchor.css({
+                                color: '#fff',
+                                height: '23px',
+                                width: '111px',
+                                display:'block',
+                                right: '10px',
+                                top: '35px',
+                                position: 'absolute',
+                                zIndex: '1000000',
+                                textIndent: '-9999px'
+                            })
+                            .attr('href','//www.bizrate.com/?rf=sur')
+                            .attr('target','_blank')
+                            .attr('id','clickOut')
+                            .html('Bizrate');
+
+                            brdWin.append(anchor);
+                            bod.append(brdWin);
+                        } else {
+                            bod.append(brdWin);
+                        }
                         return true;
                     });
                 },
@@ -468,9 +496,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             this.height = bizrate.tplVars.inviteHeight;
             this.closeY = bizrate.tplVars.inviteHeight*0.86;
 
-            this.inviteImageURL = bizrate.tplVars.inviteImageUrl;
             this.surveyURL = bizrate.tplVars.surveyUrl;
-            this.inviteURL = bizrate.tplVars.inviteUrl;
 
             if (typeof(bizrate.params.br_pos_x) != 'undefined' && bizrate.params.br_pos_x != null && !isNaN(bizrate.params.br_pos_x)) {
                 this.posX = bizrate.params.br_pos_x;
@@ -755,6 +781,13 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
             //closeCoord = this.height - this.closeY;
             posi = bizrate.getModalCoords(coordWidth, coordHeight);
 
+            if(document.getElementById('dynamicBzSurveyContents')
+                    && bizrate.tplVars.inviteImageUrl === 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/template_multi.gif') {
+                this.inviteImageUrl = 'https://images.bizrate.com/eval/survey/invite_template/non-buyer/template_multi_no_logo.gif';
+            } else {
+                this.inviteImageUrl = bizrate.tplVars.inviteImageUrl;
+            }
+
             d = $('<div>').attr('class', 'noprint').css({
                 width: imgWidth,
                 //height: imgHeight,
@@ -803,7 +836,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                 MsBoxSizing: 'border-box',
                 WebkitBoxSizing: 'border-box'
             });
-            im = $('<img />').attr('src', bizrate.tplVars.inviteImageUrl)
+            im = $('<img />').attr('src', this.inviteImageUrl)
                 .attr('alt', bizrate.tplVars.altImageText).css({
                 boxSizing: 'border-box',
                 MozBoxSizing: 'border-box',
@@ -896,6 +929,7 @@ window.$jbrSurveyInvitation = jQuery.noConflict(true);
                 //titleText: this.pageTitle,
                 titleText: bizrate.tplVars.altImageText,
                 closeText: bizrate.tplVars.closeWindowText,
+                inviteImageUrl: this.inviteImageUrl,
                 x: bizrate.posX,
                 y: bizrate.posY,
                 z: bizrate.params.modalZIndex,

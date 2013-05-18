@@ -527,8 +527,8 @@ function af_urlencode(str) {
     return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 }
 
-function af_gaqRePush() {
-	var u = (''+document.location).replace(/^http:\/\/.*?\//gi,'/virtual/');
+function af_gaqRePush(url) {
+	var u = (url ? url : document.location.href.replace(/^http(s)?:\/\/.*?\//gi,'/virtual/'));
 	
 	if (typeof _gaq != 'undefined') {
 		_gaq.push(['_trackPageview',u]);
@@ -547,7 +547,7 @@ function af_gaqRePush() {
 if (typeof(afAdScripts) == 'undefined')  afAdScripts = new Object();
 
 // scroll smoothly to a position
-afAdScripts.smoothScroll=function (delay,left,top) {
+afAdScripts.smoothScroll = function(delay,left,top) {
 	var s=afAdScripts.smoothScroll, now=(new Date()).getTime(), step=20;
 	if (s.to) { window.clearTimeout(s.to); s.to=0; }
 	if (delay) {
@@ -564,7 +564,7 @@ afAdScripts.smoothScroll=function (delay,left,top) {
 };
 
 // hide all SELECT, EMBED, OBJECT and IFRAME objects from the page to avoid them appearing above layers
-afAdScripts.tagsDisplay=function(show) {
+afAdScripts.tagsDisplay = function(show) {
 	if (!afAdScripts.tagsDisplay.selects && !show) afAdScripts.tagsDisplay.selects=document.getElementsByTagName("select");
 	afAdScripts.toggleVisibility(afAdScripts.tagsDisplay.selects,show)
 	if (!afAdScripts.tagsDisplay.embeds && !show) afAdScripts.tagsDisplay.embeds=document.getElementsByTagName("embed");
@@ -575,7 +575,7 @@ afAdScripts.tagsDisplay=function(show) {
 	afAdScripts.toggleVisibility(afAdScripts.tagsDisplay.iframes,show)
 };
 
-afAdScripts.toggleVisibility=function(items,show) {
+afAdScripts.toggleVisibility = function(items,show) {
 	if (!items) return;
 	if ((typeof items.vis!='undefined') && (items.vis==show)) return;
 	for (var i=0;i<items.length;i++) {
@@ -584,8 +584,37 @@ afAdScripts.toggleVisibility=function(items,show) {
 		o.style.visibility=(show ? o.prevVisibility : 'hidden');
 	}
 	items.vis=show;
-}
- 
+};
+
+// tracking pixels for AJAX pages
+afAdScripts.callTracking = function(url) {
+	try {
+		// Google Analytics
+		af_gaqRePush();
+		// ComScore
+		if (typeof COMSCORE!='undefined') COMSCORE.beacon({c1:2,c2:6034949,c3:"",c4:"",c5:"",c6:"",c15:""});
+		// eStat
+		if (typeof(eStatWhap)!='undefined' && _eStat_Whap_loaded) eStatWhap.send();
+		// IVW (DE)
+		if (typeof(IVW)!='undefined' && IVW!='') {
+			afAdScripts.callTracking.ivwImg = new Image();
+			afAdScripts.callTracking.ivwImg.src = IVW+'?r='+escape(document.referrer)+'&d='+(Math.random()*100000);
+		}
+		// NET-Metrix (CH)
+		if (typeof(NETMX)!='undefined' && NETMX!='') {
+			afAdScripts.callTracking.netmxImg = new Image();
+			afAdScripts.callTracking.netmxImg.src = NETMX+'?r='+escape(document.referrer)+'&d='+(Math.random()*100000);
+		}
+		// OEWA (AU)
+		if (typeof(OEWA)!='undefined' && OEWA!='') {
+			afAdScripts.callTracking.oewaImg = new Image();
+			afAdScripts.callTracking.oewaImg.src = OEWA+'?r='+escape(document.referrer)+'&d='+(Math.random()*100000);
+		}
+	} catch(e) {
+		afAdScripts.logError(2, e.message);
+	}
+};
+
 /************************************************/
 /************* pictures lazyloading *************/
 /************************************************/

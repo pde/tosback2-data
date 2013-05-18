@@ -66,7 +66,6 @@
                     <nav class="subnav-top">
                         <div class="subnav-inner">
                             <a href="http://www.journeys.com/gift_cards.aspx">gift cards</a> 
-                            <a href="http://www.journeys.com/catalog" class="with-flash">catalog</a>
                             <a href="http://www.journeys.com/order_tracking.aspx">order tracking</a> 
                             <a href="http://www.journeys.com/store_locator.aspx" class="lnk-store-locator">store locator</a> 
                             <a href="https://www.journeys.com/account/login.aspx" rel="nofollow" class="lnk-login" id="lnk-login"><span class="arrow"></span><span>log in</span><span class="icon"></span></a>
@@ -125,6 +124,59 @@ var login_params=
                 </div><!-- /.wrap -->
                 </div>
                 <!-- /.site-login -->
+                            <script type="text/javascript">
+                                var MP = {
+<!-- mp_trans_disable_start --> 
+  Version: '1.0.23',
+  Domains: {'es':'es.journeys.com'},	
+  SrcLang: 'en',
+<!-- mp_trans_disable_end -->
+  UrlLang: 'mp_js_current_lang',
+  SrcUrl: decodeURIComponent('mp_js_orgin_url'),
+<!-- mp_trans_disable_start --> 	
+  init: function(){
+    if (MP.UrlLang.indexOf('p_js_')==1) {
+      MP.SrcUrl=window.top.document.location.href;
+      MP.UrlLang=MP.SrcLang;
+  }
+},
+getCookie: function(name){
+  var start=document.cookie.indexOf(name+'=');
+  if(start < 0) return null;
+  start=start+name.length+1;
+  var end=document.cookie.indexOf(';', start);
+  if(end < 0) end=document.cookie.length;
+  while (document.cookie.charAt(start)==' '){ start++; }
+  return decodeURIComponent(document.cookie.substring(start,end));
+},
+setCookie: function(name,value,path,domain){
+  var cookie=name+'='+encodeURIComponent(value);
+  if(path)cookie+='; path='+path;
+  if(domain)cookie+='; domain='+domain;
+  var now=new Date();
+  now.setTime(now.getTime()+1000*60*60*24*365);
+  cookie+='; expires='+now.toUTCString();
+  document.cookie=cookie;
+},
+switchLanguage: function(lang){
+  if(lang!=MP.SrcLang){
+    var script=document.createElement('SCRIPT');
+    script.src=location.protocol+'//'+MP.Domains[lang]+'/'+MP.SrcLang+lang+'/?1023749632;'+encodeURIComponent(MP.SrcUrl);
+	document.body.appendChild(script);
+  } else if(lang==MP.SrcLang && MP.UrlLang!=MP.SrcLang){
+    var script=document.createElement('SCRIPT');
+    script.src=location.protocol+'//'+MP.Domains[MP.UrlLang]+'/'+MP.SrcLang+MP.UrlLang+'/?1023749634;'+encodeURIComponent(location.href);
+	document.body.appendChild(script);
+  }
+  return false;
+},
+switchToLang: function(url) {
+  window.top.location.href=url; 
+}
+<!-- mp_trans_disable_end -->   
+};
+                            </script>
+                            <a mporgnav href="http://es.journeys.com" onclick="return switchLanguage('es'); function switchLanguage(lang) { MP.SrcUrl=decodeURIComponent('mp_js_orgin_url');MP.UrlLang='mp_js_current_lang';MP.init(); MP.switchLanguage(MP.UrlLang==lang?'en':lang); return false;}">español</a>
                         </div>
                         <!-- /.subnav-inner -->
                     </nav><!-- /.subnav-top --> <div class="hdr-search-cart"><a class="cart-info" href="privacy.aspx.html#" id="cart-info" title="my cart">
@@ -394,7 +446,7 @@ var login_params=
                 </div>
                 <!-- /.container -->
             </div>
-            <!-- /.ftr-black-wrap -->
+            <!-- /.ftr-black-wrap --><script type="text/javascript" id="mpelid" src="../es.journeys.com/mpel/mpel.js"></script>
     <script src="../ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="../ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <script>        window.jQuery || document.write('<script src="assets/js/libs/jquery-1.7.2.min.js"><\/script><script src="assets/js/libs/jqueryui-1.8.18.min.js"><\/script>')</script>

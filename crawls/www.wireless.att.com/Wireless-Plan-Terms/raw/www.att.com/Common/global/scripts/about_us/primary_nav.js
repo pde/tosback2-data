@@ -147,7 +147,9 @@ function renderPrimaryNav() {
 						au_sustainability_nav();
  	document.write('</li>'
 				 + '<li><a id="au_aspire_link" href="' + site + '/gen/press-room?pid=2631"> AT&amp;T Aspire </a></li>'
-				 + '<li><a id="au_txting_link" href="' + site + '/gen/press-room?pid=2964"> It Can Wait </a></li>'
+				 + '<li');
+					if (pid == 'advocate') { document.write(' class="selected"'); }
+					 document.write('><a id="au_txting_link" href="' + site + '/gen/press-room?pid=2964"> It Can Wait </a></li>'
 				 + '<li><a href="http://att.jobs/" title="Careers" id="au_careers_link">Careers</a>');
 						au_careers_nav();
  	document.write('</li>'

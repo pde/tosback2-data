@@ -31,18 +31,35 @@ function addscript() {
 /* ALL jquery.document ready loaded here */
 
 $(document).ready(function(){
+
+		/* 2013 HP */
+		$("#homeslider .slide").css("width", ($('#homeslider').width()-40));
+		$("#homeslider .slide").css("height", ($('#homeslider').height()-27));
+		$("#homeslider")
+			.scrollable({ circular: true, size: 1, speed: 600, easing: 'swing', touch: false })
+			.navigator({navi: ".navi"})
+			.autoscroll({ interval: 5000, autopause: true, api: true });
+		var navicount = 0;
+		$("#homeslider .navi a").each(function(index) {
+			navicount = index + 1;
+			$(this).html(navicount);
+		});
+		$("#homeslider").click(function(){ $("#homeslider").data("scrollable").stop(); });
+		$(".sliderfooter > a").click(function(){ $("#homeslider").data("scrollable").stop(); });
+
+		$("#videoslider .slide").css("width", ($('#videoslider').width()-40));
+		$("#videoslider .slide").css("height", ($('#videoslider').height()-27));
+		$("#videoslider")
+			.scrollable({ circular: true, size: 1, speed: 600, easing: 'swing', touch: false, next: '.vidnext', prev: '.vidprev' })
+			.navigator({navi: ".vidnavi"})
+			.autoscroll({ interval: 5000, autopause: true, autoplay: false, api: false });
+		$("#videoslider > .items > .video").prepend("<div class='vidicon'></div>");
+		/* END */
+		
 	$('#intllink').click(function() {
 		$("#intllayer").toggle();
 		if (document.getElementById('intllink').href == "#") { return false; }
 	});
-	/*
-	if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
-		if ($('meta[name=pwcDB]').attr("content") == 'homepage' || $('meta[name=pwcDB]').attr("content") == 'home') {
-			if (typeof followbar == 'undefined') { $('body').append(followbarhtml); }
-			$('#followhide').click(function() { $('#followbar').fadeOut(500); });
-		};
-	};
-	*/
 
 	$('#morecontactsbutton').click(function() { 
 		$("#morecontacts").slideDown("medium");
@@ -137,6 +154,27 @@ function openpopup() {
 }
 */
 
+/* 2013 Homepage */
+function equalHeight(group) {
+	var tallest = 0;
+	group.each(function() {
+		var thisHeight = $(this).outerHeight(true);
+		if(thisHeight > tallest) {
+			tallest = thisHeight-5;
+		}
+	});
+	group.height(tallest);
+}
+
+$(document).ready(function() {
+	setTimeout(function(){
+		equalHeight($(".matchheight"));
+	}, 300);
+});
+
+$(window).bind("load", function() {
+   equalHeight($(".matchheight"));
+});
 
 /*** START Primary nav hover function for IE ***/
 if (document.getElementById('nav')) {

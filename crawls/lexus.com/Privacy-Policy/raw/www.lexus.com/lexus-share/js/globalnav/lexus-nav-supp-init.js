@@ -1,7 +1,8 @@
 LXinit = function(e) {
 	
 //Global footer mini promo
-miniPromo(); //uncomment to start the footer mini promo
+//uncomment call to miniPromo() function to show footer mini promo
+//miniPromo(); 
 function miniPromo(){
 	var createLi = document.createElement('li');
 	var createDiv = document.createElement('div');

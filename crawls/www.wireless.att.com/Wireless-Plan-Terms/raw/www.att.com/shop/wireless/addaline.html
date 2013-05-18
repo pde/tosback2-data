@@ -442,7 +442,7 @@ jQuery('input[type=tel]').wrap('<span>');
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -450,7 +450,7 @@ jQuery('input[type=tel]').wrap('<span>');
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -459,13 +459,27 @@ jQuery('input[type=tel]').wrap('<span>');
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -510,7 +524,7 @@ jQuery('input[type=tel]').wrap('<span>');
 								<ul> 
 											<li><a href="../../index.html">att.com</a></li> 
 											<li><a href="../../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -900,7 +914,7 @@ jQuery('input[type=tel]').wrap('<span>');
 		<div id="primary-content"> 
 			<div> 
 				<div class="authorrichtext"> 
-<p><br> 
+			<p><br> 
 </p> 
 <p></p> 
 </div> 
@@ -1110,7 +1124,7 @@ jQuery(document).ready(function(){
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="../../media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 74546734969091616410002685722755416296 --> 
+		 <!--X-Renderer: 207472370222582033738641996364173287494 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -1289,7 +1303,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","SwhTRT4dwvm1f4Hn3sJsVKG7!-882887461!1368275069834"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","3V21RXzNPv5H8c121Rjxxs16!-1882065996!1368879917527"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
@@ -1314,15 +1328,6 @@ lpMTagConfig.vars.push(["page","modalFlag","off"]);
 	<div class="atlastag"> 
 </div> 
 	<!--  To create CLT cookies in existing customer flow --> 
-        <script type="text/javascript"> 
-            jQuery(document).ready(function() { 
-            jQuery.ajax({type: "GET",url:'/shop/login/login.existcustlocalization.xhr.html', 
-            success: function (data){ 
-                jQuery('body').append(data); 
-            } 
-            }); 
-         }); 
-        </script>              
 	<!-- OPTIMOST --> 
 	<!-- B2C-120711 Place Optimost Code on att.com pages -->   
 	<!--- 

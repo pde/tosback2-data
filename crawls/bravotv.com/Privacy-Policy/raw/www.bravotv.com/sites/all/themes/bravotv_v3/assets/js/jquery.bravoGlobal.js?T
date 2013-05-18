@@ -15,6 +15,7 @@ $(document).ready(function() {
 	railAds();
 	titleCaption();
 	navigate();
+  mobileMessage();
 });
 
 
@@ -464,7 +465,7 @@ function rotateHeroTracking() {
 	});
 }
 
-/*
+/**
  *  This function sets up the tracking for the tabs of the cycle object that the hero operates on.
  *  Trouble is that the object has to be built first.  So this is called with the JS that creates it.
  */
@@ -473,4 +474,40 @@ function activateHeroTabTracking() {
   $('ul#hero-thumbs li').click( function() {
 	  trackLink('Hero Thumb Click', $(this).find("span.hero-title").text(), $(this).find("span.hero-title").text());
 	});
+}
+
+/**
+ *  If a "view_full_site" cookie exists, display a message to the user.
+ *
+ */
+function mobileMessage() {
+    var mobile_cookie = 'view_full_site',
+    disable_cookie = 'hide_mobile_message',
+    mobile_message = 'You are browsing the desktop version of BravoTV.com on a mobile device. Click here to switch to the mobile version.';
+
+    if ($.cookie !== undefined && $.cookie(mobile_cookie) == 1 && !$.cookie(disable_cookie)) {
+        var message = $('<div>').attr('id', 'mobile-message').css({
+            'font-size': '20px',
+            'width': '1000px',
+            'margin': '0 auto',
+            'background': '#000',
+            'padding': '20px 5px',
+            'text-align': 'center'
+        }).append(
+        $('<a href=\"#\">' + mobile_message + '</a>').css('color', '#FFF').click(function () {
+            $.cookie(mobile_cookie, null, {
+                path: '/'
+            });
+            message.remove();
+            window.location.reload();
+            return false;
+        })).append(
+        $('<a href=\"#\">[X]</a>').css({'color': 'red', 'margin-left': '15px'}).click(function () {
+            $.cookie(disable_cookie, 1, {
+                path: '/'
+            });
+            message.remove();
+            return false;
+        })).insertBefore('header');
+    }
 }

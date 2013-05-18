@@ -462,7 +462,7 @@ CQURLInfo = {
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -470,7 +470,7 @@ CQURLInfo = {
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -479,13 +479,27 @@ CQURLInfo = {
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -530,7 +544,7 @@ CQURLInfo = {
 								<ul> 
 											<li><a href="../../index.html">att.com</a></li> 
 											<li><a href="../../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -887,11 +901,6 @@ CQURLInfo = {
 	<!-- main content of page --> 
 	<div id="wrapper"> 
 		<div id="main-container"> 
-<div class="breadcrumb gutter"> 
-    <div class="breadcrumb"> 
-    <a href="../../index.html" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../index.html" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../wireless.html" data-cqpath="/content/att/shop/en/wireless/devices/jcr:content/breadcrumb">Wireless</a>&nbsp;&nbsp;/&nbsp;&nbsp;Devices 
-    </div> 
-</div> 
 <div class="base admgr marqueePromo"> 
 <div class="page-title-container"> 
 	    <div class="page-title"> 
@@ -956,25 +965,119 @@ CQURLInfo = {
 		}] 
 	}, 
 	{ 
-		"alt": "Already have a phone or tablet? Bring it to AT&amp;T!", 
-		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq-bring-your-device-650x280-bg.jpg", 
+		"alt": "Facebook Home", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/bg-159941_HTCFirst_650x280-sa.jpg", 
 		"backgroundHorizontalPlacement": "left", 
 		"backgroundVerticalPlacement": "top", 
-		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/device_COAM_learn_more", 
-		"description": "Bring it to AT&amp;T", 
-		"name": "device_COAM_learn_more", 
-		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/hover_devices_green_44x44.png", 
+		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_HTCFirst_buynow", 
+		"description": "HTC First&#8482; Only at AT&amp;T", 
+		"name": "devices_HTCFirst_buynow", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/thumb_159941-HTC-44x44_sa.png", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"align": "center", 
+			"horizontalPlacement": "center", 
+			"html": "1", 
+			"name": "button", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "158", 
+			"y": "203", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/wireless/devices/htc/first-black.html?source=IC2LS1528mi2295bO&amp;wtExtndSource=htcfirst99", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Buy Now" }] 
+		}, 
+		{ 
+			"alt": "pipe", 
+			"name": "pipe", 
+			"preload": "1", 
+			"source": "/shopcms/media/att/2012/global/JSAM-assets/overlays/img_price_pipe_1x42_AA000S1W.png", 
+			"type": "Media", 
+			"x": "284", 
+			"y": "206" 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size34,customcolor_f17e04,arial", 
+			"html": "1", 
+			"name": "price_point", 
+			"type": "Text", 
+			"x": "297", 
+			"y": "209", 
+			"label": [{ "Text": "99¢" }] 
+		}, 
+		{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size10,customcolor_666666,arial", 
+			"html": "1", 
+			"name": "legal", 
+			"type": "Text", 
+			"x": "160", 
+			"y": "253", 
+			"label": [{ "Text": "2-year agreement with qualifying voice & data plan or Mobile Share\r\nplan req’d. Early termination and other charges and restrictions apply." }] 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size13,linkblue,arial", 
+			"hoverUnderline": "1", 
+			"name": "Video", 
+			"type": "Link", 
+			"x": "295", 
+			"y": "172", 
+			"cta": [{ 
+				"action": "JS", 
+				"method": "gvp.showPopUp", 
+				"trigger": "click", 
+				"webtrendsType": "impression", 
+				"param": [{ 
+					"name": "val1", 
+					"value": "Play Demo Video" 
+				}, 
+				{ 
+					"name": "val2", 
+					"value": "1" 
+				}, 
+				{ 
+					"name": "val3", 
+					"value": "1" 
+				}, 
+				{ 
+					"name": "val4", 
+					"value": "gvp" 
+				}, 
+				{ 
+					"name": "val5", 
+					"value": "/video_resources/xml/gvp_HTC-First-4300496_640x360.xml&amp;gvpLgFormat" 
+				}] 
+			}], 
+			"label": [{ "Text": "Play demo video >" }] 
+		}] 
+	}, 
+	{ 
+		"alt": "Coming Soon. BlackBerry&#174; Q10.", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq_bbq10_coming_soon_650x280_bg.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/device_BlackBerry_q10_device_coming_soon", 
+		"description": "BlackBerry&#174; Q10", 
+		"name": "device_BlackBerry_q10_device_coming_soon", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/hover-BB-blue-44x44.png", 
 		"useJSAM": "1", 
 		"asset": [{ 
 			"align": "left", 
 			"antiAlias": "1", 
 			"cssClass": "size13,customcolor_333333,arial", 
 			"html": "1", 
-			"name": "subhead", 
+			"name": "copy", 
 			"type": "Text", 
-			"x": "53", 
-			"y": "157", 
-			"label": [{ "Text": "We’ll make sure your device is well-connected" }] 
+			"x": "37", 
+			"y": "128", 
+			"label": [{ "Text": "Not just another BlackBerry – it’s the new BlackBerry.\r\nRedesigned. Reengineered. Reinvented." }] 
 		}, 
 		{ 
 			"align": "left", 
@@ -982,84 +1085,15 @@ CQURLInfo = {
 			"name": "cta-btn", 
 			"styleLib": "Default", 
 			"type": "Button", 
-			"x": "52", 
-			"y": "206", 
+			"x": "35", 
+			"y": "173", 
 			"cta": [{ 
 				"action": "Browse", 
 				"trigger": "click", 
-				"url": "/shop/wireless/customer-owned.html?source=IC2LS1528mi2295bO&amp;wtExtndSource=byod", 
+				"url": "/shop/wireless/devices/blackberryQ10.html?source=IC2LS1528mi2295bO&amp;wtExtndSource=q10comingsoon", 
 				"webtrendsType": "clickThrough" 
 			}], 
 			"label": [{ "Text": "Learn More" }] 
-		}] 
-	}, 
-	{ 
-		"alt": "LG Optimus G Pro&#8482;", 
-		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/B2C-158980_OPTIMUSGPRO2_bg-CB.jpg", 
-		"backgroundHorizontalPlacement": "left", 
-		"backgroundVerticalPlacement": "top", 
-		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_LG_OptimusGPro_buynow", 
-		"description": "LG Optimus G Pro&#8482;", 
-		"name": "devices_LG_OptimusGPro_buynow", 
-		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/B2C-158980_OPTIMUSGPRO2_44x44-Thumb-CB.png", 
-		"useJSAM": "1", 
-		"asset": [{ 
-			"antiAlias": "1", 
-			"cssClass": "size15,customcolor_333333,arial", 
-			"html": "1", 
-			"name": "Subhead", 
-			"type": "Text", 
-			"width": "300", 
-			"x": "34", 
-			"y": "101", 
-			"label": [{ "Text": "Connect and share like a pro! \r\nExclusively at AT&T." }] 
-		}, 
-		{ 
-			"align": "center", 
-			"horizontalPlacement": "center", 
-			"html": "1", 
-			"name": "CTA", 
-			"styleLib": "Default", 
-			"type": "Button", 
-			"x": "33", 
-			"y": "159", 
-			"cta": [{ 
-				"action": "Browse", 
-				"trigger": "click", 
-				"url": "/shop/wireless/devices/lg/optimus-g-pro-indigo.html?source=IC2LS1528mi2295bO&amp;wtExtndSource=optimusgprobuynow", 
-				"webtrendsType": "clickThrough" 
-			}], 
-			"label": [{ "Text": "Buy Now" }] 
-		}, 
-		{ 
-			"antiAlias": "1", 
-			"cssClass": "size34,customcolor_f17e04,arial", 
-			"html": "1", 
-			"name": "Price_Point", 
-			"type": "Text", 
-			"x": "182", 
-			"y": "165", 
-			"label": [{ "Text": "$199.99" }] 
-		}, 
-		{ 
-			"name": "Pipe", 
-			"preload": "1", 
-			"source": "/shopcms/media/att/2012/global/JSAM-assets/overlays/img_price_pipe_1x42_AA000S1W.png", 
-			"type": "Media", 
-			"x": "165", 
-			"y": "158" 
-		}, 
-		{ 
-			"align": "left", 
-			"antiAlias": "1", 
-			"cssClass": "size10,customcolor_666666,arial", 
-			"html": "1", 
-			"name": "Legal", 
-			"type": "Text", 
-			"width": "400", 
-			"x": "34", 
-			"y": "213", 
-			"label": [{ "Text": "New 2-yr agreement with qualifying voice & data plan \r\nor Mobile Share plan req’d. Other restrictions apply." }] 
 		}] 
 	}, 
 	{ 
@@ -1187,7 +1221,7 @@ of devices.</p>
 		</div> 
 	</div> 
 	<div class="clear"></div></div> 
-<div class="bg-top-shadow bg-top-shadow-reset"></div>  
+<div class="bg-top-shadow"></div>  
     <div class="bg-mid-shadow">  
         <div id="content"> 
             <div style="display:inline;margin-top:5px;"> 
@@ -1911,7 +1945,7 @@ Learn more
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 170579341551085256567425730002794325952 --> 
+		 <!--X-Renderer: 128518920792748734990063856529801539555 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -2107,7 +2141,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","Gt5xRN4VPL9SVy9m9v1mn2JT!-92137189!1368225909109"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","QGTPRW7TJhgYJl1Ph8N61Pvj!434481928!1368849299344"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

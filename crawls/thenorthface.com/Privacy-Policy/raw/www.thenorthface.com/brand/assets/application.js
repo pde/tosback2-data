@@ -254,7 +254,7 @@ var Class = (function() {
 	}
 
 	// Handles "data-method" on links such as:
-	// <a href="/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
+	// <a href="/en_US/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
 	function handleMethod(link) {
 		var href = link.attr('href'),
 			method = link.data('method'),
@@ -3961,34 +3961,34 @@ $.fn.tnfBrandItemBuilder = function () {
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T13:09:27-07:00",
+        "created_at": "2011-08-18T20:09:27Z",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T13:24:13-07:00"
+        "updated_at": "2011-09-21T20:24:13Z"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T13:31:30-08:00",
+        "created_at": "2011-03-04T21:31:30Z",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T11:12:06-07:00"
+        "updated_at": "2011-08-19T18:12:06Z"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T13:09:27-07:00",
+        "created_at": "2011-08-18T20:09:27Z",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T15:11:13-07:00"
+        "updated_at": "2011-09-23T22:11:13Z"
       }
     ];
 
@@ -4204,10 +4204,10 @@ $.fn.tnfBrandItemBuilder = function () {
     }
 
     $.fn.extend({
-      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/$2\">$2</a>"),
+      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/en_US/$2\">$2</a>"),
       // Support various latin1 (\u00**) and arabic (\u06**) alphanumeric chars
       linkHash: replacer(/(?:^| )[\#]+([\w\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0600-\u06ff]+)/gi,
-                         ' <a href="http://'+s.twitter_search_url+'/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
+                         ' <a href="http://'+s.twitter_search_url+'/en_US/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
       capAwesome: replacer(/\b(awesome)\b/gi, '<span class="awesome">$1</span>'),
       capEpic: replacer(/\b(epic)\b/gi, '<span class="epic">$1</span>'),
       makeHeart: replacer(/(&lt;)+[3]/gi, "<tt class='heart'>&#x2665;</tt>")

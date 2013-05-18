@@ -1,14 +1,19 @@
 /* START New namespaced code */
 var webmd;
 if(!webmd){ webmd = {}; }
-
 webmd.omniture = {
+
+	/* 
+	 * Creates a regId value. Reading the new matchback cookie which expires in 9 months. If that cookie doesn't exist, it tries to 
+	 * grab the old matchback cookie. I understand we'll remove that OR shortly and just rely on the new cookie. 
+	 * I left the beacon specific cookie code as we will launch this on some properties that won't have the webmd shim along with our cookie functions
+	 */
+	regId : String(unescape(_readC("WBMD_MB9"))).toLowerCase() || String(unescape(_readC("WBMD_MB"))).toLowerCase(),
 
 	/* 
 	 * Scoped function with which we can get to current aiq value out of cookie if it exists
 	 *
 	 * @returns String with a value if the cookie exists and false if the cookie does not exist
-	 *
 	 */
 	aiqGet : function(){
 		// get value out of cookie using omniture global function below since we don't want to be dependent on webmd.cookie
@@ -35,11 +40,34 @@ webmd.omniture = {
 			}
 		}
 		return _aiq;	
+	},
+
+	/* 
+	 * Has logic to call a bunch of global variables that the rest of the beacon sets and creates
+	 * the 9 month matchback cookie. I left the beacon specific cookie code as we will launch this
+	 * on some properties that won't have the webmd shim along with our cookie functions
+	 */
+	handleMBCookie : function() {
+		var self = this; 
+
+		if((qecd!==""&& qecd.indexOf("wnl")>=0)){
+			_writeC("ecdwnl","wnl");
+			ecdwnlC="wnl";
+			if (uAuth===""){
+				var regIdQ=unescape(_readQ("mb"));
+				if(regIdQ!==""){
+					_writeC9Mon("WBMD_MB9",regIdQ);
+					self.regId=regIdQ;
+				}
+			}
+		}
 	}
+	
+
 };
 /* END New Namespaced code */
 
-var s_ver='|oocommon|20130411',_ud="undefined",s_live=false,ntc="ntc";
+var s_ver='|oocommon|20130506',_ud="undefined",s_live=false,ntc="ntc";
 if (window.s_beaconload) { s_beaconload(); }
 try{if(s_account!="webmddev"){s_account="webmdp1global";s_live=true;}
 	else{s_account="webmddev";}}catch(e){s_account="webmdp1global";s_live=true;}
@@ -54,7 +82,13 @@ try{if (s_not_pageview) {if (s_not_pageview!="n") {s_not_pageview="y";}} else {s
 s_md.cookieDomainPeriods="3";s_md.jsCookieDomainPeriods="2";s_md.charSet="ISO-8859-1";s_md.currencyCode="USD";s_md.trackDownloadLinks=true;
 s_md.trackExternalLinks=true;s_md.trackInlineStats=true;s_md.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls";s_md.linkInternalFilters="javascript:,"+s_domain;
 s_md.linkLeaveQueryString=false;
-s_md.linkTrackVars="prop3,prop50";all_linkTrackVars="products,events,prop3,prop15,prop20,prop21,prop32,prop48,prop50,eVar46";
+
+/* adding prop47 per WR2418 */
+s_md.linkTrackVars="prop3,prop47,prop50";
+
+/* adding prop47 per WR2418 */
+all_linkTrackVars="products,events,prop3,prop15,prop20,prop21,prop32,prop47,prop48,prop50,eVar46";
+
 s_md.linkTrackEvents="";s_md.visitorNamespace="webmd";s_md.usePlugins=true;
 function s_md_doPlugins(s){if (!s_md.pageName){s_md.pageName=location.protocol + "//" + location.host + location.pathname;}}
 s_md.doPlugins=s_md_doPlugins
@@ -91,6 +125,11 @@ function _readC(name){
 	}return "";
 }
 function _writeC(sName, sValue){date=new Date(3000, 1, 1, 0, 0, 0);document.cookie = sName + "=" + escape(sValue) + "; path=/; domain=" + s_domain + ";expires=" + date.toGMTString();}
+function _writeC9Mon(sName, sValue){
+	var _dt=new Date()
+	date=new Date(_dt.getFullYear(), _dt.getMonth()+9, _dt.getDate(), _dt.getHours(), _dt.getMinutes(), _dt.getSeconds());
+	document.cookie = sName + "=" + escape(sValue) + "; path=/; domain=" + s_domain + ";expires=" + date.toGMTString();
+}
 function sCookie(sName,sValue){document.cookie = sName+"=" + sValue.toLowerCase() + "; path=/; domain=" + s_domain + ";expires=";}
 function _readQ(name){
 	var qName = name + "=";
@@ -142,10 +181,17 @@ function _urlClean(a) {
 	return a;
 }
 
+function wmdGetPVCandidate() { 
+	if(window.jQuery) {$.get('/api/xml/pv.xml?t='+ (+new Date));} 
+}
+
 function locateCall (defunctFunction) {
 	var _linkTrackVars = s_md.linkTrackVars;
 	var _pn=s_md.pageName;
-	s_md.linkTrackVars = "prop3,prop50";
+
+	/* adding prop47 per WR2418 */
+	s_md.linkTrackVars = "prop3,prop47,prop50";
+
 	var _link = "w-debug-" + defunctFunction + "_" + s_md.prop20;
 	s_md.pageName=_link;
 	void(s_md.tl(true, 'o', _link));
@@ -176,7 +222,10 @@ function wmdPageLink(link)
 
 	s_md.linkTrackVars=all_linkTrackVars;
 	void(s_md.tl(true, 'o', link));
-	s_md.linkTrackVars="prop3,prop50";
+
+	/* adding prop47 per WR2418 */
+	s_md.linkTrackVars="prop3,prop47,prop50";
+
 	s_md.prop15="";
 	if(typeof s_new_reg!=_ud&& s_new_reg!="") s_new_reg="";
 	s_md.events=s_orig_events;
@@ -275,6 +324,8 @@ function wmdPageview(sPageName,iCount,s_sponUri)
 	s_md.products="";
 	s_md.prop15="";
 	s_md.events=s_orig_events;
+
+	wmdGetPVCandidate();
 
 	s_pageview_sent="y";
 	if (s_persist40=="1"){
@@ -377,24 +428,16 @@ if(qecd!=""){
 }
 
 var uPermC=String(_readC("WBMD_PERM"));
-var regId=String(unescape(_readC("WBMD_MB")));
 var ecdwnlC=_readC("ecdwnl");
 var uAuth=_readC("WBMD_AUTH");
-if((qecd!=""&& qecd.indexOf("wnl")>=0)){
-	_writeC("ecdwnl","wnl");
-	ecdwnlC="wnl";
-	if (uAuth==""){
-		var regIdQ=unescape(_readQ("mb"));
-		if(regIdQ!=""){
-			_writeC("WBMD_MB",regIdQ);
-			regId=regIdQ;
-		}
-	}
-}
+
+/* leaving this in the code in this spot. This should be moved to an init section later once we create one */
+webmd.omniture.handleMBCookie();
+
 s_md.prop41="consumer-unregistered";
 if(typeof uPermC!=_ud&& uPermC!=""){s_md.prop41="consumer-full";}
 else{
-	if(regId!=""||ecdwnlC!="") {
+	if(webmd.omniture.regId!=""||ecdwnlC!="") {
 		s_md.prop41="consumer-light";
 	}
 }
@@ -429,24 +472,27 @@ _asset=String(_urlClean(_asset)).toLowerCase();
 if(_asset==""){_asset="default";}
 var s_sponUri="";
 try{if(s_sponsor_brand||s_sponsor_program){s_sponUri=_asset;}}catch(e){}
-var _suit="";
 var s_siteclass="od";
 var s_hier1_subsite="";
 if(typeof s_subsite!=_ud){s_hier1_subsite=s_subsite;}
 if(typeof s_mobileweb!=_ud && s_mobileweb=="yes"){s_md.prop48="mbl-yes";s_hier1_subsite="mobile";}
 else{s_md.prop48="mbl-no";s_hier1_subsite=s_site+"only";}
 
+/* prop 50 is hardcoded per WR2395 */
+s_md.prop50="webmdp1odvista";
+
+/* leaving hier1 logic the same */
 if (s_site!="medicinenet") {
 switch(s_site){
-	case "rxlist":s_md.prop50="webmdp1odvista,webmdp1rxlistvista";s_md.hier1="webmd,cns,od,rxlist,-";break;
-	case "medterms":s_md.prop50="webmdp1odvista,webmdp1medicinenetvista";s_md.hier1="webmd,cns,od,medicinenet,medterms";break;
-	case "emedicinehealth":s_md.prop50="webmdp1odvista,webmdp1emedicinehealthvista";s_md.hier1="webmd,cns,od,emedicinehealth,-";break;
-	default:s_md.prop50="webmdp1odvista";s_md.hier1=ntc;break;
+	case "rxlist":s_md.hier1="webmd,cns,od,rxlist,-";break;
+	case "medterms":s_md.hier1="webmd,cns,od,medicinenet,medterms";break;
+	case "emedicinehealth":s_md.hier1="webmd,cns,od,emedicinehealth,-";break;
+	default:s_md.hier1=ntc;break;
 }}
 else{
-	s_md.prop50="webmdp1odvista,webmdp1medicinenetvista";
 	s_md.hier1="webmd,cns,od,"+s_site+","+s_hier1_subsite;
 }
+
 s_md.pageName=(typeof _URL!=_ud&&_URL!="")?((typeof s_page_suffix!=_ud&& s_page_suffix!="")?_URL+"-"+s_page_suffix:_URL):"";
 try{s_md.prop16=s_test1.toLowerCase();}catch(e){}
 try{s_md.prop25=s_test2.toLowerCase();}catch(e){}
@@ -522,7 +568,8 @@ if(typeof s_tug!=_ud&& s_tug!="" && s_md.prop45!=ntc)
 }
 s_md.prop46=(typeof s_page_state!=_ud&& s_page_state!="")? s_page_state.toLowerCase():"";
 
-s_md.prop47=(typeof regId!=_ud&& regId!="")? regId.toLowerCase():ntc;
+/* sets prop47 to the namespaced regId or ntc id it's blank */
+s_md.prop47 = (webmd.omniture.regId!=="") ? webmd.omniture.regId:ntc;
 
 try{s_md.prop49=s_visitor;}catch(e){}
 s_md.eVar46=_haiq;

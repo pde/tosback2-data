@@ -581,6 +581,11 @@ function renderLatestReleases() {
     document.write('<h6>Titulares</h6>');
 	
 	document.write('<div class="rc-release-box">');
+    document.write('<p>14 de mayo de 2013<br />');
+    document.write('<a href="/newsroom/news_releases/Puedeesperar_textear_conducir_5-14-13.html?id=' + state + '" title="L&iacute;deres m&oacute;viles se unen por la campa&ntilde;a "textear y conducir: puede esperar" para frenar el h&aacute;bito de enviar mensajes de textos al conducir">L&iacute;deres m&oacute;viles se unen por la campa&ntilde;a "textear y conducir: puede esperar" para frenar el h&aacute;bito de enviar mensajes de textos al conducir</a></p>');
+    document.write('</div>');
+	
+	document.write('<div class="rc-release-box">');
     document.write('<p>18 de abril de 2013<br />');
     document.write('<a href="/newsroom/news_releases/HACR_Diversidad_Hispana_4-18-13.html?id=' + state + '" title="AT&amp;T encabeza lista de compa&ntilde;&iacute;as que invierten en reclutamiento, desarrollo y retenci&oacute;n de talento hispano">AT&amp;T encabeza lista de compa&ntilde;&iacute;as que invierten en reclutamiento, desarrollo y retenci&oacute;n de talento hispano</a></p>');
     document.write('</div>');
@@ -592,7 +597,7 @@ function renderLatestReleases() {
 	
 	document.write('<div class="rc-release-box">');
     document.write('<p>11 de abril de 2012<br />');
-    document.write('<a href="/newsroom/news_releases/GoPhone_Llamadas_MexicoPlus_4-9-13.html?id=' + state + '" title="Los clientes de GoPhone de AT&T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.">Los clientes de GoPhone de AT&T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.</a></p>');
+    document.write('<a href="/newsroom/news_releases/GoPhone_Llamadas_MexicoPlus_4-9-13.html?id=' + state + '" title="Los clientes de GoPhone de AT&amp;T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.">Los clientes de GoPhone de AT&amp;T tienen nuevas opciones econ&#243;micas para llamadas internacionales con el paquete Mexico Plus, a partir del 12 de abril.</a></p>');
     document.write('</div>');
 	
 	document.write('<div class="rc-release-box">');
@@ -604,16 +609,7 @@ function renderLatestReleases() {
     document.write('<p>26 de marzo de 2013<br />');
     document.write('<a href="/newsroom/news_releases/puede_esperar_3-26-13.html?id=' + state + '" title="Casi la mitad de las personas que viajan a diario a trabajar reconocen que env&#237;an mensajes de texto mientras conducen">Casi la mitad de las personas que viajan a diario a trabajar reconocen que env&#237;an mensajes de texto mientras conducen</a></p>');
     document.write('</div>');
-
-    document.write('<div class="rc-release-box">');
-    document.write('<p>26 de febrero de 2013<br />');
-    document.write('<a href="/newsroom/news_releases/hacemos_2-28-13.html?id=' + state + '" title="Hacemos celebra la jornada nacional de alta tecnolog&#237;a para inspirar a los estudiantes a seguir carreras de ciencias e ingenier&#237;a">Hacemos celebra la jornada nacional de alta tecnolog&#237;a para inspirar a los estudiantes a seguir carreras de ciencias e ingenier&#237;a</a></p>');
-    document.write('</div>');
- 
- 
-     
-
-    
+   
 
     
     document.write('<div class="rc-release-box">');

@@ -11,16 +11,23 @@ var mktSlider = {
 
     el : "#mktSlider",
 
-    //By default: If no HTML exists within id="#mktSliderContent" it will be created automatically and the social icons will be displayed
-    //Set the default settings of the slider.
+    /*Set the default settings of the slider.
+
+       - sliderWidth    : Value: Any number | Set the width of the to fit the the iframe content.
+       - xPosition      : Value: left/right | Set the slider to be on the left or right of the page.
+       - yPosition      : Value: top/middle/bottom | Set the slider to be at the Top, Middle or Bottom.
+       - yDistance      : Value: Any number | Distance from top or bottom in pixels. This value is overwritten if you use 'yPosition' : 'middle'.
+       - defaultState   : Value open/closed | Load page with slider in open or closed position. 
+       - enabled        : Value: true/false | Slider is loaded or not loaded into the page
+       - regionNames    : Value: region locale : Text | avast.locale global vriable is used to determine the langauge of the page. 
+    */
     defaultSettings : {
-        sliderWidth     : 85,       //slider width needed because of loading Iframe content
-        xPosition       : 'left',  //left | right
-        xPreWidth       : 0,        //Don't change: Default setting used by social slider. It is overwritten when you use content in the slider instead
-        yPosition       : 'top',    //top | bottom | center
-        yDistance       : 180,      //distance from top or bottom in pixels. (This value is overwritten if you use 'yPosition' : 'center')
-        defaultState    : 'closed', //open | closed
-        enabled         : true,      //Enable or Disable
+        sliderWidth     : 85,
+        xPosition       : 'left',
+        yPosition       : 'top',
+        yDistance       : 180,
+        defaultState    : 'closed',
+        enabled         : true,
         regionNames     : {
                             "en-ww" : "Share",
                             "cs-cz" : "Sdílet",
@@ -46,12 +53,13 @@ var mktSlider = {
                             "zh-cn" : "分享",
                             "ar-ww" : "شارك",
                             "ja-jp" : "シェア",
-							"ru-ru" : "Поделиться"
+                            "ru-ru" : "Поделиться"
                         }
     },
 
-    //@method: Create the slider using the parameters from "defaultSettings".
-    //  - These settings can be customized in the head section of your document, using the 'defaultSettings' property
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+    //@Method: Create the slider using the parameters from "defaultSettings".
     createSlider : function(){
         //The realWidth is the width of the mktSlider without any width set anywhere else (in css or js - so it excludes the presetWidth). 
         //The only thing set in CSS is the border, and because you use blur it doesn't calculate correctly. So this is a fix.
@@ -60,130 +68,194 @@ var mktSlider = {
         var sliderWidth = presetWidth - realWidth;
 
         $(this.el).css({'display':'block', 'width': sliderWidth})
-            .append( $('<div id="mktSliderInner">' ).css('width', sliderWidth - 15).show() )
-            .append( $('<div class="btnSlide">').show()                                         
-                                              .append( $('<div class="whiteCover">') )
-                                              .append( $('<P class="shareText">').html(function(){
-                                                                                        var region = mktSlider.defaultSettings.regionNames;
-                                                                                        var notDefined = region['en-ww'];
-                                                                                        //avast.locale = "jp-ja"
-                                                                                        var locale = typeof avast.locale !== 'undefined' ? avast.locale : 'foo';
-                                                                                        if( typeof region[locale] !== 'undefined' ) {
-                                                                                            notDefined = region[locale];
-                                                                                        }                                                                                        
-                                                                                        return notDefined;
-                                                                                    })
-                                               )                                 
-            );
+                                                                .append( $('<div id="mktSliderInner">' ).show()
+                                                                                                        .css('width', sliderWidth - 15)
+                                                                                                        .append( $('<div class="socialBox">') ) 
+                                                                )
+                                                                .append( $('<div class="btnSlide">').show()                                         
+                                                                                                    .append( $('<div class="whiteCover">') )
+                                                                                                    .append( $('<P class="shareText">')
+                                                                                                                                    .html(mktSlider.getRegion())
+                                                                                                    )
+        );
             //Font size fix for AR
             if( avast.locale === "ar-ww" ){
                 $(".shareText").addClass('ar');
             }
     },
 
-    //@Method: Set slider position LEFT or RIGHT, TOP, BOTTOM or CENTER. sliderPosition(str1, str2, int) gets values from property 'defaultSettings'
-    //@Param: string x(xPosition value), string y(yPosition value), integer yD(yDistance value)
-    //@return: mixed
-    sliderPosition : function(x, y, yD){
+//-----------------------------------------------------------------------------------------------------------------------------------------//
 
-        var setX = {};
-        setX[x] = 0;
+    //@Method: Get region from avast.locale global variable and change text in slider button
+    //@Return: String
+    getRegion : function(){
+        var region = mktSlider.defaultSettings.regionNames;
+        var notDefined = region['en-ww'];
+        var locale = typeof avast.locale !== 'undefined' ? avast.locale : 'foo';
 
+        if( typeof region[locale] !== 'undefined' ) {
+            notDefined = region[locale];
+        }                                                                                        
+        return notDefined;
+    },
+
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+    //@Method: Set slider position TOP, BOTTOM or MIDDLE. setYPosition(str1, int) gets values from property 'defaultSettings'
+    //@Param: String1(yPosition value eg. Top), integer yD(yDistance value eg. 180(in pixels))
+    //@Return: mixed
+    setYPosition : function(y, yD){
         var setY = {};
         setY[y] = yD;
 
         function setYval(yVal){
-            if( yVal != 'center' ){
+            if( yVal != 'middle' ){
                 $(mktSlider.el).css(setY);
             }
             else {
-                //Set center position
+                //Calculate and set the middle position
                 $(mktSlider.el).addClass('yPosCenter');
                 var a = $(mktSlider.el).css('margin-top', -1 * $(mktSlider.el).height()/2);
             }
         }
         setYval(y);
+    },
+
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+    //@Method: Set slider position LEFT or RIGHT, TOP, BOTTOM or MIDDLE. sliderPosition(str1, str2, int) gets values from property 'defaultSettings'
+    //@Param: string x(xPosition value), string y(yPosition value), integer yD(yDistance value)
+    //@Return: mixed
+    setXPosition : function(x){
+    
+        var setX = {};
+        setX[x] = 0;        
 
         //Set X position to left
-        //NOTE: Functionality should be extended to place slider on right - Previous functionality from v1.0 removed
         if( x === 'left' ){
             $(this.el).addClass('xPosLeft');
         }
+
+        //Set X position to right
+        if( x === 'right' ){
+            $(this.el).addClass('xPosRight');
+        }
     },
 
-    //@method: sliderState(str1, str2, int). Checks the 'sliderState', 'open' or 'closed' and performs the correct behaviour from there when clicked
-    //@Param: string defaultState, string xPosition, integer sliderWidth
-    //@return: mixed
-    sliderState : function(defaultState, xPosition, sliderWidth){
-        var dS      = defaultState;
-        var sW      = sliderWidth;
-        var xP      = xPosition;
-        var btn     = $('.btnSlide');
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+    //@Method: sliderAppear(). Animates the slider from outside the visible window area into the page, from the sides
+    //@Param: 
+    //@Return: 
+    sliderAppear : function(defaultState, xPosition, sliderWidth){
+        var dS = defaultState;
+        var xP = xPosition;
+        var sW = sliderWidth;
         var btnWidth= $('.btnSlide').outerWidth(true);
 
-        //create object to use for css and animation object - p.s. because cannot use 'var' inside object literal
+        // //create object to use for css and animation object - p.s. because cannot use 'var' inside object literal
         var xPosVal = {};
 
-        //slide in OR slide out, depending on 'defaultState'
-        if( dS === 'closed' ){
+        /*------------\*
+             LEFT
+        \*-----------*/
+        //Slide in from Left: defaultState === 'closed' and xPosition === 'left'
+        if( dS === 'closed' && xP === 'left' ){
             xPosVal[xP] = -1 * sW - btnWidth;
 
-            $(mktSlider.el).css(xPosVal);
+            $(this.el).css(xPosVal);
+            //animate from side after 5 seconds
+            $(this.el).delay(5000).animate({
+                                left: (xPosVal[xP] = -1 * sW)
+                                }, 1000);  
+        }
+        else if( dS === 'open' && xP === 'left' ){
+            xPosVal[xP] = -1 * sW - btnWidth;
+            $(this.el).css(xPosVal);
             //animate from side after 5 seconds
             $(mktSlider.el).delay(5000).animate({
-                                left: (xPosVal[xP] = -1 * sW)
-                                }, 1000);           
+                        left: (xPosVal[xP] = 0)
+                        }, 1000);
+        }  
 
-            btn.toggle(function(){
-                    mktSlider.openCloseTrack(1);
-                    xPosVal[xP] = 0;
-                    $(mktSlider.el).animate(xPosVal);
-                    if($.browser.msie && parseInt($.browser.version, 10) == 7) {
-                        $('.btnSlide').delay(500).fadeOut();
-                    }
-                },
-                function(){
-                    mktSlider.openCloseTrack(0);
-                    xPosVal[xP] = -1 * sW;
-                    $(mktSlider.el).animate(xPosVal);
-                    if($.browser.msie && parseInt($.browser.version, 10) == 7) {
-                        $('.btnSlide').delay(500).fadeOut();
-                    }  
-                });
-        }
-        else if( dS === 'open' ){
-            xPosVal[xP] = 0;
-            $(mktSlider.el).css(xPosVal);
+        /*------------\*
+             RIGHT
+        \*-----------*/   
+        if( dS === 'closed' && xP === 'right' ){
+            xPosVal[xP] = -1 * sW - btnWidth;
 
-            btn.toggle(function(){
-                    mktSlider.openCloseTrack(0);
-                    xPosVal[xP] = -1 * sW;
-                    $(mktSlider.el).animate(xPosVal);
-                },
-                function(){
-                    mktSlider.openCloseTrack(1);
-                    xPosVal[xP] = 0;
-                    $(mktSlider.el).animate(xPosVal);
-                });
-        }
+            $(this.el).css(xPosVal);
+            //animate from side after 5 seconds
+            $(this.el).delay(5000).animate({
+                                right: (xPosVal[xP] = -1 * sW)
+                                }, 1000);  
+        }  
+        else if( dS === 'open' && xP === 'right' ){
+            xPosVal[xP] = -1 * sW - btnWidth;
+            $(this.el).css(xPosVal);
+            //animate from side after 5 seconds
+            $(mktSlider.el).delay(5000).animate({
+                        right: (xPosVal[xP] = 0)
+                        }, 1000);
+        }   
     },
 
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+    clickSlider : function(defaultState, xPosition, sliderWidth){
+        var dS = defaultState;
+        var xP = xPosition;
+        var sW = sliderWidth;
+        var btn = $('.btnSlide');
+
+        var xPosVal = {};
+
+        /*------------\*
+             CLOSED
+        \*-----------*/
+        if( dS === 'closed' ){            
+            btn.toggle(function(){
+                    //mktSlider.openCloseTrack(1);
+                    xPosVal[xP] = 0;
+                    $(mktSlider.el).animate(xPosVal);
+                },
+                function(){
+                    //mktSlider.openCloseTrack(0);
+                    xPosVal[xP] = -1 * sW;
+                    $(mktSlider.el).animate(xPosVal); 
+                });
+        }
+
+        /*------------\*
+             OPEN
+        \*-----------*/
+        if( dS === 'open' ){
+            btn.toggle(function(){
+                    mktSlider.openCloseTrack(1);
+                    xPosVal[xP] = -1 * sW;
+                    $(mktSlider.el).animate(xPosVal);
+                },
+                function(){
+                    mktSlider.openCloseTrack(0);
+                    xPosVal[xP] = 0;
+                    $(mktSlider.el).animate(xPosVal); 
+                });
+        }
+
+    },
+
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
     //Load social icons into the slider
-    //@method: social()
-    //@return: Mixed
+    //@Method: social()
+    //@Return: Mixed
      social : function(){
-
-         $('#mktSliderInner')
-             .append(
-             $('<div>').addClass('socialBox').addClass('socialPreloader'));
-
-         function loadSocial(){
-             $('.socialBox').removeClass('socialPreloader');
-
-             //Resize social box holder for IE7 as google plus icon is not saupported
-             if($.browser.msie && parseInt($.browser.version, 10) == 7) {
+        function loadSocial(){          
+            //Resize social box holder for IE7 as google plus icon is not saupported
+            if($.browser.msie && parseInt($.browser.version, 10) == 7) {
                 $('.socialBox').addClass('ie7');
-             } 
+                //Remove click button from IE7
+                $('.btnSlide').delay(500).fadeOut();
+            }
 
              $('.socialBox')
                  .append(
@@ -204,10 +276,10 @@ var mktSlider = {
                                 .attr('tw:count','vertical')
                         )
                         //G+
-                        .append(
+                        .append(                        
                             $('<a>')
-                                .addClass('addthis_button_google_plusone')
-                                .attr('g:plusone:size','tall')
+                                    .addClass('addthis_button_google_plusone')
+                                    .attr('g:plusone:size','tall')                          
                         )
                         .append(
                             $('<a>')
@@ -227,20 +299,49 @@ var mktSlider = {
              }(document, 'script'));
          }
 
+         //Load social icons after the slider has been clicked and when closed by default
          if(mktSlider.defaultSettings.defaultState === 'closed'){
              $('.btnSlide').one("click", function(){
-                    loadSocial();                    
+                setTimeout(function() {
+                    loadSocial();
+                }, 500);  
              });
          }
+         //Load social icons immidately if slider position is open by default
          else if(mktSlider.defaultSettings.defaultState === 'open'){
-             //$('.socialBox').one("mouseover", function(){
-                 loadSocial();
-             //});
+            if($.browser.msie && parseInt($.browser.version, 10) == 7) {
+                $('.btnSlide').hide();
+                setTimeout(function() {
+                    loadSocial();
+                }, 6000);              
+            } 
+            else{
+                loadSocial();
+            }                  
          }
      },
 
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+    
     /**
-    * Method will handle load event and setup correct behaviour
+    * @Method: Catches zoom event and disables slider if screen size is smaller than 1200px
+    */
+    detectZoom : function(){
+        window.onresize = function() {
+            //console.log( $(window).outerWidth() );
+            if ( $(window).outerWidth() <= 1200) {
+                $("#mktSlider").hide();             
+            }  
+            else {
+                $("#mktSlider").show();
+            } 
+        }
+    },
+  
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
+    /**
+    * @Method: Will handle load event and setup correct behaviour
     * @param ev int - action type (0 - close, 1 - open)
     * @param evar int - type desctiption
     */
@@ -269,39 +370,19 @@ var mktSlider = {
         }
     },
 
-    /**
-    * Method will handle click event and execute statistics
-    * @param thisEl [object] - current tag/tags
-    * UPDATE: CONNOT BE USED YET, TRYING TO SOLVE PROBLEM WITH ADDTHIS TIMER!
-    */
-//     socialBtnTrack : function( thisEl ){
-//         if( typeof(s) !== "undefined" && typeof(ev) !== "undefined" && typeof(_gaq) !== "undefined" ){
+//-----------------------------------------------------------------------------------------------------------------------------------------//
 
-//             var socialBtn = '';
-
-// console.log( $(thisEl).attr('class') );
-
-//             return;
-
-//             s.linkTrackVars = 'eVar2,eVar4,eVar6,eVar7,eVar10,eVar43,events';
-//             s.linkTrackEvents = 'event22';
-//             s.events = 'event22';
-//             s.eVar43 = socialBtn;
-//             s.tl(this,'o','Social Box Sharing');
-
-//             _gaq.push(['_trackEvent','Share', socialBtn, 'URL!!!!!!!!!!!!!!!!REPLACE WITH GLOBAL VARIABLE FOR URL']);
-//         }
-//     },
-
-
-
-    //@method: Initialize All Methods in object 'mktSlider'
+    //@Method: Initialize All Methods in object 'mktSlider'
     init : function(){
         if(mktSlider.defaultSettings.enabled === true){               
+            var conf = mktSlider.defaultSettings;
                 mktSlider.createSlider();
                 mktSlider.social();
-                mktSlider.sliderPosition(mktSlider.defaultSettings.xPosition, mktSlider.defaultSettings.yPosition, mktSlider.defaultSettings.yDistance);
-                mktSlider.sliderState(mktSlider.defaultSettings.defaultState, mktSlider.defaultSettings.xPosition, mktSlider.defaultSettings.sliderWidth);
+                mktSlider.setYPosition(conf.yPosition, conf.yDistance);
+                mktSlider.setXPosition(conf.xPosition);
+                mktSlider.sliderAppear(conf.defaultState, conf.xPosition, conf.sliderWidth);
+                mktSlider.clickSlider(conf.defaultState, conf.xPosition, conf.sliderWidth);
+                mktSlider.detectZoom();
         }
     },
 
@@ -315,6 +396,7 @@ var mktSlider = {
 
 };//end mktSlider
 
+//-----------------------------------------------------------------------------------------------------------------------------------------//
 
 //Extend as jQuery Plugin
     $.fn.mktCallSlider = function( options ){
@@ -322,7 +404,10 @@ var mktSlider = {
         if( typeof options !== 'undefined' ){
             $.extend(true, conf, options);
         }
-         if ( $(window).outerWidth() >= 1200) {
-             mktSlider.init();             
+        if( $(window).outerWidth() >= 1200 && conf.defaultState === 'closed' ) {
+             mktSlider.init(); 
         }                 
+        else if( $(window).outerWidth() >= 1300 && conf.defaultState === 'open' ) {
+            mktSlider.init(); 
+        } 
     };

@@ -1002,7 +1002,7 @@ function closeVday() {
 
 //SPOTTED
 function popSpot(){
-$('#DivContainer').prepend('<div id="spotDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:1; border:1px solid black;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeSpot()" style="position: absolute; right: -2px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true; border:1px solid #000000;"" name="spotFrame" id="spotFrame" src="/us/modules/spotted/201305/03/indexLN.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+$('#DivContainer').prepend('<div id="spotDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:1; border:1px solid black;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeSpot()" style="position: absolute; right: -2px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;"" name="spotFrame" id="spotFrame" src="/us/modules/spotted/201305/03/indexLN.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'spotDiv';

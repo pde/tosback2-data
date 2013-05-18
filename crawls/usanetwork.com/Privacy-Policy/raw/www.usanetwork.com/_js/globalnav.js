@@ -666,28 +666,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "THE BACK-UP PLAN",
-							"subtitle" : "SATURDAY MAY 11 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
-						},
-						{
-							"title" : "THE UGLY TRUTH",
-							"subtitle" : "SATURDAY MAY 11 6:30/5:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
-						},
-						{
-							"title" : "LITTLE FOCKERS",
-							"subtitle" : "SATURDAY MAY 11 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_littlefockers.png"
-						},
-						{
 							"title" : "THE 40 YEAR OLD VIRGIN",
 							"subtitle" : "SATURDAY MAY 18 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_40yearoldvirgin.png"
+						},
+						{
+							"title" : "QUANTUM OF SOLACE",
+							"subtitle" : "SUNDAY MAY 19 12/11C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_quantumofsolace.png"
+						},
+						{
+							"title" : "FAST & FURIOUS",
+							"subtitle" : "SUNDAY MAY 19 2/1C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastandfurious.png"
+						},
+						{
+							"title" : "MILK",
+							"subtitle" : "SATURDAY JUNE 1 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_milk.png"
 						}
 					]
 				}

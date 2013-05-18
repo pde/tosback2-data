@@ -1,0 +1,22 @@
+function setOnloadAnalytics(object_name,fields,values){eval("var "+object_name+" = s; \n");for(var i in fields){eval(object_name+"."+fields[i]+" = \""+values[i]+"\"; \n");}
+eval("var s_code = "+object_name+".t()");if(s_code){document.write(s_code);}}
+function setAnalyticsPassThroughCookieNew(_cookiename,componentName,productSlot){var cookieVal=componentName+":"+productSlot;if(cookieVal.length>0){document.cookie=_cookiename+'='+escape(cookieVal)+"; path=/";}}
+function changePageName(pageName){s.pageName=pageName;var s_code=s.t();if(s_code){document.write(s_code);}}
+function changeAnalyticsFieldValue(fields,values){var _omniture=s;for(var i in fields){eval("_omniture."+fields[i]+" = \""+values[i]+"\"; \n");}
+var s_code=_omniture.t();if(s_code){document.write(s_code);}}
+function changeAnalyticsSingleFieldValue(field,val){eval("s."+field+" = \""+val+"\"; \n");var s_code=s.t();if(s_code){document.write(s_code);}}
+function setOnclickAnalytics(fields,values){if(typeof fields=="string"&&typeof values=="string"){fields=fields.split();values=values.split();}
+var setLinkTrackVars='';var setLinkTrackEvents='';for(var i in fields){if(fields[i]=="events"){if(setLinkTrackEvents!=''){setLinkTrackEvents+=",";}
+setLinkTrackEvents+=values[i];}
+if(setLinkTrackVars!=''){setLinkTrackVars+=",";}
+setLinkTrackVars+=fields[i];}
+s.linkTrackVars=setLinkTrackVars==''?'None':setLinkTrackVars;s.linkTrackEvents=setLinkTrackEvents==''?'None':setLinkTrackEvents;eval("s.events = \""+setLinkTrackEvents+"\"; \n");for(var i in fields){if(fields[i]!="events"){eval("s."+fields[i]+" = \""+values[i]+"\"; \n");}}
+s.tl(this,'o',location);eval("s.events = \"\"; \n");for(var i in fields){if(fields[i]!="events"){eval("s."+fields[i]+" = \"\"; \n");}}}
+function setClickLetsTalk(){var tagKey=new Array('events','pageName','channel','prop3');var tagValue=new Array('event35','Let\'s Talk Pop-up','Let\'s Talk Pop-up','Let\'s Talk Pop-up');setOnclickAnalytics(tagKey,tagValue);}
+function setClickPaypalCheckout(){var tagKey=new Array('pageName','channel','prop3');var tagValue=new Array('Paypal LB','Paypal LB','Checkout Page');setOnclickAnalytics(tagKey,tagValue);}
+function setClickGoogleWallet(){var tagKey=new Array('pageName','channel','prop3');var tagValue=new Array('Google LB','Google LB','Checkout Page');setOnclickAnalytics(tagKey,tagValue);}
+function headerPlus1(data){if(data.state=='on'){tagEvarTwenFive('Header','Plus1');}}
+function footerPlus1(data){if(data.state=='on'){tagEvarTwenFive('Footer','Plus1');}}
+function confirmationPlus1(data){if(data.state=='on'){tagEvarTwenFive('Confirmation','Plus1');}}
+function tagEvarTwenFive(loc,btn){var tagKey=new Array('eVar25');var tagValue=new Array(loc+":"+btn);setOnclickAnalytics(tagKey,tagValue);}
+function appendInlineScript(text){var tag=document.createElement("script");tag.type="text/javascript";tag.text=text;document.body.appendChild(tag);}

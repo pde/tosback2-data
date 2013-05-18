@@ -413,44 +413,24 @@ function IsValidZipCode(szZipCode)
 
 
 /******************************************************
- * Checks to make sure a string is alphanumeric.
- * param strInput: string to be validated
- * param strWhitelist: non-alphanumeric exceptions
- ******************************************************/
+* Checks to make sure a string is alphanumeric.
+* param strInput: string to be validated
+* param strWhitelist: non-alphanumeric exceptions
+******************************************************/
 function isAlphaNumeric(strInput, strWhitelist){
-	var regex ="[^";
-	for(var i=0; i<strWhitelist.length; i++){
-		var ch = strWhitelist.charAt(i);
-		if(ch == " ")
-			ch = "s+"
-		regex = regex + "\\" + ch;
-	}
-	regex += "a-zA-Z0-9]";
-	var re = new RegExp(regex, "g");
-	if(re.test(strInput)){
-		return false;
-	}
+	var re = /[^A-z*0-9*\s*\.*\-*\/*]/g;
+	if (strInput.match(re)) return false;
 	return true;
 }
 
 /******************************************************
- * Checks to make sure a string is alpha.
- * param strInput: string to be validated
- * param strWhitelist: non-alpha exceptions
- ******************************************************/
+* Checks to make sure a string is alpha.
+* param strInput: string to be validated
+* param strWhitelist: non-alpha exceptions
+******************************************************/
 function isAlpha(strInput, strWhitelist){
-	var regex ="[^";
-	for(var i=0; i<strWhitelist.length; i++){
-		var ch = strWhitelist.charAt(i);
-		if(ch == " ")
-			ch = "s+"
-		regex = regex + "\\" + ch;
-	}
-	regex += "a-zA-Z]";
-	var re = new RegExp(regex, "g");
-	if(re.test(strInput)){
-		return false;
-	}
+	var re = /[^A-z*\.*\s*\-*\/*]/g;
+	if (strInput.match(re)) return false;
 	return true;
 }
 

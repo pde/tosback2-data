@@ -14,6 +14,7 @@
 <link rel="icon" href="../favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
 <link rel="alternate" media="only screen and (max-width: 640px)" href="http://mobile.brainyquote.com/inquire/privacy.html">
+<script type="text/javascript" src="../javascript/jsInit"></script>
 <script type="text/javascript">
  var ybotq = ybotq || [];
  (function() {
@@ -45,7 +46,8 @@ ybotq.push(function () {
 		var node = document.getElementsByTagName('script')[0];
 		node.parentNode.insertBefore(gads, node);
   })();
-
+ 
+ 
  STICKY_ON = ((Math.random() * 100)  < 50);
  ST_AD_DIVS=[];
  var slot;
@@ -66,6 +68,14 @@ ybotq.push(function () {
    .addService(googletag.pubads());
 
 
+   if (typeof(BQ_CC) != "undefined" && BQ_CC) {
+	   var konsole={log: function(args){}, dir:function(args){}};
+	   if (typeof window.console != 'undefined' && typeof window.console.log == 'function') { konsole = window.console; }	   	   
+	   googletag.pubads().setTargeting("bq_cc", BQ_CC);
+	   googletag.pubads().setTargeting("bq_cc_dvc", BQ_CC + "|" + BQ_DVC);
+	   konsole.log("t bq_cc=" + BQ_CC);
+	   konsole.log("t bq_cc_dvc=" + BQ_CC + "|" + BQ_DVC);
+   }
    googletag.pubads().enableSingleRequest();
    googletag.pubads().collapseEmptyDivs();
    googletag.enableServices();
@@ -92,7 +102,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </script>
 <script type="text/javascript">if (window!=top){top.location.href=location.href;};</script>
 <meta name="robots" content="noindex">
-<link href="../st/css/140164/core.css" media="screen, print" type="text/css" rel="stylesheet"/>
+<link href="../st/css/151998/core.css" media="screen, print" type="text/css" rel="stylesheet"/>
 </head>
 <body>
 <div id="bq_top_ad" align="center">
@@ -110,7 +120,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <div class="container">
 <div class="row">
 <div class="span12" style="text-align: center">
-<a href="http://www.brainyquote.com/"><img src="../st/img/140164/bql.png" id="bqlimg" width="420" height="90" alt="BrainyQuote Logo"/></a>
+<a href="http://www.brainyquote.com/"><img src="../st/img/151998/bql.png" id="bqlimg" width="420" height="90" alt="BrainyQuote Logo"/></a>
 </div>
 </div>
 </div>
@@ -402,7 +412,7 @@ privacy policy fun, exciting, enjoyable, and memorable for our readers
 <div class="row">
 <div class="span3" style="position:relative">
 <div style="float:left; position:absolute; top:-25px">
-<img src="../st/img/140164/pinwheel.gif"/>
+<img src="../st/img/151998/pinwheel.gif"/>
 </div>
 <div style="height:75px"></div>
 <div class="bq_s">
@@ -482,7 +492,7 @@ VIS_DIVS = [];
 
 
 BQ_MBL=0;
-RID = "140164";
+RID = "151998";
 
 
 

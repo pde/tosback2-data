@@ -83,6 +83,11 @@
 	
 	
 
+	
+	<style type="text/css">
+		#HHeader #google_image_div {position:relative ! important;}
+	</style>
+
 	<script type="text/javascript">
 		(function($){
 			window.adBuffer = eol.page.dartRender( {"site" : "about", "zone" : "privacy", "dimensions" : "728x90,960x150,970x50,970x66,970x90,970x150,970x250,970x415,980x250", "tile" : "1", "wid" : "", "notCategory" : "default"  }) || [];
@@ -116,7 +121,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1368274922024 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1368879767367 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -262,8 +267,9 @@ queryExpansion_init = function(searchBox, listBox, serviceUrl, searchUrl){
         
         for (var i = 0; i < list.length; i+=1){
 			var encodedQ = encodeURIComponent(list[i]);
-        	var url = searchUrl + "query=" + encodedQ.replace(/'/g, "%27");  // E! changed q= to query= 
-        	content += "<a href='index.jsp.html' onmousedown='window.location=\""+ url + "\"'>" + list[i] + "</a>";
+        	var url = searchUrl + "query=" + encodedQ.replace(/'/g, "\\\'");  // E! changed q= to query= 
+        	var searchStr = list[i].replace(/'/g, "&#39;");
+        	content += "<a href='index.jsp.html' onmousedown='javascript:submitSearch(\""+searchStr+"\")'>" + list[i] + "</a>";
         }
         
         listBox.each(function(){
@@ -980,12 +986,18 @@ pageTracker._trackPageview();
 </div>
 <script type="text/javascript">
 	function IsSearchValid() {
-		if (jQuery('#Header_Search_Input').val() == '') {
+		var searchStr = jQuery('#Header_Search_Input').val();
+		if (searchStr == '') {
 			jQuery('#Header_Search_Input').focus();
 			return false;
 		}else{
+			trackLink2(jQuery('#Header_Search_Input')[0], searchStr, {"events": "event1"});
 			return true;
 		}
+	};
+	function submitSearch(searchStr) {
+		jQuery('#Header_Search_Input').val(searchStr);
+		jQuery("#Header_Search_Form").submit();
 	};
 </script>
 				<div id="content_interior" class="clear">

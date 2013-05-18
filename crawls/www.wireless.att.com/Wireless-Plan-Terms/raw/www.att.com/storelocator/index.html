@@ -376,7 +376,7 @@ jQuery('input[type=tel]').wrap('<span>');
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -384,7 +384,7 @@ jQuery('input[type=tel]').wrap('<span>');
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -393,13 +393,27 @@ jQuery('input[type=tel]').wrap('<span>');
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -444,7 +458,7 @@ jQuery('input[type=tel]').wrap('<span>');
 								<ul> 
 											<li><a href="../index.html">att.com</a></li> 
 											<li><a href="../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -1336,7 +1350,7 @@ CQURLInfo = {
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 19509077611054676789754914722821691995 --> 
+		 <!--X-Renderer: 1362002543472521809124538102834865572 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	</div> 
@@ -2609,8 +2623,8 @@ CQURLInfo = {
                     +'<div class="tip-inner"><div class="mapTip"><div class="mapModalHeader"><h1>' + e.target.Title + '</h1><a href="index.html#Close" class="closeModal closeTip" onclick="closeTip(this); return false">'  
                     + ATT.OneMap.labels.close + '</a> <div class="clear"></div></div><div class="clear"></div><div class="tipContent"> <div class="leftAddressTip"><p> ' + e.target.Address1 + ' </p>'  
                     + address2 + '<p>' + e.target.City + ' , ' + e.target.Region + ' ' + e.target.Postal + '</p> <p>' + e.target.Phone + '</p></div><div class="rightAddressTip"><p> '  
-                    + e.target.Hours + ' </p></div><div class="clear"></div><div class="tipFooter"> <p> <a href="index.html#" class="" onclick="ATT.OneMap.openModalFromTooltip(\''+address+'\',\''+locationtype+'\',\'email\',\''+directionlink+'\')">' 
-                    +ATT.OneMap.labels.lbl_email +' </a> | <a href="index.html#" onclick="ATT.OneMap.openModalFromTooltip(\''+address+'\',\''+locationtype +'\',\'sms\',\''+directionlink+'\')">' +ATT.OneMap.labels.lbl_textmsg+ '</a></p> <p> <a href="http://www.att.com/maps/'&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;+&#32;directionUrl+e.target.id+&#32;'&amp;from-address='&#32;+&#32;thisOneMap.strLastValidSearch+"&selectedTab="+thisOneMap.currentSelectedTab+ thisOneMap.getMapDetails() +'" selector=' + ATT.OneMap.labels.lbl_directions +' storeOwnerCode=' + e.target.Title + ' class="oneMapStoreInteractClick">'  
+                    + e.target.Hours + ' </p></div><div class="clear"></div><div class="tipFooter"> <p> <a href="index.html#" class="" onclick="ATT.OneMap.openModalFromTooltip(\''+e.target.id+'\',\''+locationtype+'\',\'email\',\''+directionlink+'\')">' 
+                    +ATT.OneMap.labels.lbl_email +' </a> | <a href="index.html#" onclick="ATT.OneMap.openModalFromTooltip(\''+e.target.id+'\',\''+locationtype +'\',\'sms\',\''+directionlink+'\')">' +ATT.OneMap.labels.lbl_textmsg+ '</a></p> <p> <a href="http://www.att.com/maps/'&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;+&#32;directionUrl+e.target.id+&#32;'&amp;from-address='&#32;+&#32;thisOneMap.strLastValidSearch+"&selectedTab="+thisOneMap.currentSelectedTab+ thisOneMap.getMapDetails() +'" selector=' + ATT.OneMap.labels.lbl_directions +' storeOwnerCode=' + e.target.Title + ' class="oneMapStoreInteractClick">'  
                     +ATT.OneMap.labels.lbl_directions +' </a>'; 
                    if(thisOneMap.currentSelectedTab == "storeLocation"){ 
                      if( ATT.OneMap.labels.lbl_appointment_check == true || ATT.OneMap.labels.lbl_appointment_check == "true"){ 
@@ -2880,10 +2894,10 @@ CQURLInfo = {
                 directionlink = escape(directionlink); 
                 innerHtml = innerHtml +"<p class='searchResult_companyAddress'>" + city_region_postal + "</p><p class='searchResult_companyAddress'>" + strPhone + "</p>" 
                 +"<div class='clear'></div>"+"<div class='searchFooter' id=" + currFooterId + "></div>" 
-                +"<p class='searchResult_subText'>"+ sendTo +  "<a selector="+"\""+txtEmail+"\""+" storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.emailModalUrl+&quot;?address=&quot;+address+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;directionlink=&quot;+directionlink+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'> "+ txtEmail + "  </a> | <a selector="+"\""+txtText +"\""+" storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.smsModalUrl+&quot;?address=&quot;+address+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;directionlink=&quot;+directionlink+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'>" + txtText + "</a></p>" 
+                +"<p class='searchResult_subText'>"+ sendTo +  "<a selector="+"\""+txtEmail+"\""+" storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.emailModalUrl+&quot;?locationid=&quot;+item.id+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;fromaddress=&quot;+thisOneMap.strLastValidSearch+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'> "+ txtEmail + "  </a> | <a selector="+"\""+txtText +"\""+" storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.smsModalUrl+&quot;?locationid=&quot;+item.id+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;fromaddress=&quot;+thisOneMap.strLastValidSearch+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'>" + txtText + "</a></p>" 
                 +"<p class='searchResult_subText'>"+ txtInteract +  "<a href='index.html#' selector=Directions storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" class='oneMapStoreInteractClick'> "+ txtDirections + "  </a>"; 
                 storeDetailOverylayInfo = storeDetailOverylayInfo + +"<p class='searchResult_companyAddress'>" + city_region_postal + "</p><p class='searchResult_companyAddress'>" + strPhone + "</p>" 
-                +"<div class='clear'></div>"+"<div class='searchFooter' id=" + currFooterId + "></div>" + indicationNewStore + locationhint + storeHours + storeServices + specialInstructions + "<p class='searchResult_subText'>"+ sendTo +  "<a selector="+"\""+txtEmail+"\""+" storeOwnerCode="+"\""+item.name+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.emailModalUrl+&quot;?address=&quot;+address+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;directionlink=&quot;+directionlink+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'> "+ txtEmail + "  </a> | <a selector="+"\""+txtText +"\""+" storeOwnerCode="+"\""+item.name+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.smsModalUrl+&quot;?address=&quot;+address+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;directionlink=&quot;+directionlink+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'>" + txtText + "</a></p>" 
+                +"<div class='clear'></div>"+"<div class='searchFooter' id=" + currFooterId + "></div>" + indicationNewStore + locationhint + storeHours + storeServices + specialInstructions + "<p class='searchResult_subText'>"+ sendTo +  "<a selector="+"\""+txtEmail+"\""+" storeOwnerCode="+"\""+item.name+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.emailModalUrl+&quot;?locationid=&quot;+item.id+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;fromaddress=&quot;+thisOneMap.strLastValidSearch+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'> "+ txtEmail + "  </a> | <a selector="+"\""+txtText +"\""+" storeOwnerCode="+"\""+item.name+"\""+"  storeId="+"\""+item.id+"\""+" href='http://www.att.com/maps/&quot;+thisOneMap.smsModalUrl+&quot;?locationid=&quot;+item.id+&quot;&amp;contenttype=address&amp;locationtype=&quot;+locationtype+&quot;&amp;fromaddress=&quot;+thisOneMap.strLastValidSearch+&quot;' class='openModal channelModal' onClick='oneMapStoreSendLinkClick(this)'>" + txtText + "</a></p>" 
                 +"<p class='searchResult_subText'>"+ txtInteract +  "<a href='http://www.att.com/maps/&quot;+directionUrl+item.id+&quot;&amp;from-address=&quot;+thisOneMap.strLastValidSearch+&#32;&quot;&amp;selectedTab=&quot;+thisOneMap.currentSelectedTab;+&quot;' selector="+"\""+txtDirections+"\"" +" storeOwnerCode="+"\""+item.name+"\""+"  storeId="+"\""+item.id+"\""+" class='oneMapStoreInteractClick'> "+ txtDirections + "  </a>"; 
                 var wifiTip_part1='<div class="tip-arrow tip-arrow-top"></div><table cellspacing="0" cellpadding="0" border="0" style="width: 170px;"><tbody><tr><td style="background-image: url(http://0.ecom.attccc.com/images/global/tooltip/tip-white/tip-white.png);" class="tip-top tip-bg-image" colspan="2"><span></span></td><td style="background-image: url(http://0.ecom.attccc.com/images/global/tooltip/tip-white/tip-white.png);" class="tip-right tip-bg-image" rowspan="2"><span></span></td></tr><tr><td style="background-image:url(http://0.ecom.attccc.com/images/global/tooltip/tip-white/tip-white.png);" class="tip-left tip-bg-image" rowspan="2"><span></span></td><td style="width: 100%;"><div class=" tip-inner ">'; 
                 var wifiTip_part2 = '</div></td></tr><tr> <td style="background-image: url(http://0.ecom.attccc.com/images/global/tooltip/tip-white/tip-white.png);" class="tip-bottom tip-bg-image" colspan="2"> <span></span></td></tr></tbody></table>'; 
@@ -3509,12 +3523,12 @@ CQURLInfo = {
         this.openModalForAdvanceSearch = function openModalForAdvanceSearch(){ 
             jQuery.colorbox({iframe:false, height:700, width:780, scrolling:false, href: "modals/advsearchmodal.html"}); 
          }  
-        this.openModalFromTooltip = function openModalFromTooltip(_address, _locationtype, _modaltype, _directionlink){ 
+        this.openModalFromTooltip = function openModalFromTooltip(_locationid, _locationtype, _modaltype, _directionlink){ 
             if(_modaltype =='email'){ 
-                jQuery.colorbox({iframe:false, height:530, width:860, scrolling:false, href: thisOneMap.emailModalUrl+"?address="+_address+"&contenttype=address&locationtype="+_locationtype+"&directionlink="+_directionlink}); 
+                jQuery.colorbox({iframe:false, height:530, width:860, scrolling:false, href: thisOneMap.emailModalUrl+"?locationid="+_locationid+"&contenttype=address&locationtype="+_locationtype+"&fromaddress="+thisOneMap.strLastValidSearch}); 
             } 
             else{ 
-                jQuery.colorbox({iframe:false, height:530, width:860, scrolling:false, href: thisOneMap.smsModalUrl+"?address="+_address+"&contenttype=address&locationtype="+_locationtype+"&directionlink="+_directionlink}); 
+                jQuery.colorbox({iframe:false, height:530, width:860, scrolling:false, href: thisOneMap.smsModalUrl+"?locationid="+_locationid+"&contenttype=address&locationtype="+_locationtype+"&fromaddress="+thisOneMap.strLastValidSearch}); 
             } 
         } 
         this.setBoundingBoxForCoverage = function setBoundingBoxForCoverage(){ 
@@ -4984,7 +4998,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","gZfLRNYZnL8Jw7ZV1DJC82gG!1160424088!1368234041292"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","fsc6RW7TXRQ07jHvV7TV3zPN!-728603239!1368849267975"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 

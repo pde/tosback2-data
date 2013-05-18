@@ -1,0 +1,164 @@
+/*
+	$Revision: 1.4 $Date: 2011/10/31 15:35:10 $
+
+	SevenOne Media Ad Integration for de.bigpoint.com.tv
+*/
+
+window.myAd = {
+	soi_site_script:  'bigpoint.js',
+
+	// May be changed
+	container_prefix: 'ad-',
+
+	loadScript: function(which) {
+			if (!window.SOI_WERBUNG) return;
+
+			var src = '';
+			switch (which) {
+				case 'global':
+					src = 'http://ad.71i.de/global_js/globalV6.js';
+					break;
+				case 'site':
+					if (this.soi_site_script) src = 'http://ad.71i.de/global_js/Sites/' + this.soi_site_script;
+					break;
+			}
+			if (!src) return;
+
+			document.write('<script src="' + src + '" type="text/javascript"><\/script>');
+		},
+	insertAd: function(ad_id) {
+			if (!window.SOI_WERBUNG) return;
+			if (!window.SoiAd) return;
+
+			var go = false;
+			switch (ad_id) {
+				case 'popup1':
+					go = window.SOI_PU1;
+					break;
+				case 'fullbanner2':
+					go = window.SOI_FB2;
+					break;
+				case 'skyscraper1':
+					go = window.SOI_SC1;
+					break;
+				case 'rectangle1':
+					go = window.SOI_RT1;
+					break;
+			}
+			if (!go) return;
+
+			SoiAd.write(ad_id);
+		},
+	finishAd: function(ad_id, mode) {
+			switch (mode) {
+				case 'move':
+					this.moveAd(ad_id);
+					break;
+			}
+
+			this.adjustLayoutForAd(ad_id, mode);
+		},
+	moveAd: function(ad_id) {
+			if (!window.SOI_WERBUNG) return;
+			if (!window.SoiAd) return;
+
+			SoiAd.moveAd(ad_id, this.container_prefix + ad_id + '-postponed', this.container_prefix + ad_id);
+		},
+	adjustLayoutForAd: function(ad_id, mode) {
+			var container = document.getElementById(this.container_prefix + ad_id);
+			if (!container) return;
+
+			var exists = window.SoiAd ? SoiAd.exists(ad_id) : false;
+
+			if (exists) {
+				// Let class-defined styles win.
+				if (ad_id != 'fullbanner2' || !SoiAd.isBillboard(ad_id)) SoiAd.removeStyleAttribute(container);
+
+				if (SoiAd.reserveSowefoSpace(ad_id)) {
+					container.style.backgroundColor = 'transparent';
+					container.style.backgroundImage = 'none';
+					container.style.borderColor     = 'transparent';
+				}
+				else if (SoiAd.isBlockpixel(ad_id)) {
+					container.style.display = 'none';
+				}
+			}
+
+			if (ad_id == 'popup1') {
+				if (exists) {
+					// Nothing to be done
+				}
+			}
+			else {
+				var width  = 0;
+				var height = 0;
+
+				if (exists) {
+					width  = SoiAd.getWidth(ad_id);
+					height = SoiAd.getHeight(ad_id);
+				}
+
+				if (ad_id == 'fullbanner2') {
+					if (exists) {
+						var is_powerbanner = SoiAd.isPowerbanner(ad_id);
+						var is_pushdown    = SoiAd.isPushdown(ad_id);
+						var is_wallpaper   = SoiAd.isWallpaper(ad_id);
+						var is_fireplace   = SoiAd.isFireplace(ad_id);
+						var is_billboard   = SoiAd.isBillboard(ad_id);
+						
+						container.style.width = width + 'px';
+
+						if (is_pushdown) {
+							SoiAd.setAutoHeight(ad_id, this.container_prefix + ad_id);
+						}
+						else if (is_wallpaper || is_fireplace) {
+							container.style.height = Math.max(height, 90) + 'px';
+							container.style.backgroundImage = 'none';
+						}
+						else if (is_billboard) {
+							container.style.backgroundImage = 'none';
+							container.style.display = 'none';
+							var special_id = this.container_prefix + ad_id + '-billboard';
+							var special_container = document.getElementById(special_id);
+							if (special_container) {
+								SoiAd.removeStyleAttribute(special_container);
+								var max_width = parseInt(SoiQuery.getCurrentStyle(special_id + '-outer', 'width')) || 990;
+								var delta = Math.max(parseInt((width - max_width) / 2), 0);
+								if (delta) {
+									// Wider than content - centrify via negative margin-left
+									special_container.style.marginLeft = (-1 * delta) + 'px';
+								}
+								else {
+									// Not wider than content - centrify via auto margin
+									special_container.style.width = width + 'px';
+								}
+							}
+						}
+					}
+					else {
+						container.style.display = 'none';
+					}
+				}
+				else if (ad_id == 'rectangle1') {
+					if (exists) {
+						var is_halfpage = SoiAd.isHalfpage(ad_id);
+						if (is_halfpage) {
+							SoiAd.setAutoHeight(ad_id, this.container_prefix + ad_id);
+						}
+						if (window.SOI_CONTENT == 'logout') {
+							// possibly powerrectangle or maxiad
+							container.style.width = width + 'px';
+							container.style.height = height + 'px';
+						}
+					}
+				}
+				else if (ad_id == 'skyscraper1') {
+					if (exists) {
+						if (width && width > 160) {
+							container.style.width = width + 'px';
+						}
+					}
+				}
+			}
+		}
+};

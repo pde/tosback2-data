@@ -19,10 +19,12 @@ if (mobileRedirect != "0") {
         var resultsPageRegex = new RegExp('(/$|/\\?.*$|(Results.aspx).*$)', 'i');
         var loginPageRegex = new RegExp('(/$|/\\?.*$|(Login.aspx).*$)', 'i');
         var productPageRegex = new RegExp('(/$|/\\?.*$|(ProductDetails).*$)', 'i');
+        var cartPageRegex = new RegExp('(/$|/\\?.*$|(cart).*$)', 'i');
         var homePageMatch = currentPageUrl.match(homePageRegex);
         var resultsPageMatch = currentPageUrl.match(resultsPageRegex);
         var productPageMatch = currentPageUrl.match(productPageRegex);
         var loginPageMatch = currentPageUrl.match(productPageRegex);
+        var cartPageMatch = currentPageUrl.match(cartPageRegex);
 
         if (homePageMatch != null && homePageMatch.length > 0) {
             window.location = "/Mobile/Default.aspx?" + currentPageQueryStrings;
@@ -35,6 +37,9 @@ if (mobileRedirect != "0") {
         }
         else if (loginPageMatch != null && productPageMatch.length > 0) {
             window.location = "/Mobile/Profile/login.aspx?" + currentPageQueryStrings;
+        }
+        else if (cartPageMatch != null && cartPageMatch.length > 0) {
+            window.location = "/Mobile/Cart.aspx?" + currentPageQueryStrings;
         }
     }
     else {

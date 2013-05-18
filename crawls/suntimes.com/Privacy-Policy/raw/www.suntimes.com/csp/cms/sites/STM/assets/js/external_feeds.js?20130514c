@@ -1,0 +1,90 @@
+function loadJsonp(name, url, settings){
+	$.ajax({
+		type: 'get',		
+		url: url,
+		data : settings,
+		dataType: 'jsonp',
+		cache: false,
+		jsonp: 'callback',
+		success: function(data, textStatus, jqXHR){
+			switch(name){
+				case 'homicide':
+					populateHomicideFeed(data);
+					break;
+				case 'homicide-interior':
+					populateHomicideInteriorFeed(data);
+					break;
+				case 'homicide-mobile':
+					populateMobileFeed(data);
+					break;					
+				case 'grid':
+					populateGridFeed(data);
+				  	break;
+				case 'grid-homepage':
+					populateGridHomepageFeed(data);
+				  	break;					
+			}
+		},
+	    error: function(httpReq, status, exception){	    	
+	        populateFeedError(status, exception, name);
+	    }		
+	});			
+}
+
+// FEED ERROR 
+function populateFeedError(status, exception, name){	
+	console.log(status + ": " + exception + ' - ' + name);
+	$('.error-box[data-feed="' + name + '"]').html('No data available.');
+}
+
+// HOMICIDE FEED - HOMEPAGE
+function populateHomicideFeed(data){
+	for(i in data['posts']) {
+		if( i == 0 ){
+			$('<img class="featured-img" src="http://www.suntimes.com/csp/cms/sites/STM/assets/img/hwc-100x67.png" alt="Homicide Watch"><span class="topLink"><a class="top-story" href="' + data['posts'][i]['URL'] + '"><p class="NormalParagraphStyle">' + data['posts'][i]['title'] + '</p></a></span><span class="float-clear" style="float:right;"></span><a class="see-more-link internal-story-a PaddingTopFifteen" title="Read More" href="http://homicides.suntimes.com/">More Homicides</a>').appendTo('#external-feed-list #spotlight');
+		}else if( i == ( data['count'] - 1) ){
+			$('<li class="ender"><a class="bullet" href="' + data['posts'][i]['URL'] + '">' + data['posts'][i]['title'] + '</a></li>').appendTo('#external-feed-list #spotlight');
+		}else{
+			$('<li><a class="bullet" href="' + data['posts'][i]['URL'] + '">' + data['posts'][i]['title'] + '</a></li>').appendTo('#external-feed-list #spotlight');
+		}
+	}
+}
+
+// HOMICIDE FEED - INTERIOR
+function populateHomicideInteriorFeed(data){
+	for(i in data['posts']) {
+		$('<a href="' + data['posts'][i]['URL'] + '">' + data['posts'][i]['title'] + '</a>').appendTo('#rssBox .homicide-feed');
+	}
+}
+
+// GRID BUSINESS PAGE FEED
+function populateGridFeed(data){
+	for(i in data['posts']) {
+		if( i == 0 ){
+			$('<a href="' + data['posts'][i]['url'] + '"><img width="604" height="auto" src="' + data['posts'][i]['thumbnail'] + '" class="attachment-full wp-post-image" alt="' + data['posts'][i]['title'] + '"></a>').appendTo('.fs-story-box .image-boxes2');
+
+			$('<h3><a href="' + data['posts'][i]['url'] + '">' + data['posts'][i]['title'] + '</a></h3><span class="authorsgrid">' + data['posts'][i]['categories'][0]['title'] + '</span><p>' + data['posts'][i]['excerpt'] + '</p>').appendTo('.fs-story-box .gridfeatured');	
+
+		}else{
+			$('<h4><a href="' + data['posts'][i]['url'] + '">' + data['posts'][i]['title'] + '</a></h4><span class="authorsgrid">' + data['posts'][i]['categories'][0]['title'] + '</span><p>' + data['posts'][i]['excerpt'] + '</p>').appendTo('.fs-story-box .gridstories');					
+		}
+	}
+}
+
+// GRID HOMEPAGE FEED
+function populateGridHomepageFeed(data){
+	for(i in data['posts']) {
+		if( i == 0 ){
+			$('<a href="' + data['posts'][i]['url'] + '"><img width="100" height="auto" src="' + data['posts'][i]['thumbnail'] + '" class="attachment-full wp-post-image" alt="' + data['posts'][i]['title'] + '"></a><span class="topLink"><a class="top-story" href="' + data['posts'][i]['url'] + '"><p class="NormalParagraphStyle">' + data['posts'][i]['title'] + '</p></a></span><span class="float-clear" style="float:right;"></span><a class="see-more-link internal-story-a" title="Read More" href="http://chicagogrid.com/">More Business</a>').appendTo('.external-feed-list #business2');	
+		}else{
+			$('<li><a class="bullet" href="' + data['posts'][i]['url'] + '">' + data['posts'][i]['title'] + '</a></li>').appendTo('.external-feed-list #business2');
+		}	
+	}
+}
+
+// HOMICIDE MOBILE
+function populateMobileFeed(data){
+	for(i in data['posts']) {
+		$('<li><div class="otherStories MarginBottomTen clearfix"><div class="storyDetails"><a href="' + data['posts'][i]['URL'] + '" class="ui-link"><p class="head.black">' + data['posts'][i]['title'] + '</p></a><span class="updatenotification"><small></small></span></div></div></li>').appendTo('#homicide .blanklist');
+	}
+}

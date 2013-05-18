@@ -18,7 +18,7 @@ BB.Helpers.selectRating = function (value) {
 		$('div.generated-rating div.comment-rating').text(clickedRating);
 		
 		if ($('div.generated-rating')){
-			if($('div.generated-rating').css('display') == 'hidden') {
+			if($('div.generated-rating').css('display') === 'hidden') {
 				$('div.generated-rating').show();
 			}
 		}
@@ -33,4 +33,4 @@ BB.Helpers.selectRating = function (value) {
 				$('.my-rating').text(clickedRating);
 			}
 		}
-}
+};

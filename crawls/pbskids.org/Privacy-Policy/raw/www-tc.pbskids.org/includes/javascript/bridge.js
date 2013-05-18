@@ -43,7 +43,7 @@ jQuery(document).ready(function() {
 	
 	var bridgeSponsorImages = new Array();
 	
-	jQuery('a').each(function(i){
+	jQuery('a').not('.not-bridge').each(function(i){
 		if (jQuery(this).attr('class') == 'pbskids_bridge_sponsor') {
 			// alert('Sponsor Image Preloaded');
 			bridgeSponsorImages[i] = new Image();
@@ -53,7 +53,7 @@ jQuery(document).ready(function() {
 	 });
 
 						   
-	jQuery('a, area').click(function() {
+	jQuery('a, area').not('.not-bridge').click(function() {
 		if ( (( bridgeURLs(this.hostname, this.pathname) == true ) && bridgeURLs(window.location.hostname, window.location.pathname) == false ) && (jQuery(this).attr('href').indexOf('javascript:') == -1) ) {
 				var pathnameslash = '';
 				if (this.pathname.substring(0, 1) != '/') { pathnameslash = '/'; };

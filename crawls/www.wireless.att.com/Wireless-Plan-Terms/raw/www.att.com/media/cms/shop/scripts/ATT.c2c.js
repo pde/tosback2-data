@@ -1,4 +1,4 @@
-//$Revision: 517779 $, $Date: 2013-03-28 14:13:55 -0700 (Thu, 28 Mar 2013) $ and $Author: bh4634 $
+//$Revision: 524963 $, $Date: 2013-05-02 12:16:04 -0700 (Thu, 02 May 2013) $ and $Author: at024v $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -196,6 +196,7 @@ ATT.c2c = function () {
     if (~href.indexOf('/wireless/')) {
         conversionStage = "customize";
     }
+  
     if (~href.indexOf('/cart')) {
     	 results.orderTotal = results.orderTotal && !isNaN(results.orderTotal) ? results.orderTotal  : 0;
     	 results.orderTotal = results.taxAmount && !isNaN(results.taxAmount)? results.orderTotal +  results.taxAmount : results.orderTotal;
@@ -203,7 +204,7 @@ ATT.c2c = function () {
         buyflowCode = ATT.globalVars.flowcode;
        ATT.util.setCookie('buyflowType',ATT.globalVars.cartContents.buyFlowType,1);
        ATT.util.setCookie('wtContents',  ATT.globalVars.cartContents.wtCartContents, 1);
-       ATT.util.setCookie('lpCartTotal', results.orderTotal, 1); 
+       ATT.util.setCookie('lpCartTotal', parseFloat(results.orderTotal.toFixed(2)), 1); 
        ATT.util.setCookie('lpCartTotalRMR', results.mrcTotal, 1); //"cartTotalRMR",
     }
     if (~href.indexOf('/checkout')) {
@@ -254,11 +255,11 @@ ATT.c2c = function () {
     // ATT.util.setCookie('lpCartTotalRMR', results.mrcTotal, 1); //"cartTotalRMR",
     results.mrcTotal =  results.mrcTotal && !isNaN(results.mrcTotal) ?  results.mrcTotal : ATT.util.getCookie('lpCartTotalRMR') && ATT.util.getCookie('lpCartTotalRMR') !== 'undefined' ? parseFloat(ATT.util.getCookie('lpCartTotalRMR')) : 0;
     
-    
+   
     window.lpMTagConfig.vars.push(["page","categoryName", category || '']);
     window.lpMTagConfig.vars.push(["page","conversionStage",conversionStage || ""]);
     window.lpMTagConfig.vars.push(["page","configureStage",configureStage || ""]);
-    window.lpMTagConfig.vars.push(["page","cartTotal",results.orderTotal]);
+    window.lpMTagConfig.vars.push(["page","cartTotal",parseFloat(results.orderTotal.toFixed(2))]);
    // window.lpMTagConfig.vars.push(["page","cartTotalOTR",results.orderTotal || ""]);
     window.lpMTagConfig.vars.push(["page","cartTotalRMR",results.mrcTotal]);
 	window.lpMTagConfig.vars.push(["page","checkoutStage",checkoutStage || ""]);

@@ -108,4 +108,28 @@ $(document).ready(function(){
                 $('.bx-clone').css('visibility', 'visible');
             }
          });
+
+        /*
+     * Initialization of Awards slider
+     */
+    var resultFrames = $('#results-slides .frame').children().length;
+    if(!avast.disableSlider && resultFrames > 2) avast.slider.init("product","#results-slides",
+        {
+            auto: false,
+            pager: false,
+            infiniteLoop: true,
+            moveSlides: 1,
+            minSlides: 1,
+            maxSlides: 1,
+            slideWidth: 960,
+            slideMargin: 0,
+            controls: true,
+            nextSelector: "#results .ra",
+            prevSelector: "#results .la",
+            useCSS: false,
+            onSliderLoad: function(){
+                // IE Fix :  Set clones hidden in css and show them when all bxslider is ready to show
+                $('.bx-clone').css('visibility', 'visible');
+            }
+         });
 });

@@ -256,7 +256,7 @@ base64 = new Nibbler({
     $('[data-ejsl]').not('.lsje').addClass('lsje');
     
     // add mouseenter handler to replace fake link with real link
-    $(window).delegate('[data-ejsl]','mouseenter', function() {
+    $('body').delegate('[data-ejsl]','mouseenter', function() {
       $temporaryLink = $(this);
       $realLink = $('<a />');
       targetUrl = gf.util.misc.ejsl.decode($temporaryLink.data('ejsl'));

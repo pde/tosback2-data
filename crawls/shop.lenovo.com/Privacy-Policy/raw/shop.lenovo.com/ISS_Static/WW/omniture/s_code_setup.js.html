@@ -2,7 +2,7 @@
 // Copyright 2011-2013 Adobe, Inc. All Rights Reserved
 // More info available at http://www.omniture.com
 // UPDATED: 26-Apr-2013
-var s_fileVer='130426';
+var s_fileVer='130426b';
 
 /************************** CONFIG SECTION **************************/
 
@@ -504,7 +504,7 @@ function scrubPath(path){
 /***************************** UTILITIES ****************************/
 
 /*
- * Utilities: preSlib v1.32
+ * Utilities: preSlib v1.33
  */
 function s_isNull(x){return x===null}
 function s_isUdef(x){return typeof x=='undefined'}
@@ -559,5 +559,5 @@ function s_getVisitDuration(c){if(!c)c='s_dur';var M=60000,V=1800000,a=new Date(
 function s_getVisitNum(p,a,b){var D=new Date,P,V,T=D.getTime(),d,i,t=0,k,o,y,H=1800000;if(!p)p='m';if(p=='m'||p=='w'||p=='d'){o=s_endof(p);y=o.getTime();D.setTime(y)}else{d=p*86400000;D.setTime(T+d)}if(!a)a='s_vnum';if(!b)b='s_invisit';P=s_c_r(a);if(P){i=P.indexOf('&vn=');t=s_toInt(P.substring(i+4,P.length));if(isNaN(t)||t<0)t=0}V=s_c_r(b);if(V){if(t){D.setTime(T+H);s_c_w(b,'Y',D)}return t}else{if(t){t++;k=P.substring(0,i);D.setTime(k);s_c_w(a,k+'&vn='+t,D);D.setTime(T+H);s_c_w(b,'true',D);return t}else{s_c_w(a,D.getTime()+'&vn=1',D);D.setTime(T+H);s_c_w(b,'Y',D);return 1}}}
 function s_dimo(m,y){var d=new Date(y,m+1,0);return d.getDate()}
 function s_endof(x){var t=new Date;t.setHours(0);t.setMinutes(0);t.setSeconds(0);if(x=='m')d=s_dimo(t.getMonth(),t.getFullYear())-t.getDate()+1;else if(x=='w')d=7-t.getDay();else d=1;t.setDate(t.getDate()+d);return t}
-function s_getDaysSinceLastVisit(k,f){if(typeof k!='string'||!k){f=k?k:1;k=''}k=k||'s_lv';f=!!f;var M=60000,H=60*M,V=H/2,D=24*H,l=k+'_s',v=s_c_r(l),a=new Date(),b=0,t=a.getTime(),u=s_c_r(k),c=new Date(t+V),d=new Date(t+999*D),x=0,y='New';s_c_w(k,t,d);if(f){v=s_round(v,0,-1);if(v>730||v<0)v=-1}else v=v?v:'Unknown';u=s_toInt(u);if(!isNaN(u)){if(u>t)u=t-M;if(t-u>V){a=new Date(a.getFullYear(),a.getMonth(),a.getDate());t=a.getTime();b=new Date(u);b=new Date(b.getFullYear(),b.getMonth(),b.getDate());u=b.getTime();x=s_round((t-u)/D);if(x>730)y=f?999:'Unknown';else y=f?x:(x<7?'Less than '+(x<1?'1 day':'7 days'):'More than '+(x<30?'7':'30')+' days')}else y=v}else y=f?-1:'First Visit';s_c_w(l,y,c);return y}
+function s_getDaysSinceLastVisit(k,f){if(typeof k!='string'||!k){f=k?k:1;k=''}k=k||'s_lv';f=!!f;var M=60000,V=30*M,D=48*V,a=new Date(),t=a.getTime(),l=k+'_s',u=s_c_r(k),v=s_c_r(l),c=new Date(t+V),d=new Date(t+999*D),x=0;u=u&&!isNaN(u)?parseInt(u):0;if(u&&v&&!isNaN(v)){x=parseInt(v)}else{x=u?Math.floor((t-u)/D+0.5):-1;if(x>999)x=999;if(x<0)x=-1;a=new Date(a.getFullYear(),a.getMonth(),a.getDate());t=a.getTime();s_c_w(k,t,d)}s_c_w(l,x+'',c);if(!f)x=x<0?'New':(x<7?'Less than '+(x<1?'1 day':'7 days'):('More than '+(x<30?'7':'30')+' days'));return x}
 // END preSlib

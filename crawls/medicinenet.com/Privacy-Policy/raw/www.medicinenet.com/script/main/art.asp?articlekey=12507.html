@@ -1,7 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/">
 
-<head>
+<HEAD>
+<script type="text/javascript" src="../../../img.webmd.com/dtmcms/live/webmd/PageBuilder_Assets/JS_static/api/oo_shim.min-temp.js"></script>
+<script type="text/javascript" language="javascript" src="../../../images.medicinenet.com/javascript/webmd/webmd.ads.js"></script>
 
 <TITLE>MedicineNet.com Privacy Policy</TITLE>
 <meta property="og:title" content="MedicineNet.com Privacy Policy" />
@@ -26,7 +28,6 @@
 <link rel="stylesheet" href="../../../images.medicinenet.com/css/medicinenet/header/1.5/header.min.css"/>
 <link rel="stylesheet" href="../../../images.medicinenet.com/css/sponsorbox.min.css"/>
 
-<script type="text/javascript" src="../../../images.medicinenet.com/javascript/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="../../../images.medicinenet.com/javascript/main.js"></script>
 <script type="text/javascript" src="../../../images.medicinenet.com/javascript/jquery/plugins/jquery.cookie.js"></script>
 <script type="text/javascript" src="../../../images.medicinenet.com/javascript/jquery/custom/mednet/1.4/custom.js"></script>
@@ -72,7 +73,6 @@ var s_user_group = "unregistered";
 
 <link href="https://plus.google.com/117041701306844597651" rel="publisher" />
 <script type="text/javascript">(function(){var gps=document.createElement("script");gps.type="text/javascript";gps.async = true;gps.src="https://apis.google.com/js/plusone.js";var gpse=document.getElementsByTagName("script")[0];gpse.parentNode.insertBefore(gps, gpse);})();</script>
-<script type="text/javascript" src="../../../img.webmd.com/dtmcms/live/webmd/PageBuilder_Assets/JS_static/api/oo_shim.min.js"></script>
 </HEAD>
 
 
@@ -80,14 +80,51 @@ var s_user_group = "unregistered";
 <div id="page-wrap">
 	<header>
 		<div class="inside">
-			
-			<!-- 728x90 Ad Tag -->
+            			<!-- Start 728x90 Ad Tag -->
+            <div id="adSeedCall">
+                <script>
+                    webmd.ads.adSeedCall = function () {
+                        var self = this;
+                        var defer = new jQuery.Deferred();
+                        self.adSeedCallTimeout = setTimeout(function () {
+                            defer.resolve();
+                        }, 1000);
+                        var pageviewId = window.s_pageview_id || '';
+                        var iframeURLOutOfPB = '//as.webmd.com/html.ng/transactionID=1290289580203&amp;tile=1290289580203&amp;app=31&amp;bc=__&amp;dmp=_lnull_&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=5200&amp;params.styles=json01&amp;pvid='+pageviewId;
+                        var cleanIframeURL = iframeURLOutOfPB.replace(/&amp;/g, '&');
+                        require([cleanIframeURL],
+                            function(){
+                                clearTimeout(self.adSeedCallTimeout);
+                                defer.resolve();
+                            }
+                        );
+                        return defer.promise();
+                    }
+                    webmd.ads.adSeedCallPromise = webmd.ads.adSeedCall();
+                </script>
+            </div>
 			<div id="bannerAd_rdr">
-				<div id="bannerAd_fmt">
-					<iframe align="center" width="728" height="90" marginwidth="0" marginheight="0" style="margin:0;" frameborder="0" scrolling="no" src="http://as.webmd.com/html.ng/transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=101&amp;dmp=_lnull_"><script language="JavaScript1.2" type="text/javascript" charset="ISO-8859-1" src="http://as.webmd.com/js.ng/Params.richmedia=yes&amp;transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=101&amp;dmp=_lnull_"></script></iframe>
+				<div id="bannerAd_fmt"> 
+                    <div style="height: 90px;" class="ad_placeholder"></div>
 				</div>
 			</div>
+            <script>
+                (function () {
+                    var pageviewId = window.s_pageview_id || '';
+                    var iframeURLOutOfPB = '//as.webmd.com/html.ng/transactionID=1290289580203&amp;tile=1290289580203&amp;app=31&amp;bc=__&amp;dmp=_lnull_&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=101&amp;pvid=' + pageviewId;
+                    var cleanIframeURL = iframeURLOutOfPB.replace(/&amp;/g, '&');
+                    var ad = {
+                        adLocation: 'banner',
+                        adURL: cleanIframeURL,
+                        trans: '1290289580203',
+                        tile: '1290289580203',
+                        pos: '101'
+                    };
+                    webmd.ads.handleAdSeedCall(ad);
+                })();
+            </script>
 			<!-- End 728x90 Ad Tag -->
+
 			
 			<!-- Start Main Top -->
 			<div class="mn_top_fmt">
@@ -108,7 +145,7 @@ var s_user_group = "unregistered";
 				<div id="header-links">
 					<div id="smallr" class="smallr_fmt"> 
 						<a class="hdr_aboutUs" onclick="wmdTrack('tn-srch-bar-text_1');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=12510" rel="nofollow">About Us</a><span>|</span><a class="hdr_newsletter" onclick="wmdTrack('tn-srch-bar-text_2');" href="https://www.medicinenet.com/newsletter/newsletter-signup.asp" rel="nofollow"><i></i>Newsletter</a>
-						<time>May 11, 2013</time>
+						<time>May 18, 2013</time>
 					</div>
 					<div class="social_links social_masthead">
 					    <ul>
@@ -980,12 +1017,12 @@ p.moretopics { font-style: italic; font-size: 11px; margin: 6px 0 0 0; }
         <div class="new_headerLink">New on MedicineNet</div>
     </div>
     <ul id="backItems">
-	<li><a onclick="wmdTrack('lr-topics-mn_1');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=1910">Bad Breath Remedies</a></li>
-	<li><a onclick="wmdTrack('lr-topics-mn_2');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=41962">Esophagitis Symptoms</a></li>
-	<li><a onclick="wmdTrack('lr-topics-mn_3');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=99391">Pelvic Exam Procedure</a></li>
-	<li><a onclick="wmdTrack('lr-topics-mn_4');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=148412">The BRAT Diet</a></li>
-	<li><a onclick="wmdTrack('lr-topics-mn_5');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=41883">Adult ADHD Symptoms</a></li>
-	<li><a onclick="wmdTrack('lr-topics-mn_6');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=43105">Thrush Treatment</a></li>
+	<li><a onclick="wmdTrack('lr-topics-mn_1');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=509">Ulcerative Colitis Diet</a></li>
+	<li><a onclick="wmdTrack('lr-topics-mn_2');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=42156">Breast Self-Exam</a></li>
+	<li><a onclick="wmdTrack('lr-topics-mn_3');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=43390">Labor and Delivery</a></li>
+	<li><a onclick="wmdTrack('lr-topics-mn_4');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=1976">COPD Symptoms</a></li>
+	<li><a onclick="wmdTrack('lr-topics-mn_5');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=10110">Heat Stroke: Emergency</a></li>
+	<li><a onclick="wmdTrack('lr-topics-mn_6');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=1910">Bad Breath Remedies</a></li>
 		<li><a onclick="wmdTrack('lr-topics-mn_hl');" href="http://www.medicinenet.com/health_and_living/focus.htm"><img src="../../../images.medicinenet.com/images/icon-apple.jpg" alt="Health and Living: Recipes, Nutrition, Exercise and More" width="20" height="20" style="border: 0px;vertical-align: middle;" /> Healthy Living Tips</a></li>
 </ul>
     <div class="bottom"></div>
@@ -1005,11 +1042,11 @@ p.moretopics { font-style: italic; font-size: 11px; margin: 6px 0 0 0; }
 </div>
 <div class="News_list_box">
 <ul>
-<li class="first"><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169714">Hospital Bills Can Vary Widely, Even in Same City</a></li>
-<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169737">Confused by Health Care Marketplaces? Help Is Coming</a></li>
-<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169684">Health Highlights: May 7, 2013</a></li>
-<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169614">Health Highlights: May 2, 2013</a></li>
-<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169597">Health Highlights: May 1, 2013</a></li>
+<li class="first"><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169873">Noisy Operating Rooms Jeopardize Patient Safety</a></li>
+<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169889">Cloning Technique to Produce Human Stem Cells</a></li>
+<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169892">Doctors Reluctant to Expand Nurse Practitioners</a></li>
+<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169842">Health Highlights: May 14, 2013</a></li>
+<li><a onclick="wmdTrack('lr-ltnews');" href="http://www.medicinenet.com/script/main/art.asp?articlekey=169845">CDC Guidelines Cut Infections From Dialysis?</a></li>
 <li><a onclick="wmdPageLink('newsletter-itn');" href="https://www.medicinenet.com/newsletter/newsletter-signup.asp">Want More News? Sign Up for MedicineNet Newsletters!</a></li>
 
 <li><a onclick="wmdTrack('lr-news_rss');" href="http://www.medicinenet.com/rss/dailyhealth.xml" target="_blank"><img alt="XML" src="../../../images.medicinenet.com/images/RSSfeed-icon-16x16.gif" border="0" width="16" height="16" style="vertical-align: middle;" /> Health News Feed</a></li>
@@ -1020,17 +1057,34 @@ p.moretopics { font-style: italic; font-size: 11px; margin: 6px 0 0 0; }
 
 </div>
 							<div class="sidebar-box"></div>
-							<div class="sidebar-box">
-								<!-- Start 160x600/120x600 Ad Unit -->
+                            <div class="sidebar-box">
+                                								<!-- Start 160x600/120x600 Ad Unit -->
 								<div id="leftAd_rdr">
 									<div class="leftAd_top_fmt"></div>
-									<div class="leftAd_BG_fmt">
-										<iframe align="center" width="160" height="600" marginwidth="0" marginheight="0" style="margin:0;" frameborder="0" scrolling="no" src="http://as.webmd.com/html.ng/transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=113&amp;dmp=_lnull_"><script language="JavaScript1.2" type="text/javascript" src="http://as.webmd.com/js.ng/Params.richmedia=yes&amp;transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=113&amp;dmp=_lnull_"></script></iframe>
+									<div id="leftAd_fmt" class="leftAd_BG_fmt">
+                                        <div style="height: 600px;" class="ad_placeholder"></div>
 									</div>
 									<div class="leftAd_bottom_fmt"></div>
 								</div>
+                                <script>
+                                    (function () {
+                                        var pageviewId = window.s_pageview_id || '';
+                                        var iframeURLOutOfPB = '//as.webmd.com/html.ng/transactionID=1290289580203&amp;tile=1290289580203&amp;app=31&amp;bc=__&amp;dmp=_lnull_&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=113&amp;pvid=' + pageviewId;
+                                        var cleanIframeURL = iframeURLOutOfPB.replace(/&amp;/g, '&');
+
+                                        var ad = {
+                                            adLocation: 'left',
+                                            adURL: cleanIframeURL,
+                                            trans: '1290289580203',
+                                            tile: '1290289580203',
+                                            pos: '113'
+                                        };
+                                        webmd.ads.handleAdSeedCall(ad);
+                                    })();
+                                </script>
 								<!-- End 160x600/120x600 Ad Unit -->
-							</div>
+
+                            </div>
 							<div class="sidebar-box"><!-- Start RxList Promo -->
 <div id="pillPharmPromo">
 	<a class="try" href="http://www.rxlist.com/pill-identification-tool/article.htm" onclick="wmdTrack('lr-pid');">Use Pill Finder</a>
@@ -1068,17 +1122,36 @@ p.moretopics { font-style: italic; font-size: 11px; margin: 6px 0 0 0; }
 								<a href="http://www.medicinenet.com/symptoms_and_signs/article.htm" onclick="wmdTrack('ss-az');" title="Symptom Checker: Your Guide to Symptoms and Signs: Pinpoint Your Pain"><img src="../../../images.medicinenet.com/images/module/Symptoms-checker.jpg" alt="Symptom Checker: Your Guide to Symptoms &amp; Signs: Pinpoint Your Pain" border="0" width="300" height="110"/></a>
 							</div>
 						</div>
-						<div class="sidebar-box">
-						<!-- Start 300x250 Ad Tag -->
+                        
+                        <div class="sidebar-box">
+                            						    <!-- Start 300x250 Ad Tag -->
 							<div id="rightAd_rdr">
 								<div class="rightAd_top_fmt"> </div>
-								<div class="rightAd_BG_fmt">
-									<iframe align="center" width="300" height="250" marginwidth="0" marginheight="0" style="margin:0;" frameborder="0" scrolling="no" src="../../../as.webmd.com/html.ng/transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=.html"><script language="JavaScript1.2" type="text/javascript" src="../../../as.webmd.com/js.ng/Params.richmedia=yes&amp;transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12"></script></iframe>
+								<div id="rightAd_fmt" class="rightAd_BG_fmt">
+                                    <div style="height: 250px;" class="ad_placeholder">
+                                    </div>
 								</div>
 								<div class="rightAd_bottom_fmt"> </div>
 							</div>
+                            <script>
+                                (function () {
+                                    var pageviewId = window.s_pageview_id || '';
+                                    var iframeURLOutOfPB = '//as.webmd.com/html.ng/transactionID=1290289580203&amp;tile=1290289580203&amp;app=31&amp;bc=__&amp;dmp=_lnull_&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=121&amp;pvid=' + pageviewId;
+                                    var cleanIframeURL = iframeURLOutOfPB.replace(/&amp;/g, '&');
+                                    var ad = {
+                                        adLocation: 'right',
+                                        adURL: cleanIframeURL,
+                                        trans: '1290289580203',
+                                        tile: '1290289580203',
+                                        pos: '121'
+                                    };
+                                    webmd.ads.handleAdSeedCall(ad);
+                                })();
+                            </script>
 							<!-- End 300x250 Ad Tag -->
+
 						</div>
+
 						<div class="sidebar-box">
 							<!-- START US ONLY VISITOR RR2 -->
 <div class="from_webmd">
@@ -1104,7 +1177,7 @@ p.moretopics { font-style: italic; font-size: 11px; margin: 6px 0 0 0; }
 						</div>
 
 						<div class="sidebar-box">
-							
+							<!-- Related Drugs -->
 						</div>
 						<div class="sidebar-box">
 							<!--*DAILYPICK*-->
@@ -1315,8 +1388,12 @@ doBIScript();
 </script>
 
 <!-- start ad 1x1 -->
-<script language="JavaScript1.2" type="text/javascript" charset="ISO-8859-1" src="../../../as.webmd.com/js.ng/transactionID=1030916106203&amp;tile=1030916106203&amp;app=31&amp;bc=__&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate="></script>
+<script language="JavaScript1.2" type="text/javascript">
+    var pageviewId = window.s_pageview_id || '';
+    document.write('<scr' + 'ipt language="javascript1.2" type="text/javascript" charset="ISO-8859-1" src="http://as.webmd.com/js.ng/transactionID=1290289580203&amp;tile=1290289580203&amp;app=31&amp;bc=__&amp;dmp=_lnull_&amp;xpg=1761&amp;sec=8001|8005|8006|8007|8008&amp;artid=12507&amp;site=2&amp;affiliate=22&amp;uri=articlekey%3D12507&amp;pos=901&amp;pv=' + pageviewId + '"><\/scr' + 'ipt>');
+</script>
 <!-- end ad 1x1 -->
+
 
 <iframe width="0" height="0" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" src="../../../d.turn.com/r/dd/id/L21rdC83NC9jaWQvMTkyNDA3NTkvdC8x/cat/9.html"></iframe>
 

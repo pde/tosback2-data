@@ -46,7 +46,8 @@ More info available at http://www.omniture.com */
  *14/03/13 update s_code to version vH.25.4.(Ales), eVar27 definition logic changed (Ales), added create cookie helper (Ales)
  *25/03/13 added www.avast.ru (Ales)
  *10/04/13 set tracking servers for .avast.co.jp and .avast.ru. Enable cookies for .avast.co.jp (Ales)
- *02/05/13 Added eVar43 logic, ppros 99 (Ales)
+ *02/05/13 Added eVar45 logic, ppros 99 (Ales)
+ *15/05/13 Added eVar46 logic (Ales)
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -304,8 +305,10 @@ function s_doPlugins(s) {
     else {
       if(s.getQueryParam('p_bld') == "FreeInBusiness")
             s.eVar27="Free Program | Free In Business";
-      else if(s.getQueryParam('p_sts') && parseInt(s.getQueryParam('p_lst')) > 2)
-            s.eVar27="Free Program | Soft Trial";
+      else if(s.getQueryParam('p_sts') && parseInt(s.getQueryParam('p_pro')) > 0 ) {
+            if(s.getQueryParam('p_lst') === "3" || s.getQueryParam('p_lst') === "4" || s.getQueryParam('p_lst') === "5")
+                s.eVar27="Free Program | Soft Trial";
+      }
       else if(s.getQueryParam('seg') == "fre_reg" || s.getQueryParam('seg') == "fre_lic")
             s.eVar27="Free Program | Registered";
       else if(s.getQueryParam('seg') == "fre_unr" || s.getQueryParam('seg') == "fre_unl")
@@ -461,18 +464,30 @@ function s_doPlugins(s) {
             document.cookie="osc_v42="+s.eVar42+";domain=.avast.com;path=/;";
 	}
 
-    /*s.eVar45*/    
-    if(s.getQueryParam('p_sts') === "0"){       
-        if(parseInt(s.getQueryParam('p_pro')) >  0 && parseInt(s.getQueryParam('p_lst')) >  2){
-            s.eVar43="Program Setup: Active"; 
+    /*s.eVar45 - Soft Trial*/
+    if(s.getQueryParam('p_sts') && parseInt(s.getQueryParam('p_pro')) > 0 ) {
+        if(s.getQueryParam('p_lst') === "3" || s.getQueryParam('p_lst') === "4" || s.getQueryParam('p_lst') === "5")
+            s.eVar45="Program Setup: Active";
+    }
+    else if(s.getQueryParam('p_sts') && parseInt(s.getQueryParam('p_pro')) > 0 ) {
+        if(s.getQueryParam('p_lst') === "0" || s.getQueryParam('p_lst') === "1" || s.getQueryParam('p_lst') === "2")
+            s.eVar45="Program Setup: Inactive";
+    } else {
+       s.eVar45="Program Setup: None";
+    }
+
+    /*s.eVar46 - Source Build - copy URL param 'p_bld' to eVar46 */
+    if(rc("osc_v46")){
+        s.eVar46=rc("osc_v46");
+    } else if (s.getQueryParam('p_bld')){
+        s.eVar46 = s.getQueryParam('p_bld');
+       
+        if(window.location.hostname.search(".avast.co.jp") != -1) {
+            document.cookie="osc_v46="+s.eVar46+";domain=.avast.co.jp;path=/;";
+        } else if (window.location.hostname.search(".avast.ru") != -1){
+            document.cookie="osc_v46="+s.eVar46+";domain=.avast.ru;path=/;";
         } else {
-            s.eVar43="Program Setup: Inactive";
-        }
-    } else if (s.getQueryParam('p_sts') === "1") {
-        if(parseInt(s.getQueryParam('p_pro')) >  0 && parseInt(s.getQueryParam('p_lst')) >  2){
-            s.eVar43="Program Update: Active"; 
-        } else {
-            s.eVar43="Program Update: Inactive";
+            document.cookie="osc_v46="+s.eVar46+";domain=.avast.com;path=/;";
         }
     }
     

@@ -455,7 +455,7 @@ CQURLInfo = {
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -463,7 +463,7 @@ CQURLInfo = {
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -472,13 +472,27 @@ CQURLInfo = {
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -917,26 +931,19 @@ CQURLInfo = {
 	</map> 
 	<img id="socialMedia" src="../../../1.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
 </div> 
-<div  id="underNav" class="breadcrumbGutter"> 
-      <div class="undernav-ribbon-wrapper"> 
-              <div id="undernav-right"> 
-                  <div id="lpButtonDiv" style="display:inline;"></div> 
-                  <div id="mini-cart-link-container" style="display:inline;"> 
-                      <a id="minicart-link" href="att-internet-terms-of-service.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content;2013053">My Wireless Cart  
-                          <img src="../../../1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
-                          <span id="minicart-count"></span> 
-                      </a><br/> 
-                      <div id="cart-preview-container" style="display:none;float:right;"></div> 
-                      <div id="cart-bubble-container" style="display:none;float:right;"></div> 
-                  </div> 
-                  <div class="clear"></div> 
-              </div> 
-              <div class="breadcrumb breadcrumb-undernav"> 
-     			 <div class="breadcrumb"> 
-    <a href="http://www.att.com/" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="http://www.att.com/shop/" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="http://www.att.com/shop/internet.html" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content/breadcrumb">Internet</a>&nbsp;&nbsp;/&nbsp;&nbsp;att-internet-terms-of-service 
-    </div> 
-			</div> 
-		</div> 
+<div  id="underNav"> 
+	<div id="undernav-right"> 
+	    <div id="lpButtonDiv" style="display:inline;"></div> 
+	    <div id="mini-cart-link-container" style="display:inline;"> 
+	        <a id="minicart-link" href="att-internet-terms-of-service.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/internet/att-internet-terms-of-service/jcr:content;2013053">My Wireless Cart  
+	            <img src="../../../1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
+	            <span id="minicart-count"></span> 
+	        </a><br/> 
+	        <div id="cart-preview-container" style="display:none;float:right;"></div> 
+	        <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+	    </div> 
+	    <div class="clear"></div> 
+	</div> 
 </div> 
 	<!-- main content of page --> 
 	<div id="wrapper"> 
@@ -953,10 +960,9 @@ CQURLInfo = {
 				<div id="breadcrumbs-and-facebook-like-container"> 
 					<div style="" id="breadcrumbs-container"> 
 						<!--  --> 
-						<div class="base-bread-crumb breadcrumb-hidden" style="padding-left:10px;"> 
-							<div class="basebreadcrumb breadcrumb"> 
+						<div class="base-bread-crumb" style="padding-left:10px;"><div class="basebreadcrumb breadcrumb"> 
 </div> 
-						</div> 
+</div> 
 					</div> 
 					<div align="right" id="facebook-like-container"> 
 				          	<div class="likebutton"> 
@@ -1269,7 +1275,7 @@ CQURLInfo = {
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="../../media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 208748337863140873888190134620128977364 --> 
+		 <!--X-Renderer: 122776526919335096400756408465035239578 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1479,7 +1485,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","h2LRRNHTJyvVhQRzFRnTMlTK!1365809097!1368229651693"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","fy13RXLWth290JyyH9dyWn2m!1293609628!1368853430307"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

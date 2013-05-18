@@ -1,0 +1,1611 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/galleries/2013/05/16/george-takei-s-nine-favorite-star-trek-memes.html",' +
+                '"title": "George Takei&rsquo;s 9 Favorite &lsquo;Star Trek&rsquo; Memes, From Khan to Party Spock",' +
+                '"rubric": "Khaaan!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "262c69732d50511eeb75a4a4d57cfbeb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/sad-face-at-walmart.html",' +
+                '"title": "Sad Face at Walmart",' +
+                '"rubric": "PROFIT PROBLEMS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "12855db64bd0ed3a5e8a3437853873fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/imagine-the-story-on-fox-jay-carney-holds-on-as-winds-buffet-white-house.html",' +
+                '"title": "&lsquo;Imagine the Story on Fox&rsquo;&ndash;Jay Carney Holds On as Winds Buffet White House",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "418e27c07971d09dd34a34e7c5e23b30"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/world-war-ii-s-strangest-battle-when-americans-and-germans-fought-together.html",' +
+                '"title": "World War II&rsquo;s Strangest Battle: When Americans and Germans Fought Together",' +
+                '"rubric": "After the Downfall",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "15c61f8bccb3be0fc427bdc477e5b16e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/inside-the-latest-benghazi-emails-no-one-knew-much-of-anything.html",' +
+                '"title": "Inside the Latest Benghazi Emails: No One Knew Much of Anything",' +
+                '"rubric": "More Questions",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9f38eb712a34d7982f38a8ca15642e8e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/makeup-for-men-is-on-the-rise-and-no-longer-a-taboo.html",' +
+                '"title": "Makeup for Men Is on the Rise&mdash;and No Longer a Taboo",' +
+                '"rubric": "Boys in Bronzer",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "86bc7ef588133b4771d7ddf32ebcbace"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/irs-doj-and-benghazi-expose-limits-of-obama-s-big-government-vision.html",' +
+                '"title": "IRS, DOJ, and Benghazi Expose Limits of Obama&rsquo;s Big-Government Vision",' +
+                '"rubric": "IRS, DOJ, and Benghazi",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d6859a49f36ede0bef90989fe2319cbb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/06/how-10-porn-stars-lost-their-virginity.html",' +
+                '"title": "How 10 Porn Stars Lost Their Virginity",' +
+                '"rubric": "First Times",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a62cc46c520c8c8570037801d1ac507"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/america-s-new-oligarchs-fwd-us-and-silicon-valley-s-shady-1-percenters.html",' +
+                '"title": "America&rsquo;s New Oligarchs&mdash;Fwd.us and Silicon Valley&rsquo;s Shady 1 Percenters",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "2c65f4fe7a5aff3b7aab4c454aafd69e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/downton-abbey-season-4-sets-pbs-return-date.html",' +
+                '"title": "\'Downton Abbey\' Season 4 Sets PBS Return Date",' +
+                '"rubric": "Dear \'Abbey\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a4669e4a900f41e6ef1ced8eac02f1ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/inferno-dan-s-brown-s-best-book-yet.html",' +
+                '"title": "&lsquo;Inferno&rsquo;: Dan&rsquo;s Brown&rsquo;s Best Book Yet",' +
+                '"rubric": "Hot Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4223332b4606cfe721f3f7afa035cc74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/poor-misunderstood-media-matters.html",' +
+                '"title": "Poor Misunderstood Media Matters",' +
+                '"rubric": "I, Eli",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c410e3b65ab536732b89af3e60982b59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/star-trek-for-dummies-get-ready-for-into-darkness-with-our-primer.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; for Dummies: Get Ready for &lsquo;Into Darkness&rsquo; With Our Primer",' +
+                '"rubric": "Make It So",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d9e3a128b7afab1d78b099b2bbc4dc57"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/the-coming-attempt-to-impeach-obama.html",' +
+                '"title": "The Coming Attempt to Impeach Obama",' +
+                '"rubric": "Nuts",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cd24a7fc4e16de378d75d1b49713dbb1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/19/nipple-tattoos-increase-in-popularity-in-uk.html",' +
+                '"title": "Nipple Tattoos Increase in Popularity in U.K.",' +
+                '"rubric": "Ouch",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "73adfc8fcbff39a746ae91de4feb64d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/ken-tucker-on-why-the-big-bang-theory-is-better-than-ever.html",' +
+                '"title": "Tucker on Why &lsquo;The Big Bang Theory&rsquo; Is Better Than Ever",' +
+                '"rubric": "Bazinga!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b1d2adf5de0a6fcf8d60bd22d6a13ee0"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/inside-the-latest-benghazi-emails-no-one-knew-much-of-anything.html",' +
+                '"title": "Inside the Latest Benghazi Emails: No One Knew Much of Anything",' +
+                '"rubric": "More Questions",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9f38eb712a34d7982f38a8ca15642e8e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/irs-doj-and-benghazi-expose-limits-of-obama-s-big-government-vision.html",' +
+                '"title": "IRS, DOJ, and Benghazi Expose Limits of Obama&rsquo;s Big-Government Vision",' +
+                '"rubric": "IRS, DOJ, and Benghazi",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d6859a49f36ede0bef90989fe2319cbb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/eric-holder-on-the-skewer-the-lowest-points-of-his-capitol-hill-grilling.html",' +
+                '"title": "Eric Holder on the Skewer: The Lowest Points of His Capitol Hill Grilling",' +
+                '"rubric": "Hot Seat",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e11ad7e7259fc6ae4370d3e147c0f477"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/inferno-dan-s-brown-s-best-book-yet.html",' +
+                '"title": "&lsquo;Inferno&rsquo;: Dan&rsquo;s Brown&rsquo;s Best Book Yet",' +
+                '"rubric": "Hot Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4223332b4606cfe721f3f7afa035cc74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/imagine-the-story-on-fox-jay-carney-holds-on-as-winds-buffet-white-house.html",' +
+                '"title": "&lsquo;Imagine the Story on Fox&rsquo;&ndash;Jay Carney Holds On as Winds Buffet White House",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "418e27c07971d09dd34a34e7c5e23b30"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/ken-tucker-on-why-the-big-bang-theory-is-better-than-ever.html",' +
+                '"title": "Tucker on Why &lsquo;The Big Bang Theory&rsquo; Is Better Than Ever",' +
+                '"rubric": "Bazinga!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b1d2adf5de0a6fcf8d60bd22d6a13ee0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/justice-department-s-ap-subpoena-surgical-strike-or-dragnet.html",' +
+                '"title": "Justice Department&rsquo;s AP Subpoena: Surgical Strike or Dragnet?",' +
+                '"rubric": "AP Subpoena",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ca707e06c6543ccd09dbbd7ffd58395e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/the-king-the-courtesan-inside-edward-viii-s-steamy-french-affair.html",' +
+                '"title": "The King and the Courtesan: Inside Edward VIII&rsquo;s Steamy French Affair",' +
+                '"rubric": "Royal Dirt",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3965b6c64a7568b610ee231f58120b24"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/sad-face-at-walmart.html",' +
+                '"title": "Sad Face at Walmart",' +
+                '"rubric": "PROFIT PROBLEMS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "12855db64bd0ed3a5e8a3437853873fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/david-beckham-is-retiring-but-we-still-love-him.html",' +
+                '"title": "David Beckham Is Retiring, But We Still Love Him",' +
+                '"rubric": "HE&rsquo;S OUT",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "092f9f172d68e508622c13b807574bf1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/makeup-for-men-is-on-the-rise-and-no-longer-a-taboo.html",' +
+                '"title": "Makeup for Men Is on the Rise&mdash;and No Longer a Taboo",' +
+                '"rubric": "Boys in Bronzer",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "86bc7ef588133b4771d7ddf32ebcbace"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/roger-stone-s-new-book-solves-jfk-assassination-johnson-did-it.html",' +
+                '"title": "Roger Stone&rsquo;s New Book &lsquo;Solves&rsquo; JFK Assassination: Johnson Did It!",' +
+                '"rubric": "INCENDIARY BOOK",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "37187b749f5eee5feafde521a518e360"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/olympia-snowe-on-her-new-book-overcoming-partisanship-more.html",' +
+                '"title": "Olympia Snowe on Her New Book, Overcoming Partisanship &amp; More",' +
+                '"rubric": "Banter With the Beast",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "beb66450112c8a6229435979ae1330c1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/j-j-abrams-on-star-trek-into-darkness-the-mission-continues-more.html",' +
+                '"title": "J.J. Abrams on &lsquo;Star Trek Into Darkness,&rsquo; the Mission Continues &amp; More",' +
+                '"rubric": "Director, Activist",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b34c57f6548cd0449f79bf2c501a16fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/jimmy-connors-memoir-shows-he-wasn-t-misunderstood-he-was-just-a-jerk.html",' +
+                '"title": "Jimmy Connors Memoir Shows He Wasn&rsquo;t Misunderstood, He Was Just a Jerk",' +
+                '"rubric": "The Entertainer",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "238b7f216ad303ea7752d0ae1ec2305c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/joakim-noah-has-the-manliest-bun-ever.html",' +
+                '"title": "Joakim Noah Has the Manliest Bun Ever",' +
+                '"rubric": "Samurai Chic",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "ebdbd2178bdadb9b0185c98906e7a9e5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/star-trek-for-dummies-get-ready-for-into-darkness-with-our-primer.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; for Dummies: Get Ready for &lsquo;Into Darkness&rsquo; With Our Primer",' +
+                '"rubric": "Make It So",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d9e3a128b7afab1d78b099b2bbc4dc57"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/o-j-simpson-wants-redemption-retrial-for-2008-robbery-conviction.html",' +
+                '"title": "O.J. Simpson Wants Redemption, Retrial for 2008 Robbery Conviction",' +
+                '"rubric": "Innocent?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9f4f81cab3fd0f5e02c59bdb2ac37f4a"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/star-trek-dating-websites-cater-to-trekkies-looking-for-love.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; Dating Websites Cater to Trekkies Looking for Love",' +
+                '"rubric": "Trekkies in Love",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c5eaa9791fad8bee9f7b0215644240b6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/america-s-new-oligarchs-fwd-us-and-silicon-valley-s-shady-1-percenters.html",' +
+                '"title": "America&rsquo;s New Oligarchs&mdash;Fwd.us and Silicon Valley&rsquo;s Shady 1 Percenters",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "2c65f4fe7a5aff3b7aab4c454aafd69e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/05/15/inside-the-latest-benghazi-emails-no-one-knew-much-of-anything.html",' +
+                '"title": "Inside the Latest Benghazi Emails: No One Knew Much of Anything",' +
+                '"rubric": "More Questions",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9f38eb712a34d7982f38a8ca15642e8e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/imagine-the-story-on-fox-jay-carney-holds-on-as-winds-buffet-white-house.html",' +
+                '"title": "&lsquo;Imagine the Story on Fox&rsquo;&ndash;Jay Carney Holds On as Winds Buffet White House",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "418e27c07971d09dd34a34e7c5e23b30"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/makeup-for-men-is-on-the-rise-and-no-longer-a-taboo.html",' +
+                '"title": "Makeup for Men Is on the Rise&mdash;and No Longer a Taboo",' +
+                '"rubric": "Boys in Bronzer",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "86bc7ef588133b4771d7ddf32ebcbace"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/irs-doj-and-benghazi-expose-limits-of-obama-s-big-government-vision.html",' +
+                '"title": "IRS, DOJ, and Benghazi Expose Limits of Obama&rsquo;s Big-Government Vision",' +
+                '"rubric": "IRS, DOJ, and Benghazi",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d6859a49f36ede0bef90989fe2319cbb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/poor-misunderstood-media-matters.html",' +
+                '"title": "Poor Misunderstood Media Matters",' +
+                '"rubric": "I, Eli",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c410e3b65ab536732b89af3e60982b59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/world-war-ii-s-strangest-battle-when-americans-and-germans-fought-together.html",' +
+                '"title": "World War II&rsquo;s Strangest Battle: When Americans and Germans Fought Together",' +
+                '"rubric": "After the Downfall",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "15c61f8bccb3be0fc427bdc477e5b16e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/eric-holder-on-the-skewer-the-lowest-points-of-his-capitol-hill-grilling.html",' +
+                '"title": "Eric Holder on the Skewer: The Lowest Points of His Capitol Hill Grilling",' +
+                '"rubric": "Hot Seat",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e11ad7e7259fc6ae4370d3e147c0f477"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/justice-department-s-ap-subpoena-surgical-strike-or-dragnet.html",' +
+                '"title": "Justice Department&rsquo;s AP Subpoena: Surgical Strike or Dragnet?",' +
+                '"rubric": "AP Subpoena",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ca707e06c6543ccd09dbbd7ffd58395e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/06/how-10-porn-stars-lost-their-virginity.html",' +
+                '"title": "How 10 Porn Stars Lost Their Virginity",' +
+                '"rubric": "First Times",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a62cc46c520c8c8570037801d1ac507"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/jimmy-connors-memoir-shows-he-wasn-t-misunderstood-he-was-just-a-jerk.html",' +
+                '"title": "Jimmy Connors Memoir Shows He Wasn&rsquo;t Misunderstood, He Was Just a Jerk",' +
+                '"rubric": "The Entertainer",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "238b7f216ad303ea7752d0ae1ec2305c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/inferno-dan-s-brown-s-best-book-yet.html",' +
+                '"title": "&lsquo;Inferno&rsquo;: Dan&rsquo;s Brown&rsquo;s Best Book Yet",' +
+                '"rubric": "Hot Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4223332b4606cfe721f3f7afa035cc74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/roger-stone-s-new-book-solves-jfk-assassination-johnson-did-it.html",' +
+                '"title": "Roger Stone&rsquo;s New Book &lsquo;Solves&rsquo; JFK Assassination: Johnson Did It!",' +
+                '"rubric": "INCENDIARY BOOK",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "37187b749f5eee5feafde521a518e360"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/19/nipple-tattoos-increase-in-popularity-in-uk.html",' +
+                '"title": "Nipple Tattoos Increase in Popularity in U.K.",' +
+                '"rubric": "Ouch",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "73adfc8fcbff39a746ae91de4feb64d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/sad-face-at-walmart.html",' +
+                '"title": "Sad Face at Walmart",' +
+                '"rubric": "PROFIT PROBLEMS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "12855db64bd0ed3a5e8a3437853873fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/irs-scandal-s-central-figure-lois-lerner-described-as-apolitical.html",' +
+                '"title": "IRS Scandal&rsquo;s Central Figure, Lois Lerner, Described as &lsquo;Apolitical&rsquo;",' +
+                '"rubric": "Political Target",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "429f72ca737d4e42c2a41e5f02cb0545"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/ken-tucker-on-why-the-big-bang-theory-is-better-than-ever.html",' +
+                '"title": "Tucker on Why &lsquo;The Big Bang Theory&rsquo; Is Better Than Ever",' +
+                '"rubric": "Bazinga!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b1d2adf5de0a6fcf8d60bd22d6a13ee0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/05/15/tina-brown-on-growing-white-house-scandals.html",' +
+                '"title": "Tina Brown on Growing White House Scandals",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b788e3c31bf703bae121b459b520ba83"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/cbs-announces-2013-14-primetime-schedule.html",' +
+                '"title": "CBS Announces 2013-14 Primetime Schedule",' +
+                '"rubric": "TV Upfronts",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "647206b770c25e13cbc5203987e1282b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/ken-tucker-on-why-the-big-bang-theory-is-better-than-ever.html",' +
+                '"title": "Tucker on Why &lsquo;The Big Bang Theory&rsquo; Is Better Than Ever",' +
+                '"rubric": "Bazinga!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b1d2adf5de0a6fcf8d60bd22d6a13ee0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/j-j-abrams-on-star-trek-into-darkness-the-mission-continues-more.html",' +
+                '"title": "J.J. Abrams on &lsquo;Star Trek Into Darkness,&rsquo; the Mission Continues &amp; More",' +
+                '"rubric": "Director, Activist",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b34c57f6548cd0449f79bf2c501a16fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/05/14/new-york-s-hottest-club-is-wahhhhh.html",' +
+                '"title": "New York\'s Hottest Club Is Wahhhhh",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f036994ac0d9f845479251d2b22b1295"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/upfront-about-upfronts-jace-lacob-talks-to-kpcc-about-next-season-s-new-television.html",' +
+                '"title": "Next Season\'s Television Trends",' +
+                '"rubric": "Talking TV",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3749dc9d997c94a9ab7e3019425fa184"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/05/16/scandal-starring-president-obama.html",' +
+                '"title": "\'Scandal,\' Starring President Obama",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9da83ab65da39994ff8ff1f3fdff91e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/the-cw-reveals-its-2013-14-primetime-schedule-hart-of-dixie-to-monday-supernatural-to-tuesday-the-carrie-diaries-to-friday.html",' +
+                '"title": "The CW Reveals Its 2013-14 Primetime Schedule: \'Hart of Dixie\' to Monday, \'Supernatural\' to Tuesday, \'The Carrie Diaries\' to Friday",' +
+                '"rubric": "TV Upfronts",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ba4a2f3205bf71444596c4e2f78ec248"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/abc-announces-2013-14-schedule-marvel-s-agents-of-s-h-i-e-l-d-gets-tuesday-berth-once-upon-a-time-spin-off-to-thursdays.html",' +
+                '"title": "ABC Announces 2013-14 Schedule: \'Marvel\'s Agents of S.H.I.E.L.D.\' Gets Tuesday Berth, \'Super Fun Night\' Gets \'Modern Family\' Lead-In",' +
+                '"rubric": "TV Upfronts",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7fe90f93940255d930f9667365bdd09d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/how-i-met-your-mother-mother-revealed-meet-cristin-milioti.html",' +
+                '"title": "&lsquo;How I Met Your Mother&rsquo; Mother Revealed: Meet Cristin Milioti",' +
+                '"rubric": "Revealed!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5a2e86034ace0bf686005a86d7dccffd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/adam-devine-on-workaholics-cameo-on-arrested-development-more.html",' +
+                '"title": "Adam DeVine on &lsquo;Workaholics,&rsquo; Cameo on &lsquo;Arrested Development&rsquo; &amp; More",' +
+                '"rubric": "9-to-5er",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e1183d4ec8680b716721d676610369b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/05/16/michael-scott-s-magical-moments.html",' +
+                '"title": "Michael Scott\'s Magical Moments",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c1ab3fe064ca67c5c12a00994e9d26bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/downton-abbey-season-4-sets-pbs-return-date.html",' +
+                '"title": "\'Downton Abbey\' Season 4 Sets PBS Return Date",' +
+                '"rubric": "Dear \'Abbey\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a4669e4a900f41e6ef1ced8eac02f1ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/05/15/spy-vs-spy.html",' +
+                '"title": "Spy vs. Spy",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4df7868885edfb872328d88f977318fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/star-trek-dating-websites-cater-to-trekkies-looking-for-love.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; Dating Websites Cater to Trekkies Looking for Love",' +
+                '"rubric": "Trekkies in Love",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c5eaa9791fad8bee9f7b0215644240b6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/world-war-ii-s-strangest-battle-when-americans-and-germans-fought-together.html",' +
+                '"title": "World War II&rsquo;s Strangest Battle: When Americans and Germans Fought Together",' +
+                '"rubric": "After the Downfall",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "15c61f8bccb3be0fc427bdc477e5b16e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/poor-misunderstood-media-matters.html",' +
+                '"title": "Poor Misunderstood Media Matters",' +
+                '"rubric": "I, Eli",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c410e3b65ab536732b89af3e60982b59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/jimmy-connors-memoir-shows-he-wasn-t-misunderstood-he-was-just-a-jerk.html",' +
+                '"title": "Jimmy Connors Memoir Shows He Wasn&rsquo;t Misunderstood, He Was Just a Jerk",' +
+                '"rubric": "The Entertainer",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "238b7f216ad303ea7752d0ae1ec2305c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/america-s-new-oligarchs-fwd-us-and-silicon-valley-s-shady-1-percenters.html",' +
+                '"title": "America&rsquo;s New Oligarchs&mdash;Fwd.us and Silicon Valley&rsquo;s Shady 1 Percenters",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "2c65f4fe7a5aff3b7aab4c454aafd69e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/makeup-for-men-is-on-the-rise-and-no-longer-a-taboo.html",' +
+                '"title": "Makeup for Men Is on the Rise&mdash;and No Longer a Taboo",' +
+                '"rubric": "Boys in Bronzer",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "86bc7ef588133b4771d7ddf32ebcbace"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/downton-abbey-season-4-sets-pbs-return-date.html",' +
+                '"title": "\'Downton Abbey\' Season 4 Sets PBS Return Date",' +
+                '"rubric": "Dear \'Abbey\'",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "a4669e4a900f41e6ef1ced8eac02f1ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/06/how-10-porn-stars-lost-their-virginity.html",' +
+                '"title": "How 10 Porn Stars Lost Their Virginity",' +
+                '"rubric": "First Times",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a62cc46c520c8c8570037801d1ac507"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/19/nipple-tattoos-increase-in-popularity-in-uk.html",' +
+                '"title": "Nipple Tattoos Increase in Popularity in U.K.",' +
+                '"rubric": "Ouch",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "73adfc8fcbff39a746ae91de4feb64d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/irs-doj-and-benghazi-expose-limits-of-obama-s-big-government-vision.html",' +
+                '"title": "IRS, DOJ, and Benghazi Expose Limits of Obama&rsquo;s Big-Government Vision",' +
+                '"rubric": "IRS, DOJ, and Benghazi",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d6859a49f36ede0bef90989fe2319cbb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/inside-the-latest-benghazi-emails-no-one-knew-much-of-anything.html",' +
+                '"title": "Inside the Latest Benghazi Emails: No One Knew Much of Anything",' +
+                '"rubric": "More Questions",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9f38eb712a34d7982f38a8ca15642e8e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/how-i-met-your-mother-mother-revealed-meet-cristin-milioti.html",' +
+                '"title": "&lsquo;How I Met Your Mother&rsquo; Mother Revealed: Meet Cristin Milioti",' +
+                '"rubric": "Revealed!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5a2e86034ace0bf686005a86d7dccffd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/can-you-eat-cicadas-yes-and-here-s-how.html",' +
+                '"title": "Can You Eat Cicadas? Yes, and Here&rsquo;s How",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Food",' +
+                '"urlHashCode": "3ab5097e4e7d7d7eb1b4435d343e3fee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/sad-face-at-walmart.html",' +
+                '"title": "Sad Face at Walmart",' +
+                '"rubric": "PROFIT PROBLEMS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "12855db64bd0ed3a5e8a3437853873fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/imagine-the-story-on-fox-jay-carney-holds-on-as-winds-buffet-white-house.html",' +
+                '"title": "&lsquo;Imagine the Story on Fox&rsquo;&ndash;Jay Carney Holds On as Winds Buffet White House",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "418e27c07971d09dd34a34e7c5e23b30"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/star-trek-for-dummies-get-ready-for-into-darkness-with-our-primer.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; for Dummies: Get Ready for &lsquo;Into Darkness&rsquo; With Our Primer",' +
+                '"rubric": "Make It So",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d9e3a128b7afab1d78b099b2bbc4dc57"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/05/14/new-york-s-hottest-club-is-wahhhhh.html",' +
+                '"title": "New York\'s Hottest Club Is Wahhhhh",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f036994ac0d9f845479251d2b22b1295"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/inferno-dan-s-brown-s-best-book-yet.html",' +
+                '"title": "&lsquo;Inferno&rsquo;: Dan&rsquo;s Brown&rsquo;s Best Book Yet",' +
+                '"rubric": "Hot Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4223332b4606cfe721f3f7afa035cc74"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/cicadas-grasshoppers-locusts-ants-among-the-tastiest-insects.html",' +
+                '"title": "Cicadas, Grasshoppers, Locusts, Ants Among the Tastiest Insects",' +
+                '"rubric": "Try Them All!",' +
+                '"topic": "Food",' +
+                '"urlHashCode": "1323c549a1761bc25190fecbe47651cc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/world-war-ii-s-strangest-battle-when-americans-and-germans-fought-together.html",' +
+                '"title": "World War II&rsquo;s Strangest Battle: When Americans and Germans Fought Together",' +
+                '"rubric": "After the Downfall",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "15c61f8bccb3be0fc427bdc477e5b16e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/06/how-10-porn-stars-lost-their-virginity.html",' +
+                '"title": "How 10 Porn Stars Lost Their Virginity",' +
+                '"rubric": "First Times",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a62cc46c520c8c8570037801d1ac507"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/inside-the-latest-benghazi-emails-no-one-knew-much-of-anything.html",' +
+                '"title": "Inside the Latest Benghazi Emails: No One Knew Much of Anything",' +
+                '"rubric": "More Questions",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9f38eb712a34d7982f38a8ca15642e8e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/irs-doj-and-benghazi-expose-limits-of-obama-s-big-government-vision.html",' +
+                '"title": "IRS, DOJ, and Benghazi Expose Limits of Obama&rsquo;s Big-Government Vision",' +
+                '"rubric": "IRS, DOJ, and Benghazi",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d6859a49f36ede0bef90989fe2319cbb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/eric-holder-on-the-skewer-the-lowest-points-of-his-capitol-hill-grilling.html",' +
+                '"title": "Eric Holder on the Skewer: The Lowest Points of His Capitol Hill Grilling",' +
+                '"rubric": "Hot Seat",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e11ad7e7259fc6ae4370d3e147c0f477"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/imagine-the-story-on-fox-jay-carney-holds-on-as-winds-buffet-white-house.html",' +
+                '"title": "&lsquo;Imagine the Story on Fox&rsquo;&ndash;Jay Carney Holds On as Winds Buffet White House",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "418e27c07971d09dd34a34e7c5e23b30"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/inferno-dan-s-brown-s-best-book-yet.html",' +
+                '"title": "&lsquo;Inferno&rsquo;: Dan&rsquo;s Brown&rsquo;s Best Book Yet",' +
+                '"rubric": "Hot Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4223332b4606cfe721f3f7afa035cc74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/ken-tucker-on-why-the-big-bang-theory-is-better-than-ever.html",' +
+                '"title": "Tucker on Why &lsquo;The Big Bang Theory&rsquo; Is Better Than Ever",' +
+                '"rubric": "Bazinga!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b1d2adf5de0a6fcf8d60bd22d6a13ee0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/sad-face-at-walmart.html",' +
+                '"title": "Sad Face at Walmart",' +
+                '"rubric": "PROFIT PROBLEMS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "12855db64bd0ed3a5e8a3437853873fa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/makeup-for-men-is-on-the-rise-and-no-longer-a-taboo.html",' +
+                '"title": "Makeup for Men Is on the Rise&mdash;and No Longer a Taboo",' +
+                '"rubric": "Boys in Bronzer",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "86bc7ef588133b4771d7ddf32ebcbace"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/roger-stone-s-new-book-solves-jfk-assassination-johnson-did-it.html",' +
+                '"title": "Roger Stone&rsquo;s New Book &lsquo;Solves&rsquo; JFK Assassination: Johnson Did It!",' +
+                '"rubric": "INCENDIARY BOOK",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "37187b749f5eee5feafde521a518e360"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/justice-department-s-ap-subpoena-surgical-strike-or-dragnet.html",' +
+                '"title": "Justice Department&rsquo;s AP Subpoena: Surgical Strike or Dragnet?",' +
+                '"rubric": "AP Subpoena",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ca707e06c6543ccd09dbbd7ffd58395e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/jimmy-connors-memoir-shows-he-wasn-t-misunderstood-he-was-just-a-jerk.html",' +
+                '"title": "Jimmy Connors Memoir Shows He Wasn&rsquo;t Misunderstood, He Was Just a Jerk",' +
+                '"rubric": "The Entertainer",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "238b7f216ad303ea7752d0ae1ec2305c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/the-king-the-courtesan-inside-edward-viii-s-steamy-french-affair.html",' +
+                '"title": "The King and the Courtesan: Inside Edward VIII&rsquo;s Steamy French Affair",' +
+                '"rubric": "Royal Dirt",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3965b6c64a7568b610ee231f58120b24"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/olympia-snowe-on-her-new-book-overcoming-partisanship-more.html",' +
+                '"title": "Olympia Snowe on Her New Book, Overcoming Partisanship &amp; More",' +
+                '"rubric": "Banter With the Beast",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "beb66450112c8a6229435979ae1330c1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/star-trek-for-dummies-get-ready-for-into-darkness-with-our-primer.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; for Dummies: Get Ready for &lsquo;Into Darkness&rsquo; With Our Primer",' +
+                '"rubric": "Make It So",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d9e3a128b7afab1d78b099b2bbc4dc57"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/david-beckham-is-retiring-but-we-still-love-him.html",' +
+                '"title": "David Beckham Is Retiring, But We Still Love Him",' +
+                '"rubric": "HE&rsquo;S OUT",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "092f9f172d68e508622c13b807574bf1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/joakim-noah-has-the-manliest-bun-ever.html",' +
+                '"title": "Joakim Noah Has the Manliest Bun Ever",' +
+                '"rubric": "Samurai Chic",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "ebdbd2178bdadb9b0185c98906e7a9e5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/o-j-simpson-wants-redemption-retrial-for-2008-robbery-conviction.html",' +
+                '"title": "O.J. Simpson Wants Redemption, Retrial for 2008 Robbery Conviction",' +
+                '"rubric": "Innocent?",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9f4f81cab3fd0f5e02c59bdb2ac37f4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/j-j-abrams-on-star-trek-into-darkness-the-mission-continues-more.html",' +
+                '"title": "J.J. Abrams on &lsquo;Star Trek Into Darkness,&rsquo; the Mission Continues &amp; More",' +
+                '"rubric": "Director, Activist",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b34c57f6548cd0449f79bf2c501a16fc"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/poor-misunderstood-media-matters.html",' +
+                '"title": "Poor Misunderstood Media Matters",' +
+                '"rubric": "I, Eli",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c410e3b65ab536732b89af3e60982b59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/05/14/imagine-the-story-on-fox-jay-carney-holds-on-as-winds-buffet-white-house.html",' +
+                '"title": "&lsquo;Imagine the Story on Fox&rsquo;&ndash;Jay Carney Holds On as Winds Buffet White House",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "418e27c07971d09dd34a34e7c5e23b30"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/inside-the-latest-benghazi-emails-no-one-knew-much-of-anything.html",' +
+                '"title": "Inside the Latest Benghazi Emails: No One Knew Much of Anything",' +
+                '"rubric": "More Questions",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9f38eb712a34d7982f38a8ca15642e8e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/irs-doj-and-benghazi-expose-limits-of-obama-s-big-government-vision.html",' +
+                '"title": "IRS, DOJ, and Benghazi Expose Limits of Obama&rsquo;s Big-Government Vision",' +
+                '"rubric": "IRS, DOJ, and Benghazi",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d6859a49f36ede0bef90989fe2319cbb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/makeup-for-men-is-on-the-rise-and-no-longer-a-taboo.html",' +
+                '"title": "Makeup for Men Is on the Rise&mdash;and No Longer a Taboo",' +
+                '"rubric": "Boys in Bronzer",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "86bc7ef588133b4771d7ddf32ebcbace"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/irs-audits-benghazi-sebelius-obama-s-second-term-is-scandal-heaven.html",' +
+                '"title": "IRS Audits, Benghazi, Sebelius: Obama&rsquo;s Second Term Is Scandal Heaven",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "53edb68c0e8f0d2b033074283d7d6e23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/poor-misunderstood-media-matters.html",' +
+                '"title": "Poor Misunderstood Media Matters",' +
+                '"rubric": "I, Eli",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c410e3b65ab536732b89af3e60982b59"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/new-questions-arise-about-mary-richardson-kennedy-s-suicide.html",' +
+                '"title": "New Questions Arise About Mary Richardson Kennedy&rsquo;s Suicide",' +
+                '"rubric": "One Year Later",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a38879217ffa20fb02ac303756bac146"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/06/how-10-porn-stars-lost-their-virginity.html",' +
+                '"title": "How 10 Porn Stars Lost Their Virginity",' +
+                '"rubric": "First Times",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a62cc46c520c8c8570037801d1ac507"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/america-s-new-oligarchs-fwd-us-and-silicon-valley-s-shady-1-percenters.html",' +
+                '"title": "America&rsquo;s New Oligarchs&mdash;Fwd.us and Silicon Valley&rsquo;s Shady 1 Percenters",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "2c65f4fe7a5aff3b7aab4c454aafd69e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/former-victoria-s-secret-model-kylie-bisutti-talks-leaving-the-runway-for-god.html",' +
+                '"title": "Former Victoria&rsquo;s Secret Model Kylie Bisutti Talks Leaving the Runway for God",' +
+                '"rubric": "Jesus Christ Superstar",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0cc4876cb2af54eebab461d59dfd5ae6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/eric-holder-on-the-skewer-the-lowest-points-of-his-capitol-hill-grilling.html",' +
+                '"title": "Eric Holder on the Skewer: The Lowest Points of His Capitol Hill Grilling",' +
+                '"rubric": "Hot Seat",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e11ad7e7259fc6ae4370d3e147c0f477"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/justice-department-s-ap-subpoena-surgical-strike-or-dragnet.html",' +
+                '"title": "Justice Department&rsquo;s AP Subpoena: Surgical Strike or Dragnet?",' +
+                '"rubric": "AP Subpoena",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ca707e06c6543ccd09dbbd7ffd58395e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/inferno-dan-s-brown-s-best-book-yet.html",' +
+                '"title": "&lsquo;Inferno&rsquo;: Dan&rsquo;s Brown&rsquo;s Best Book Yet",' +
+                '"rubric": "Hot Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4223332b4606cfe721f3f7afa035cc74"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/world-war-ii-s-strangest-battle-when-americans-and-germans-fought-together.html",' +
+                '"title": "World War II&rsquo;s Strangest Battle: When Americans and Germans Fought Together",' +
+                '"rubric": "After the Downfall",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "15c61f8bccb3be0fc427bdc477e5b16e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/roger-stone-s-new-book-solves-jfk-assassination-johnson-did-it.html",' +
+                '"title": "Roger Stone&rsquo;s New Book &lsquo;Solves&rsquo; JFK Assassination: Johnson Did It!",' +
+                '"rubric": "INCENDIARY BOOK",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "37187b749f5eee5feafde521a518e360"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/19/nipple-tattoos-increase-in-popularity-in-uk.html",' +
+                '"title": "Nipple Tattoos Increase in Popularity in U.K.",' +
+                '"rubric": "Ouch",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "73adfc8fcbff39a746ae91de4feb64d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/ken-tucker-on-why-the-big-bang-theory-is-better-than-ever.html",' +
+                '"title": "Tucker on Why &lsquo;The Big Bang Theory&rsquo; Is Better Than Ever",' +
+                '"rubric": "Bazinga!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b1d2adf5de0a6fcf8d60bd22d6a13ee0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/the-coming-attempt-to-impeach-obama.html",' +
+                '"title": "The Coming Attempt to Impeach Obama",' +
+                '"rubric": "Nuts",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cd24a7fc4e16de378d75d1b49713dbb1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/star-trek-for-dummies-get-ready-for-into-darkness-with-our-primer.html",' +
+                '"title": "&lsquo;Star Trek&rsquo; for Dummies: Get Ready for &lsquo;Into Darkness&rsquo; With Our Primer",' +
+                '"rubric": "Make It So",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d9e3a128b7afab1d78b099b2bbc4dc57"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/05/15/democracy-on-hold-as-david-bing-prepares-to-leave-detroit-s-city-hall.html",' +
+                '"title": "Democracy on Hold as Dave Bing Prepares to Leave Detroit&rsquo;s City Hall",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c185d99a14e51a8a967bad09da41b604"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/amy-s-baking-company-a-real-life-kitchen-nightmare.html",' +
+                '"title": "Amy&rsquo;s Baking Company: A Real-Life Kitchen Nightmare",' +
+                '"rubric": "Viral",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "49761c530601ab5dd265fa2448b63876"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/bea-arthur-naked-up-for-sale.html",' +
+                '"title": "\'Bea Arthur Naked\' Could Sell for $2.5 Million",' +
+                '"rubric": "On The Block",' +
+                '"topic": "Art",' +
+                '"urlHashCode": "7abdb05afc66035a4908753bffbeba52"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/12/world-war-ii-s-strangest-battle-when-americans-and-germans-fought-together.html",' +
+                '"title": "World War II&rsquo;s Strangest Battle: When Americans and Germans Fought Together",' +
+                '"rubric": "After the Downfall",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "15c61f8bccb3be0fc427bdc477e5b16e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/14/america-s-new-oligarchs-fwd-us-and-silicon-valley-s-shady-1-percenters.html",' +
+                '"title": "America&rsquo;s New Oligarchs&mdash;Fwd.us and Silicon Valley&rsquo;s Shady 1 Percenters",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "2c65f4fe7a5aff3b7aab4c454aafd69e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/03/25/jeffrey-epstein-how-the-billionaire-pedophile-got-off-easy.html",' +
+                '"title": "Behind Pedophile Jeffrey Epstein\'s Sweetheart Deal",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1d94ccfc59dc4498399e563805946266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/02/26/simcity-is-smarter-than-you-even-if-you-re-an-urban-planner.html",' +
+                '"title": "SimCity Is Smarter Than You (Even If You&rsquo;re an Urban Planner)",' +
+                '"rubric": "Game On",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "00ac8c04fceb0234ce62bf1fa9a32908"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/16/bea-arthur-s-boobs-got-us-booted-from-facebook.html",' +
+                '"title": "Bea Arthur&rsquo;s Boobs Got Us Booted From Facebook",' +
+                '"rubric": "Unfriend",' +
+                '"topic": "null",' +
+                '"urlHashCode": "d33e9e489a0fcfc91d20fa695064b8b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/04/16/beyonce-s-sparkling-nipples-marco-zanini-could-be-heading-to-schiaparelli.html",' +
+                '"title": "Beyonc&eacute;\'s Sparkling Nipples; Marco Zanini Could Be Heading to Schiaparelli",' +
+                '"rubric": "Fashion Cheat Sheet",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "0769332f8923aaa9d756f674c391ad23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/15/rand-paul-plays-the-maverick-at-cpac-and-the-evangelical-in-cedar-rapids.html",' +
+                '"title": "Rand Paul Plays the Maverick at CPAC and the Evangelical in Cedar Rapids",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9fbe6b99eb11f68a3d11d39103e1204c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/05/06/how-10-porn-stars-lost-their-virginity.html",' +
+                '"title": "How 10 Porn Stars Lost Their Virginity",' +
+                '"rubric": "First Times",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1a62cc46c520c8c8570037801d1ac507"' +
+            '}' +
+        ']' +
+    '}'
+);

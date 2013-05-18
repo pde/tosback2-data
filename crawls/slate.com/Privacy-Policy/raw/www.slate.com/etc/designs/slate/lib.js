@@ -561,7 +561,7 @@ SlateNav.createFlyout = function(stories, sectId) {
 		li.append(h5);
 		// add menuline and link data
 		a.addClass('sl-nav-link');
-		a.attr('href', entry.link);
+		a.attr('href', entry.link + '?wpisrc=flyouts');
 		a.html(entry.menuline);
 		h5.append(a);
 		li = p = span = h5 = a = null;
@@ -579,7 +579,7 @@ SlateNav.createFlyout = function(stories, sectId) {
 		a = $(document.createElement('a'));
 		a.addClass('sl-nav-link');
 		a.addClass('sl-to-uppercase');
-		a.attr('href', seeAllLink);
+		a.attr('href', seeAllLink + '?wpisrc=flyouts');
 		a.append('See all ' + SlateNav.sectionMap[sectId].name);
 		h5.append(a);
 	}

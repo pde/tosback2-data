@@ -460,7 +460,7 @@ CQURLInfo = {
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -468,7 +468,7 @@ CQURLInfo = {
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -477,13 +477,27 @@ CQURLInfo = {
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -528,7 +542,7 @@ CQURLInfo = {
 								<ul> 
 											<li><a href="../../index.html">att.com</a></li> 
 											<li><a href="../../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -922,26 +936,19 @@ CQURLInfo = {
 	</map> 
 	<img id="socialMedia" src="../../../1.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
 </div> 
-<div  id="underNav" class="breadcrumbGutter"> 
-      <div class="undernav-ribbon-wrapper"> 
-              <div id="undernav-right"> 
-                  <div id="lpButtonDiv" style="display:inline;"></div> 
-                  <div id="mini-cart-link-container" style="display:inline;"> 
-                      <a id="minicart-link" href="data-plans.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content;2013107">My Wireless Cart  
-                          <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
-                          <span id="minicart-count"></span> 
-                      </a><br/> 
-                      <div id="cart-preview-container" style="display:none;float:right;"></div> 
-                      <div id="cart-bubble-container" style="display:none;float:right;"></div> 
-                  </div> 
-                  <div class="clear"></div> 
-              </div> 
-              <div class="breadcrumb breadcrumb-undernav"> 
-     			 <div class="breadcrumb"> 
-    <a href="../../index.html" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../index.html" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../wireless.html" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content/breadcrumb">Wireless</a>&nbsp;&nbsp;/&nbsp;&nbsp;Individual &amp; Mobile Share Data Plans 
-    </div> 
-			</div> 
-		</div> 
+<div  id="underNav"> 
+	<div id="undernav-right"> 
+	    <div id="lpButtonDiv" style="display:inline;"></div> 
+	    <div id="mini-cart-link-container" style="display:inline;"> 
+	        <a id="minicart-link" href="data-plans.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/data-plans/jcr:content;2013107">My Wireless Cart  
+	            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
+	            <span id="minicart-count"></span> 
+	        </a><br/> 
+	        <div id="cart-preview-container" style="display:none;float:right;"></div> 
+	        <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+	    </div> 
+	    <div class="clear"></div> 
+	</div> 
 </div> 
 	<!-- main content of page --> 
 	<div id="wrapper"> 
@@ -1054,6 +1061,13 @@ CQURLInfo = {
 </div> 
 </div></div> 
          <div id="breadcrumbs-and-facebook-like-container"> 
+            <div style="" id="breadcrumbs-container"> 
+               <!--  --> 
+               <div class="base-bread-crumb" style="padding-left:10px;"> 
+                  <div class="basebreadcrumb breadcrumb"> 
+</div> 
+               </div> 
+            </div> 
             <div align="right" id="facebook-like-container"> 
                <div class="likebutton"> 
 	<div id="faceBookLikeButtonDiv" class="topMar10"> 
@@ -2094,7 +2108,7 @@ online - it's just that simple!<br>
 	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list">Wireless Customer Agreement</a> | 
 	<a class="last" href="../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html">Cell Phone Records Security</a> 
 		   |<a class="openModal modal705" href="http://www.att.com/shop/en/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges">Other Monthly Charges</a>| 
-			<a class="postPaidLegalLink" href="../../wirelessterms.html" target="_blank">Plan Terms</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank">Plan Terms</a>| 
 			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice">Online Pricing</a>| 
 			<div class='secondRow'> 
 				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html">Returns Policy &amp; Early Termination Fee</a>| 
@@ -2209,7 +2223,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 304717816311018320123763073805445381681 --> 
+		 <!--X-Renderer: 206907014552813295229023642354804813658 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -2419,7 +2433,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","kGdyRN4HZMppyj2tGb9xJ3jb!-1166965445!1368225895309"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","GgRlRW7Lvv2VGPSFdvbhxc6b!-58598148!1368849256827"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

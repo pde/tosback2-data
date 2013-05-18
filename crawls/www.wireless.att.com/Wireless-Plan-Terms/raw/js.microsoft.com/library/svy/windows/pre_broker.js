@@ -34,7 +34,7 @@ function cleCookie() {
 }
 
 if(/[\w\.]+\/en-us\//i.test(SR_url)) {
-	var _f = 0.065, _l="9";
+	var _f = 0.052, _l="9";
 	if(/windows-8\/meet/i.test(SR_url)) {
 		loadCle(1, _f,"1992",_l);
 	}else if(/windows-8\/new-pcs/i.test(SR_url)) {

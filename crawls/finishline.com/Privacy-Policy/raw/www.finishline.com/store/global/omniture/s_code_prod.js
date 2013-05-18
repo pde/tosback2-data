@@ -76,20 +76,23 @@ function s_doPlugins(s) {
 	}
 	if(!s.eVar2)
 		s.eVar2=s.getQueryParam('icid');
-	
+
 	if(!s.eVar8)
 		s.eVar8=s.getQueryParam('ET_RID');
 
 	if(!s.eVar9)
 		s.eVar9=s.getQueryParam('lid');
-	
+
 	if(!s.eVar10)
 		s.eVar10=s.getQueryParam('sourceid');
 
 	if(!s.eVar15)
 		s.eVar15=s.getQueryParam('ET_CID');
 
-	if(s.eVar1) 
+	if(!s.eVar16)
+		s.eVar16=s.getQueryParam('mnid','lnid','sort');
+
+	if(s.eVar1)
 		s.eVar1=s.eVar1.toLowerCase()
 
 	/*
@@ -98,7 +101,7 @@ function s_doPlugins(s) {
 	*/
 	var t_search=s.getValOnce(s[s.searchTermVariable],'ev1',0)
 	if(t_search=='')
-	{	
+	{
 		var a=s.split(s.events,',');
 		var e='';
 		for(var i = 0; i < a.length ; i++ )
@@ -117,7 +120,7 @@ function s_doPlugins(s) {
 		if(!s.products)
 			s.products=';';
 	}
-	
+
 	/*Channel Manager Configuration*/
 	s.channelManager('cmp,cid',':','s_cm');
    s.eVar50=s.getValOnce(s._referrer,'s_cm_ref',0);
@@ -125,7 +128,7 @@ function s_doPlugins(s) {
    s.eVar52=s.getValOnce(s._partner,'s_cm_ptn',0);
    s.eVar53=s.getValOnce(s._campaign,'s_cm_camp',0);
    s.eVar54=s.getValOnce(s._keywords,'s_cm_kw',0);
-    
+
 	/*Check for Affiliate*/
 	var sourceID=s.getQueryParam('sourceid');
 	if (sourceID && sourceID.toLowerCase() == 'affiliate'){
@@ -138,7 +141,7 @@ function s_doPlugins(s) {
       eVar58 - Level 2
       eVar59 - Level 3
       eVar60 - Level 4
-      
+
       Variables only populate if the campaign and channel are both set, and if the level exists*/
     if(typeof(s.eVar53) !== "undefined" && s.eVar53 !== "" && typeof(s.eVar55) !== "undefined" && s.eVar55 !== ""){
         var hierarchy = s.eVar53.split('-'),
@@ -155,8 +158,8 @@ function s_doPlugins(s) {
       eVar61 - Channel
       eVar62 - Level 2
       eVar63 - Level 3
-      eVar63 - Level 4
-	  
+      eVar64 - Level 4
+
       Variables only populate if the campaign and channel are both set, and if the level exists*/
     if(typeof(s.eVar66) !== "undefined" && s.eVar66 !== ""){
         var hierarchy = s.eVar66.split('-'),
@@ -165,34 +168,34 @@ function s_doPlugins(s) {
             s["eVar"+(i+61)] = hierarchy[i];
         }
     }
-	
-	
+
+
 	/* Set Time Parting Variables */
 		var theDate=new Date()
 		var currentYear=(theDate.getFullYear())
 		s.eVar71=s.getTimeParting('h','-8',currentYear); // Set hour of day
 		s.eVar72=s.getTimeParting('d','-8',currentYear);	// Set Day of week
 		s.eVar73=s.getTimeParting('w','-5',currentYear); // Set Weekend / Weekday
-	
+
 		/* New/Repeat Visitors */
 		s.eVar74=s.getNewRepeat();
-	
+
 		/* Visit Number (how many times they have been to the site) */
 		s.eVar75=s.getVisitNum();
-	
+
 		/* Days since last visit */
 		s.eVar70=s.getDaysSinceLastVisit('s_lv');
-		
+
 		/* Copy purchase ID to eVar35 */
 		s.eVar35=s.purchaseID
 		/* Set OmnID to eVar69 */
 		s.eVar69=s.omnivisID
-		/* Conversion bounce conversion events */		
+		/* Conversion bounce conversion events */
 		s.setLPVandClickPast('event54','event55');
 	if(!s.pageName){
 		s.pageName = "";
 	}
-		
+
 	/* Search Result Pages: PageName begins with Search Results: */
 	if(s.pageName.substring(0,15) == "search results:"){
 		s.prop24 = "product details page";
@@ -201,34 +204,34 @@ function s_doPlugins(s) {
 	if(s.pageName.substring(0,7) == "search:" && s.eVar3.substring(0,17) == "internal campaign"){
 		s.prop24 = s.eVar3;
 		}
-		
+
 	{
 	/* Page Name: IF pageName is not the HomePage, ShoppingCart or MyAccount Page then clear name and repopulate */
 	if(s.pageName =="Shopping Cart: Thank You" || s.pageName =="Shopping Cart: Shipping" || s.pageName =="Shopping Cart: Order Review" || s.pageName =="Shopping Cart: Checkout" || s.pageName =="Shopping Cart: Sign In" ||
 	s.pageName =="Shopping Cart: Billing" || s.pageName =="e-gift card: shopping cart" || s.pageName =="e-gift card: shopping cart:billing" || s.pageName =="e-gift card: shopping cart: confirmation" || s.pageName =="e-gift card: shopping cart: confirmation" ||
-	s.pageName =="Home Page" || s.pageName =="My Account: SignIn Page" || s.pageName =="My Account: Landing Page" || s.pageName =="My Account: Register Page" || s.pageName =="My Account: Order Inquiry" || s.pageName =="My Account: Order Details" || s.pageName =="My Account: Thank-You" || 
+	s.pageName =="Home Page" || s.pageName =="My Account: SignIn Page" || s.pageName =="My Account: Landing Page" || s.pageName =="My Account: Register Page" || s.pageName =="My Account: Order Inquiry" || s.pageName =="My Account: Order Details" || s.pageName =="My Account: Thank-You" ||
 	s.pageName =="My Account: Personal Profile" || s.pageName =="My Account: Catalog Request" || s.pageName =="My Account: Gift Cards" || s.pageName =="product details page"  || s.pageName == s.eVar3)
 	{
 	s.prop24 = s.pageName;
 	}
-	else 
+	else
 	{
 	if(!s.prop24 || s.prop24==""){
 		s.prop24 = s.getPageName();
 			}
 		}
 	}
-	
+
 	/* External Source Landing Page */
 	if(s.prop24 == "store|catalog|product.jsp"){
 		s.prop24 = "Campaign Landing";
 		var temp1 = s.getQueryParam('productId');
 		s.eVar30 = "Campaign Landing:" + temp1
 		}
-	
 
 
-		
+
+
 
 
 	/* Code to track Secure Google Search Keywords */

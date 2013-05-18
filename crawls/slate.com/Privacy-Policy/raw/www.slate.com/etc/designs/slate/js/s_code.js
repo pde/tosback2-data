@@ -64,7 +64,7 @@ function s_doPlugins(s)
 
 	/* Right Rail Split Test */
     var treatment;
-    treatment = $.cookie("rr2-split");
+    treatment = $.cookie("rr3-split");
     if (treatment) {
     	if (treatment === ".") {
     		treatment = "Null Hypothesis";

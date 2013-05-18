@@ -1227,7 +1227,7 @@ function validateSearchForm(){
 			},
 			source: function(request, response) {
 				jQuery.ajax({
-					url: "//www.att.com/global/search/autoSuggestJson.jsp?q=" + srch.val() + "&callback=insertAutoSuggestions",
+					url: "//www.att.com/global-search/gs_autosuggest.jsp?q=" + srch.val() + "&callback=insertAutoSuggestions",
 					dataType: "jsonp",
 					jsonpCallback: "insertAutoSuggestions",
 					success: function(data) {

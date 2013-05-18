@@ -7,6 +7,7 @@
 
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
+  //wpAd.flags.postscribe = /blockingAds/.test(location.search) ? false : true;
 
   wpAd.constants = {
     'ad_config_url': /ad_config_url\=/.test(location.search) ? decodeURIComponent(location.search.split(/ad_config_url\=/)[1].split(/&/)[0]) : 'http://js.washingtonpost.com/wp-srv/ad/wp_config.js',
@@ -519,6 +520,11 @@
     commercialNode = 'cityguide/kidfriendly';
   }
 
+  //21406-CD
+  if(commercialNode === 'cityguide/search' && /holiday/i.test(unescape(location.href))){
+    commercialNode = 'cityguide/holiday';
+  }
+
   //19879-CD
   //arkadium games section commercialNode hack:
   if(/games\.washingtonpost/i.test(doc.domain) && /entertainment\/arkadium/.test(commercialNode) && !wpAd.arkadiumNodeHack){
@@ -549,24 +555,8 @@
       wpAd.tools.add_criteo();
     }
 
-    if(wpAd.flags.postscribe){
-      wpAd.tools.ajax({
-        url: 'http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js',
-        cache: true,
-        dataType: 'script',
-        timeout: 2000,
-        crossDomain: true,
-        error: function(err){
-          if(wpAd.flags.debug){
-            try{win.console.log('postscribe ajax error:', err);}catch(e){}
-          }
-        },
-        success: function(data){
-          if(wpAd.flags.debug){
-            try{win.console.log('postscribe script loaded');}catch(e){}
-          }
-        }
-      });
+    if(wpAd.flags.postscribe && wpAd.postscribe){
+      wpAd.postscribe.init();
     }
 
     //20999 - JH - brand connect tracking:

@@ -21,11 +21,15 @@ dojo.addOnLoad(function () {
     { id: 'SHIPTO',              title: 'Countries we ship to:'                                            },
     { id: 'WINESHIP',            title: 'Wine Shipping Details'                                            },
     { id: 'ALLMOMS',        type: 'coupon' },
+    { id: 'BDAY',           type: 'coupon' },
     { id: 'FLOWERS',        type: 'coupon' },
     { id: 'FREEFSD',        type: 'coupon' },
     { id: 'GIFT4U',         type: 'coupon' },
     { id: 'MOMSGIFT',       type: 'coupon' },
     { id: 'PINTEREST',      type: 'coupon' },
+    { id: 'STARS',          type: 'coupon' },
+    { id: 'THANKS',         type: 'coupon' },
+    { id: 'WED',            type: 'coupon' },
     { id: 'EMAIL', title: 'Email Sign-up', callback: function () {
       var $email, starting;
       $email   = $('#dialog-EMAIL input:text');

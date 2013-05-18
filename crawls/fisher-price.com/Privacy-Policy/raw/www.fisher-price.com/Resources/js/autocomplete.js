@@ -32,7 +32,7 @@ function getSearchString() {
 }
 
 function getSearchString_Intl(inputFieldId) {
-    var searchString = $(inputFieldId).val();
+    var searchString = encodeURIComponent($(inputFieldId).val());
     if ((searchString !== "Search all of fisher-price.com") && ($(inputFieldId).val() !== "")) {
             window.location.href = localInfo + "/searchresult.html?N=0&Ntk=Products&Ntx=mode+matchallany&type=keyword&Ntt=" + searchString;
     }

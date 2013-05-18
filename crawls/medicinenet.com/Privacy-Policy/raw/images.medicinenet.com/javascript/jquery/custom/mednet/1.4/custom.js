@@ -59,6 +59,12 @@
 		$(this).closest('.ltcToggle').find('.ltcToggleWrap').slideToggle();
 		$(this).closest('.ltcToggle').find('.ltcToggleTitle i').toggleClass('down');
 	});
+
+	//QandA Toggle
+	$('.docToggleTitle').click(function() {
+		$(this).closest('.docToggle').find('.docToggleWrap').slideToggle();
+		$(this).closest('.docToggle').find('.docToggleTitle i').toggleClass('down');
+	});
 	
 	//Keep Focus on Scrolling Div
 	$('.ltcToggleList, .scrollFocus').bind('mousewheel DOMMouseScroll', function(e) {

@@ -50,7 +50,7 @@ CQURLInfo = {
     "selectors": [],
     "extension": 'html',
     "suffix": null,
-    "systemId": 'f105188d-9640-4b7b-b12c-d42eedfa2c17',
+    "systemId": 'ea5629e0-3902-45fb-ac4e-69d0682857e2',
     "runModes": 'publish'
 };</script>
 <link rel="stylesheet" href="../etc/designs/residential/clientlibs.css" type="text/css"/>
@@ -83,7 +83,7 @@ CQURLInfo = {
 
 <div class="parbase clientcontext"><script type="text/javascript" src="../etc/clientlibs/foundation/librarymanager.js"></script>
 <script type="text/javascript">
-CQClientLibraryManager.write([{"p":"/etc/clientlibs/foundation/jquery.js","c":[]},{"p":"/etc/clientlibs/foundation/shared.js","c":[]},{"p":"/etc/clientlibs/foundation/jquery-ui.js","c":[]},{"p":"/etc/clientlibs/foundation/personalization/jcarousel.css","c":[]},{"p":"/etc/clientlibs/foundation/personalization/jcarousel.js","c":[]},{"p":"/etc/clientlibs/foundation/personalization.js","c":[]},{"p":"/etc/clientlibs/foundation/jquery-ui/themes/default.css","c":[]},{"p":"/etc/clientlibs/foundation/personalization/themes/default.css","c":[]},{"p":"/etc/clientlibs/foundation/personalization/ie6/themes/default.css","c":["ie6"]}],false);
+CQClientLibraryManager.write([{"p":"/etc/clientlibs/foundation/jquery.js","c":[]},{"p":"/etc/clientlibs/foundation/shared.js","c":[]},{"p":"/etc/clientlibs/foundation/jquery-ui.js","c":[]},{"p":"/etc/clientlibs/foundation/personalization/jcarousel.js","c":[]},{"p":"/etc/clientlibs/foundation/personalization/jcarousel.css","c":[]},{"p":"/etc/clientlibs/foundation/personalization.js","c":[]},{"p":"/etc/clientlibs/foundation/jquery-ui/themes/default.css","c":[]},{"p":"/etc/clientlibs/foundation/personalization/themes/default.css","c":[]},{"p":"/etc/clientlibs/foundation/personalization/ie6/themes/default.css","c":["ie6"]}],false);
 </script>
 <script type="text/javascript">
     $CQ(function() {
@@ -589,7 +589,8 @@ CQClientLibraryManager.write([{"p":"/etc/clientlibs/foundation/jquery.js","c":[]
     
     <aside class="sidebar">
         <div class="parsys iparsys right-par"><div class="section"><div class="new"></div>
-</div><div class="iparys_inherited"><div class="parsys iparsys right-par"></div>
+</div><div class="iparys_inherited"><div class="parsys iparsys right-par">
+</div>
 </div>
 </div>
 
@@ -1134,9 +1135,6 @@ jQuery(document).ready(function(){
   
   <div class="servicecomponents cloudservices"><div class="sitecatalyst cloudservice">
 
-<!-- SiteCatalyst code version: H.24.
-Copyright 1996-2011 Adobe, Inc. All Rights Reserved
-More info available at http://www.omniture.com -->
 
 <script type="text/javascript" src="../etc/clientlibs/foundation/sitecatalyst/sitecatalyst.js"></script>
 
@@ -1149,28 +1147,36 @@ More info available at http://www.omniture.com -->
 the next lines. */
 
 CQ_Analytics.Sitecatalyst.frameworkComponents = ['common/components/page/base','common/components/content/link-group','common/components/page/custom404','common/components/content/cta'];
-
-CQ_Analytics.Sitecatalyst.updateEvars = function() {
-    
-    
-        CQ_Analytics.Sitecatalyst.setEvar( 'pageName', 'eventdata.errorPageName');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'prop19', 'eventdata.prop19');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'prop29', 'eventdata.PageLanguage');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'eVar6', 'profile.region');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'prop54', 'eventdata.prop54');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'eVar12', 'profile.zip');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'prop15', 'pagedata.template');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'prop3', 'profile.region');
-        
-        CQ_Analytics.Sitecatalyst.setEvar( 'prop9', 'pagedata.title');
-         
+/**
+ * Sets SiteCatalyst variables accordingly to mapped components. If <code>options</code> 
+ * object is provided only variables matching the options.componentPath are set.
+ *
+ * @param {Object} options Parameter object from CQ_Analytics.record() call. Optional.
+ */
+CQ_Analytics.Sitecatalyst.updateEvars = function(options) {
+    var mapping = [];
+	mapping.push({scVar:"eVar6",cqVar:"profile.region",resourceType:"common/components/page/base"});
+	mapping.push({scVar:"prop29",cqVar:"eventdata.PageLanguage",resourceType:"common/components/page/base"});
+	mapping.push({scVar:"eVar12",cqVar:"profile.zip",resourceType:"common/components/page/base"});
+	mapping.push({scVar:"prop15",cqVar:"pagedata.template",resourceType:"common/components/page/base"});
+	mapping.push({scVar:"prop3",cqVar:"profile.region",resourceType:"common/components/page/base"});
+	mapping.push({scVar:"prop9",cqVar:"pagedata.title",resourceType:"common/components/page/base"});
+	mapping.push({scVar:"prop19",cqVar:"eventdata.prop19",resourceType:"common/components/content/link-group"});
+	mapping.push({scVar:"prop54",cqVar:"eventdata.prop54",resourceType:"common/components/content/link-group"});
+	mapping.push({scVar:"pageName",cqVar:"eventdata.errorPageName",resourceType:"common/components/page/custom404"});
+	mapping.push({scVar:"eVar6",cqVar:"profile.region",resourceType:"common/components/page/custom404"});
+	mapping.push({scVar:"prop29",cqVar:"eventdata.PageLanguage",resourceType:"common/components/page/custom404"});
+	mapping.push({scVar:"eVar12",cqVar:"profile.zip",resourceType:"common/components/page/custom404"});
+	mapping.push({scVar:"prop15",cqVar:"pagedata.template",resourceType:"common/components/page/custom404"});
+	mapping.push({scVar:"prop3",cqVar:"profile.region",resourceType:"common/components/page/custom404"});
+	mapping.push({scVar:"prop19",cqVar:"eventdata.prop19",resourceType:"common/components/content/cta"});
+	mapping.push({scVar:"prop54",cqVar:"eventdata.prop54",resourceType:"common/components/content/cta"});
+    for (var i=0; i<mapping.length; i++){
+		var m = mapping[i];
+		if (!options || (options.componentPath == m.resourceType)) {
+			CQ_Analytics.Sitecatalyst.setEvar(m.scVar,m.cqVar);
+		}
+    }
 }
 
 CQ_Analytics.CCM.addListener("storesinitialize", function(e) {
@@ -1184,6 +1190,7 @@ CQ_Analytics.CCM.addListener("storesinitialize", function(e) {
     /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
     var s_code=s.t();if(s_code)document.write(s_code);
     s.linkTrackEvents = lte;
+    if(s.linkTrackVars.indexOf('events')==-1){delete s.events};
 });
 
 
@@ -1195,8 +1202,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 //-->
 </script>
 
-<noscript><img src="../../metric.timewarnercable.com/b/ss/tsg2resdev3/1/H.24--NS/1368262196899%3Fcdp=2&amp;gn=legal%253Aprivacy-policy" height="1" width="1" border="0" alt=""/></noscript>
-<!-- End SiteCatalyst code version: H.24. -->
+<noscript><img src="../../metric.timewarnercable.com/b/ss/tsg2resdev3/1/H.25--NS/1368866931231%3Fcdp=2&amp;gn=legal%253Aprivacy-policy" height="1" width="1" border="0" alt=""/></noscript>
 
 <!-- send page view and other values if need it -->
 <span record="'pageView', {}"></span></div>

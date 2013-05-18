@@ -27,7 +27,7 @@
 
     <link href="../a1.lscdn.net/lsui/system/stylesheets/lsui-6d8cfa2.css" media="screen" rel="stylesheet" type="text/css" />
 
-    <link href="../a1.lscdn.net/deals/system/stylesheets/hungry-8d29d2fab8405d3afbd77f9f81d9d2f1.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../a1.lscdn.net/deals/system/stylesheets/hungry-709166d4b2bba729b443edbcef7e1146.css" media="screen" rel="stylesheet" type="text/css" />
 
     
     
@@ -53,9 +53,9 @@
   dls.viewer = {};
   dls.mePresent = false;
 
-  dls.preferredCity = {"thumb":"https://a1.lscdn.net/imgs/38fb3c97-a918-43c0-bd66-cab788d7d936/100.jpg","image":"https://a1.lscdn.net/imgs/38fb3c97-a918-43c0-bd66-cab788d7d936/original_q60.jpg","name":"San Francisco","id":15};
+  dls.preferredCity = {"image":"https://a1.lscdn.net/imgs/38fb3c97-a918-43c0-bd66-cab788d7d936/original_q60.jpg","name":"San Francisco","id":15,"thumb":"https://a1.lscdn.net/imgs/38fb3c97-a918-43c0-bd66-cab788d7d936/100.jpg"};
 
-  dls.i18n = {currency: {"precision":2,"separator":".","format":"%u%n","escapes_currency_unit_override":false,"delimiter":",","unit":"$"} };
+  dls.i18n = {currency: {"escapes_currency_unit_override":false,"delimiter":",","unit":"$","precision":2,"format":"%u%n","separator":"."} };
 </script>
 <script type='text/javascript' src='payments/javascripts/payment.js'></script>
 <script type="text/javascript">
@@ -514,7 +514,7 @@ body { padding-top: 60px; }
 
     </div>
 
-    <script src="../a1.lscdn.net/deals/system/javascripts/bingy-4b345fc6343aed480d8b432f84dda2dc.js" type="text/javascript"></script>    <script>
+    <script src="../a1.lscdn.net/deals/system/javascripts/bingy-317d27c39946c3888688b35487dc2b4b.js" type="text/javascript"></script>    <script>
 
   var notifications_count = null;
     //this needs to be redone, correctly using notificationsTab.js
@@ -622,6 +622,52 @@ MeInfo.bind(noficationsUpdate);
   });
   </script>
 
+    <script type="text/javascript">
+      (function(){
+  var current_promo = getQueryParams('promo_code');
+  var running_codes = ["MARCHVIP5","MYSTERY50","MYSTERY5","FEBVIP20","FEBVIP10","FEBVIP5","MYSTERY10","MARCHVIP20"];
+  var show_promo = getQueryParams('show_promo_code');
+
+  function getQueryParams(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+  }
+
+  function display_promo_code_upsell_modal(current_promo) {
+    data_params = {'promo_code': current_promo};
+    jqxhr = $.get('/promo_codes/promo_code_upsell',
+                   data_params,
+                   display_response_modal);
+  }
+
+  function display_promo_terms_of_service_modal() {
+    jqxhr = $.get('/promo_codes/terms_and_conditions',
+                   window.location.search,
+                   display_response_modal);
+  }
+
+  function display_response_modal(response) {
+    var renderedTemplate = response['template'];
+    if($.facebox) {
+      $.facebox(renderedTemplate);
+    } else {
+      $('body').append('<div id="promo-modal" class="popup modal hide">'+renderedTemplate+'</div>');
+      $('#promo-modal').modal({});
+    }
+  }
+
+  function init() {
+    if(show_promo == 'true') {
+      display_promo_terms_of_service_modal();
+    }
+    if($.inArray(current_promo, running_codes) >= 0) {
+      display_promo_code_upsell_modal(current_promo);
+    }
+  }
+
+  init();
+
+}());    </script>
     
     <script>
   $(document).bind("fb:connected", FbMe.updateControlBar);
@@ -720,7 +766,7 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrf2","beacon-4.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,49233441,new Date().getTime(),"","","","",""])</script>
+NREUMQ.push(["nrf2","beacon-4.newrelic.com","01dcf4d414",18408,"IA0KFRRcXFlXShZIVwQHF04WQVlDU1tAZ0YMDg0CHw==",0,407031,new Date().getTime(),"","","","",""])</script>
     <div id="fb-root"></div>
     
   </body>

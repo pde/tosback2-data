@@ -21,7 +21,7 @@
             }
         </script>
 
-        <meta property="og:site_name" content="redbox.com" /><meta property="og:title" content="Redbox Privacy Policy | Redbox customer Privcay Policy" /><meta property="og:type" content="website" /><meta property="og:image" content="http://www.redbox.com/content/images/redbox_kiosk_90x90.png" /><meta property="og:url" content="http://www.redbox.com/privacy" /><meta property="fb:app_id" content="139138829484516" /><meta property="fb:admins" content="597809314" /><title>
+        <meta property="og:site_name" content="redbox.com" /><meta property="og:title" content="Redbox Privacy Policy | Redbox customer Privcay Policy" /><meta property="og:type" content="website" /><meta property="og:url" content="http://www.redbox.com/privacy" /><meta property="fb:app_id" content="139138829484516" /><meta property="fb:admins" content="597809314" /><title>
 	Redbox Privacy Policy | Redbox customer Privcay Policy
 </title>
     <link href="Content/template.layout.css" rel="stylesheet" type="text/css" /><link href="Content/template.page.css" rel="stylesheet" type="text/css" />
@@ -48,7 +48,7 @@
                 on_mobile = true;
             }
         </script>
-        <script src="gen2.31.2/scripts/fw.global.js" type="text/javascript"></script><script src="gen2.31.2/scripts/idangerous.swiper-1.8.min.js" type="text/javascript"></script><script src="gen2.31.2/scripts/rb.global.js" type="text/javascript"></script><script src="../pluck.redbox.com/ver1.0/Content/ua/scripts/pluckApps.js%3FskipCSS=false" type="text/javascript"></script><script src="gen2.31.2/scripts/mbox.js" type="text/javascript"></script>
+        <script src="gen2.32/scripts/fw.global.js" type="text/javascript"></script><script src="gen2.32/scripts/idangerous.swiper-1.8.min.js" type="text/javascript"></script><script src="gen2.32/scripts/rb.global.js" type="text/javascript"></script><script src="../pluck.redbox.com/ver1.0/Content/ua/scripts/pluckApps.js%3FskipCSS=false" type="text/javascript"></script><script src="gen2.32/scripts/mbox.js" type="text/javascript"></script>
 
         <script type="text/javascript">            // script for google analytics
             var _gaq = _gaq || [];
@@ -173,7 +173,7 @@
 <a href="privacy.html#nav" id="menu-btn">main navigation</a>
 <div id="nav">
     <ul class="head-buttons">
-        <li id="storepickermenu0_FindButton"><a><span class="arrow">LOCATIONS</span></a>
+        <li id="storepickermenu0_FindButton" class="locationsbutton"><a><span class="arrow">LOCATIONS</span></a>
             <ul><li>
                 
                 <div id="storepickermenu0_Widget" class="widget  storepickermenu" style=" position: relative; z-index: 1000;">
@@ -183,14 +183,22 @@
 
 <div id="storepickermenu0_storepicker_Widget" class="widget " style="">
     
+    <div id="storepickermenu0_storepicker_OfflineMessage" class="kiosk-offline-message" style="display: none;">
+        Sorry, we're having trouble communicating with that box. Please choose another one.
+    </div>
+
     
     <div class="location-kiosk-content" style="margin-bottom: 10px; display: none;">
         <div id="storepickermenu0_storepicker_ProgressBar" class="ui-helper-clearfix location-display">
             <img src="Content/img/animations/progressbar.gif" />
         </div>
         <div id="storepickermenu0_storepicker_Stores" class="ui-helper-clearfix" style="display: none;">
-            <p><strong>Suggested for You:</strong></p>
+            <p><strong id="storepickermenu0_storepicker_SelectedForYouText">Suggested for You:</strong></p>
             <ul id="storepickermenu0_storepicker_StoreList" class="location-kiosk-list ui-helper-clearfix" buttonset="storepickermenu0_storepicker_ButtonSet"></ul>
+
+            <ul id='storepickermenu0_storepicker_SelectedStoreTemplateList'></ul>
+            <div class="qr-container"><div id="storepickermenu0_storepicker_ChooseFromDiv" style="cursor: pointer; display: none;" class="quick-choose-kiosk">OR CHOOSE FROM THE FOLLOWING</div>
+            <ul id="storepickermenu0_storepicker_StoreVerticalList" class="location-kiosk-list ui-helper-clearfix" buttonset="storepickermenu0_storepicker_ButtonSet"></ul></div>
         </div>
         <div style="text-align: center; margin-bottom: 10px;">
             <a class="sp-btn sp-btn-clear" style="display: none;">see what’s inside all locations</a>
@@ -200,23 +208,23 @@
     <div id="storepickermenu0_storepicker_DialogHandler" class="rb-dialog-yes"></div>
 
     <!-- Footer -->
-        <div class="search-for-location">
-            <div class="emphasis search-location-headertext">
-                <p>Find a Box:</p>
-            </div>
-            <div class="search-location-field">
-                <div style="height: 30px; overflow: hidden;">
-                    <input type="text" id="storepickermenu0_storepicker_SearchBox" style="width: 200px;" />
-                    <a id="storepickermenu0_storepicker_SearchIcon" class="rb-search-button rb-search-ico" style="position: relative; top: -30px; left: 185px;"></a>
-                </div>
-            </div>
-            <div class="search-location-button">
-                <div style="height: 30px; overflow: hidden;">
-                    <a id="storepickermenu0_storepicker_SearchButton" class="jqbutton rb-red rb-small"   ><span >SEARCH</span></a>
-                    <a id="storepickermenu0_storepicker_FindNearbyButton" class="jqbutton rb-red rb-small" style="display: none;"  ><span >NEAR YOU</span></a>
-                </div>
+    <div id="storepickermenu0_storepicker_SearchForLocation" class="search-for-location">
+        <div class="emphasis search-location-headertext">
+            <p id="storepickermenu0_storepicker_SearchHeader">Find a Box:</p>
+        </div>
+        <div class="search-location-field">
+            <div style="height: 30px; overflow: hidden;">
+                <input type="text" id="storepickermenu0_storepicker_SearchBox" style="width: 100%;" />
+                <a id="storepickermenu0_storepicker_SearchIcon" class="rb-search-button rb-search-ico" style="position: relative; top: -32px; left: 195px;"></a>
             </div>
         </div>
+        <div class="search-location-button">
+            <div style="height: 30px; overflow: hidden;">
+                <a id="storepickermenu0_storepicker_SearchButton" class="jqbutton rb-red rb-small"   ><span >SEARCH</span></a>
+                <a id="storepickermenu0_storepicker_FindNearbyButton" class="jqbutton rb-red rb-small" style="display: none;"  ><span >NEAR YOU</span></a>
+            </div>
+        </div>
+    </div>
 
     <script id="storepickermenu0_storepicker_StoreTemplate" type="text/html">
         <li class="location-kiosk-dtl">
@@ -231,6 +239,21 @@
             </div>
             <div class="location-kiosk-dtl-btn" kioskID="<#=id#>">
                 <a class="rb-red rb-tiny sp-btn rb-btn-rent">RENT</a>
+            </div>
+        </li>
+    </script>
+
+    <script id="storepickermenu0_storepicker_SelectedStoreTemplate" type="text/html">
+        <li class="location-kiosk-list-dtl" kioskID="<#=id#>">
+            <div class="kiosk-list-detail">
+                <strong>
+                    <#=profile.vendor + (profile.indoor ? 'Indoor' : 'Outdoor').show(' ') + profile.name#>
+                </strong>
+                <br />
+                <#=profile.addr.show(', ')#>
+                <#=profile.city.show(', ')#>
+                <#=profile.state.show(' ')#>
+                <#=profile.zip && profile.zip.length > 5 ? profile.zip.substr(0, 5) : profile.zip#>
             </div>
         </li>
     </script>
@@ -272,7 +295,7 @@
     <div id="search0_ProgressBar" class="progressBarCtr " style="display: none; "><div class="progressBar "></div></div>
 
         <input name="q" type="text" id="search0_SearchBox" style="width: 230px;" disabled="true" />
-        <a id="search0_SearchIcon" class="rb-search-button rb-search-ico" style="position: relative; top: -30px; left: 215px;"></a>
+        <a id="search0_SearchIcon" class="rb-search-button rb-search-ico" style="position: relative; top: -30px; left: 205px;"></a>
         <input type="hidden" name="d" id="search0_DidYouMeanOriginalTerm" />
         <div id="tntMBox"></div>
    
@@ -340,31 +363,27 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
 <div id="buttonset0_Widget">
     
     <div id="buttonset0_BlurayDialog" class="rb-dialog blu-pop-dialog">
-        <h2 class="red">
-            You&#39;ve selected a Blu-ray Disc<sup>(R)</sup>
-        </h2>
-        <div class="ui-helper-clearfix blu-pop-content">
-            <img src="Content/images/bluray-alert-logo.png" />
-            <h5 class="red">
-                </h5>
+        <div class="dialog-content-container">
+            <h2 class="red">
+                You&#39;ve selected a Blu-ray Disc<sup>(R)</sup>
+            </h2>
+            <div class="ui-helper-clearfix blu-pop-content">
+                <img src="Content/images/bluray-alert-logo.png" />
+                <h5 class="red">
+                    </h5>
                 <p>Blu-ray&trade; Discs won't play on standard DVD players. If your player's compatible, it'll most likely have a Blu-ray&trade; logo on it. You can learn more about Blu-ray&trade; <a href= "https://redbox.custhelp.com/app/answers/cat/c/4" style="color:#1AA6FF;">here</a>.</p>
+            </div>
+            <h5>Are you sure you want to rent a Blu-ray movie?</h5>
         </div>
-        <h5>Are you sure you want to rent a Blu-ray movie?</h5>
         <div class="modal-footer">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="text-align: left;">
-                        <label class="form rb-input-checkbox">
-                        <input type="checkbox" class="rb-dialog-disabled" id="buttonset0_BlurayToggle"/>&nbsp;&nbsp;Don't show this message again</label>
-                    </td>
-                    <td>
-                        <div class="modal-button">
-                            <a id="buttonset0_BlurayYes" class="jqbutton rb-red rb-medium ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only rb-dialog-yes" role="button" aria-disabled="false"><span class="ui-button-text"><span style="line-height:1;">YES</span></span></a>
-                            <a id="buttonset0_BlurayNo" class="jqbutton rb-dkgray rb-medium ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only rb-dialog-no" role="button" aria-disabled="false"><span class="ui-button-text"><span style="line-height:1;">NO THANKS</span></span></a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <div style="text-align: left;">
+                <label class="form rb-input-checkbox">
+                    <input type="checkbox" class="rb-dialog-disabled" id="buttonset0_BlurayToggle"/>&nbsp;&nbsp;Don't show this message again</label>
+            </div>
+            <div class="modal-button">
+                <a id="buttonset0_BlurayYes" class="jqbutton rb-red rb-medium ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only rb-dialog-yes" role="button" aria-disabled="false"><span class="ui-button-text">YES</span></a>
+                <a id="buttonset0_BlurayNo"  class="jqbutton rb-dkgray rb-medium ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only rb-dialog-no" role="button" aria-disabled="false"><span class="ui-button-text">NO THANKS</span></a>
+            </div>
         </div>
     </div>
 
@@ -375,6 +394,10 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
 
 <div id="buttonset0_StorePicker_Widget" class="widget " style="">
     
+    <div id="buttonset0_StorePicker_OfflineMessage" class="kiosk-offline-message" style="display: none;">
+        Sorry, we're having trouble communicating with that box. Please choose another one.
+    </div>
+
     
         <div class="location-message">
             <img src="content/images/kiosk.gif" style="float: left; margin-right: 5px;" /> <p style="font-size: 14px;">Pick up your rentals from one of over 36,000 Redbox locations nationwide.</p>
@@ -385,8 +408,12 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
             <img src="Content/img/animations/progressbar.gif" />
         </div>
         <div id="buttonset0_StorePicker_Stores" class="ui-helper-clearfix" style="display: none;">
-            <p><strong>Suggested for You:</strong></p>
+            <p><strong id="buttonset0_StorePicker_SelectedForYouText">Suggested for You:</strong></p>
             <ul id="buttonset0_StorePicker_StoreList" class="location-kiosk-list ui-helper-clearfix" buttonset="buttonset0_StorePicker_ButtonSet"></ul>
+
+            <ul id='buttonset0_StorePicker_SelectedStoreTemplateList'></ul>
+            <div class="qr-container"><div id="buttonset0_StorePicker_ChooseFromDiv" style="cursor: pointer; display: none;" class="quick-choose-kiosk">OR CHOOSE FROM THE FOLLOWING</div>
+            <ul id="buttonset0_StorePicker_StoreVerticalList" class="location-kiosk-list ui-helper-clearfix" buttonset="buttonset0_StorePicker_ButtonSet"></ul></div>
         </div>
         <div style="text-align: center; margin-bottom: 10px;">
             <a class="sp-btn sp-btn-clear" style="display: none;">see what’s inside all locations</a>
@@ -396,23 +423,23 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
     <div id="buttonset0_StorePicker_DialogHandler" class="rb-dialog-yes"></div>
 
     <!-- Footer -->
-        <div class="search-for-location">
-            <div class="emphasis search-location-headertext">
-                <p>Find a Box:</p>
-            </div>
-            <div class="search-location-field">
-                <div style="height: 30px; overflow: hidden;">
-                    <input type="text" id="buttonset0_StorePicker_SearchBox" style="width: 200px;" />
-                    <a id="buttonset0_StorePicker_SearchIcon" class="rb-search-button rb-search-ico" style="position: relative; top: -30px; left: 185px;"></a>
-                </div>
-            </div>
-            <div class="search-location-button">
-                <div style="height: 30px; overflow: hidden;">
-                    <a id="buttonset0_StorePicker_SearchButton" class="jqbutton rb-red rb-small"   ><span >SEARCH</span></a>
-                    <a id="buttonset0_StorePicker_FindNearbyButton" class="jqbutton rb-red rb-small" style="display: none;"  ><span >NEAR YOU</span></a>
-                </div>
+    <div id="buttonset0_StorePicker_SearchForLocation" class="search-for-location">
+        <div class="emphasis search-location-headertext">
+            <p id="buttonset0_StorePicker_SearchHeader">Find a Box:</p>
+        </div>
+        <div class="search-location-field">
+            <div style="height: 30px; overflow: hidden;">
+                <input type="text" id="buttonset0_StorePicker_SearchBox" style="width: 100%;" />
+                <a id="buttonset0_StorePicker_SearchIcon" class="rb-search-button rb-search-ico" style="position: relative; top: -32px; left: 195px;"></a>
             </div>
         </div>
+        <div class="search-location-button">
+            <div style="height: 30px; overflow: hidden;">
+                <a id="buttonset0_StorePicker_SearchButton" class="jqbutton rb-red rb-small"   ><span >SEARCH</span></a>
+                <a id="buttonset0_StorePicker_FindNearbyButton" class="jqbutton rb-red rb-small" style="display: none;"  ><span >NEAR YOU</span></a>
+            </div>
+        </div>
+    </div>
 
     <script id="buttonset0_StorePicker_StoreTemplate" type="text/html">
         <li class="location-kiosk-dtl">
@@ -427,6 +454,21 @@ addEventSimple(el, 'keydown', setSearchFormMbox);
             </div>
             <div class="location-kiosk-dtl-btn" kioskID="<#=id#>">
                 <a class="rb-red rb-tiny sp-btn rb-btn-rent">RENT</a>
+            </div>
+        </li>
+    </script>
+
+    <script id="buttonset0_StorePicker_SelectedStoreTemplate" type="text/html">
+        <li class="location-kiosk-list-dtl" kioskID="<#=id#>">
+            <div class="kiosk-list-detail">
+                <strong>
+                    <#=profile.vendor + (profile.indoor ? 'Indoor' : 'Outdoor').show(' ') + profile.name#>
+                </strong>
+                <br />
+                <#=profile.addr.show(', ')#>
+                <#=profile.city.show(', ')#>
+                <#=profile.state.show(' ')#>
+                <#=profile.zip && profile.zip.length > 5 ? profile.zip.substr(0, 5) : profile.zip#>
             </div>
         </li>
     </script>
@@ -743,7 +785,7 @@ Redbox Automated Retail LLC | 1 Tower Lane, Suite 900 | Oakbrook Terrace, IL 601
                     rb.util.HasPCN = false;
                     rb.util.HasDSA = false;
                 </script>
-        <script src="gen2.31.2/scripts/s_code.js" type="text/javascript"></script><script src="gen2.31.2/scripts/rb.widget.hivepromotiondialog.js" type="text/javascript"></script><script src="api/product/js/__titles" type="text/javascript"></script><script type="text/javascript">rb.api.url = '/'; rb.api.key = 'zPylfAw8KDJpjsR+pigR8mjknuVxtftAV9EDjI2pSCM=';
+        <script src="gen2.32/scripts/s_code.js" type="text/javascript"></script><script src="gen2.32/scripts/rb.widget.hivepromotiondialog.js" type="text/javascript"></script><script src="api/product/js/__titles" type="text/javascript"></script><script type="text/javascript">rb.api.url = '/'; rb.api.key = 'zPylfAw8KDJpjsR+pigR8mjknuVxtftAV9EDjI2pSCM=';
 rb.app.store.init({ selectedStore: null });
 rb.app.cart.init({ session: {"storeRef":null,"items":[]}, maxItems: 5, cartUrl: "https://www.redbox.com/cart" });
 rb.app.user.init({ loggedIn: false, loginUrl: "https://www.redbox.com/register?ReturnUrl=http%3a%2f%2fwww.redbox.com%2fprivacy" });
@@ -751,16 +793,16 @@ rb.search.init({ searchUrl: 'http://search.redbox.com' });</script><script type=
 rb.component.register('headerbar0', rb.widget.headerbar, {"urlPath":"/","type":"headerbar","id":"headerbar0","clientText":{}});
 rb.component.register('welcome0', rb.widget.welcome, {"authUrl":["/account","/subscription","/register","/registrationinfo"],"rootUrl":"http://www.redbox.com","defaultUrl":"http://www.redbox.com","dynamicBlock":{"firstName":"","showCreditSummary":false,"credits":{"TotalCredits":0,"CreditLines":null},"showCreditHeader":false,"isDigitalCustomer":false,"expiringCreditsCount":0},"urlPath":"/","type":"welcome","id":"welcome0","clientText":{"Welcome":"Welcome!","Hi":"Hi, {0}!","DialogTitle":"Welcome/Create an account"}});
 rb.component.register('storepickermenu0', rb.widget.storepickermenu, {"childId":"storepicker","urlPath":"/","type":"storepickermenu","id":"storepickermenu0","clientText":{}});
-rb.component.register('storepickermenu0_storepicker', rb.widget.storepicker, {"getSuggestions":true,"moviesUrl":"http://www.redbox.com/movies","searchUrl":"http://www.redbox.com/locations","inTitlesContext":false,"inLocationContext":false,"parentType":"StorePickerMenu","urlPath":"/","type":"storepicker","id":"storepickermenu0_storepicker","clientText":{"EnterAddressOrZip":"Enter your address or ZIP code","Browse":"BROWSE","Rent":"RENT","Select":"SELECT","SelectedForYou":"Suggested for You:"}});
+rb.component.register('storepickermenu0_storepicker', rb.widget.storepicker, {"getSuggestions":true,"moviesUrl":"http://www.redbox.com/movies","searchUrl":"http://www.redbox.com/locations","inTitlesContext":false,"inLocationContext":false,"parentType":"StorePickerMenu","listMode":false,"isOnline":true,"urlPath":"/","type":"storepicker","id":"storepickermenu0_storepicker","clientText":{"EnterAddressOrZip":"Enter your address or ZIP code","Browse":"BROWSE","Rent":"RENT","Select":"SELECT","SelectedForYou":"Suggested for You:","YouAreNowBrowsing":"You're browsing inside of:","ChooseAnother":"Choose another pickup spot:"}});
 $('.jqbutton').button();
 rb.component.register('search0', rb.widget.search, {"searchAcct":"sp1004a1b7","searchApi":"http://search.redbox.com","searchUrl":"http://www.redbox.com/search","urlPath":"/","type":"search","id":"search0","clientText":{"SearchMoviesAndGames":"Search for Movies & Games"}});
 rb.component.register('shoppingsession0', rb.widget.shoppingsession, {"showBlurayWarning":true,"data":{"session":{"storeRef":null,"items":[]}},"urlPath":"/","type":"shoppingsession","id":"shoppingsession0","clientText":{}});
 rb.component.register('buttonset0', rb.widget.buttonset, {"dvdText":"DVD","blurayText":"Blu-ray<sup>TM</sup>","rent":"RESERVE NOW","inCart":"IN YOUR CART","find":"FIND","findNearby":"FIND NEARBY","remindMe":"REMIND ME","processing":"LOADING","findProductFormat":"FIND {0}","findNearbyProductFormat":"FIND {0} NEARBY","rentProductFormat":"RESERVE {0}","remindMeProductFormat":"REMIND ME {0}","inventory":[],"reminders":[],"runView":false,"enableSuggestedStores":true,"locationsUrl":"http://www.redbox.com/locations","urlPath":"/","type":"buttonset","id":"buttonset0","clientText":{}});
-rb.component.register('buttonset0_StorePicker', rb.widget.storepicker, {"getSuggestions":true,"moviesUrl":"http://www.redbox.com/movies","searchUrl":"http://www.redbox.com/locations","inTitlesContext":false,"inLocationContext":false,"parentType":"ButtonSet","urlPath":"/","type":"storepicker","id":"buttonset0_StorePicker","clientText":{"EnterAddressOrZip":"Enter your address or ZIP code","Browse":"BROWSE","Rent":"RENT","Select":"SELECT","SelectedForYou":"Suggested for You:"}});
+rb.component.register('buttonset0_StorePicker', rb.widget.storepicker, {"getSuggestions":true,"moviesUrl":"http://www.redbox.com/movies","searchUrl":"http://www.redbox.com/locations","inTitlesContext":false,"inLocationContext":false,"parentType":"ButtonSet","listMode":false,"isOnline":true,"urlPath":"/","type":"storepicker","id":"buttonset0_StorePicker","clientText":{"EnterAddressOrZip":"Enter your address or ZIP code","Browse":"BROWSE","Rent":"RENT","Select":"SELECT","SelectedForYou":"Suggested for You:","YouAreNowBrowsing":"You're browsing inside of:","ChooseAnother":"Choose another pickup spot:"}});
 rb.rec.Omn.RecordPage('Help', 'Privacy Policy');
 rb.component.register('footer0', rb.widget.footer, {"urlPath":"/","type":"footer","id":"footer0","clientText":{}});});</script>
 
-        <!-- 07 -->
+        <!-- 06 -->
 
         <script type="text/javascript">            // script for google analiytics
             (function ()

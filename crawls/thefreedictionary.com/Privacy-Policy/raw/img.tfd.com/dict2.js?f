@@ -5,7 +5,7 @@ var Domain='thefreedictionary.com';
 var Sources,sources=[];
 var AdResults=0;var OvResults=0;var OResults='';var GResults='';var IsG=false;var IsMSN=false;IsY=false;
 var AdsNum = 1, MoreAds=1, Ads = [], RAd,  kw = '', kw2 = '', g_kw = 1, CurrentAd = 0, CurrentRad = 0, AdBlocks = [];
-var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad";google_ad_output = "js";google_encoding="utf-8";
+var g_client=google_ad_client = "ca-pub-2694630391511205";google_kw_type="broad";google_ad_output = "js";google_encoding="utf-8";google_color_url = google_color_link =color_link= "#1D4994";google_color_text = "#000000";google_color_bg = "#FFFFFF";g_cf=0;
 var google_afs_client = "pub-2694630391511205", afs_pageOptions = null, ch_c="8922314704";
 google_num_radlinks = '10';google_max_radlink_len = '17';
 var ImgAd='';
@@ -74,6 +74,7 @@ var Langs ={
 'ml':['Malay','Bahasa Melayu',''],
 'no':['Norwegian','Norsk','Velg et språk'],
 'pl':['Polish','Polski','Wybierz język'],
+'ps':['Pashto', 'پښتو,پشتو',''],
 'pt':['Portuguese','Português','Selecione um idioma'],
 'ro':['Romanian','Română','Selectaţi o limbă'],
 'ru':['Russian','Русский','Выберите язык'],
@@ -89,7 +90,7 @@ var Langs ={
 'ur':['Urdu','اردو',''],
 'vi':['Vietnamese','Tiếng Việt','']
 }
-function srp(s) {sources.push(s);if(MoreAds) write_ads(1, 1, 1)}
+function srp(s) {sources.push(s);if(MoreAds) write_ads(1, 1, 10)}
 function wiki(){srp('wiki')}
 function foldoc(){dw('<br><div class=brand_copy>This article is provided by FOLDOC - Free Online Dictionary of Computing (<a target=_blank href="http:/'+'/foldoc.org">foldoc.org</a>)</div><br>');srp('foldoc')};
 function cde(){dw('<br><div class=brand_copy>Computer Desktop Encyclopedia copyright ©1981-2013 by <a target=_blank href=http:/'+'/www.computerlanguage.com/tfd.html>The Computer Language Company Inc</a>. All Right reserved. THIS DEFINITION IS FOR PERSONAL USE ONLY. All other reproduction is strictly prohibited without permission from the publisher.</div><br>');srp('cde')}
@@ -278,6 +279,9 @@ function google_ad_request_done(google_ads) {
 	else if (google_ads[0].type == "flash") {
 		ImgAd='<o'+'bject classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http:/'+'/download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" WIDTH="'+google_ad.image_width+'" HEIGHT="'+google_ad.image_height+'"><PARAM NAME="movie" VALUE="'+google_ad.image_url+'"><PARAM NAME="quality" VALUE="high"><PARAM NAME="AllowScriptAccess" VALUE="never"><EMBED src="'+google_ad.image_url+'" WIDTH="'+google_ad.image_width+'" HEIGHT="'+google_ad.image_height+'" TYPE="application/x-shockwave-flash" AllowScriptAccess="never" PLUGINSPAGE="http:/'+'/www.macromedia.com/go/getflashplayer"></EMBED></OBJECT>';
 	}
+	else if(google_ads[0].type=="html") {
+		ImgAd=google_ads[0].snippet;
+	}
 }
 function ad(url,visible_url,line1,line2,line3){this.url=url;this.visible_url=visible_url;this.line1=line1;this.line2=line2;this.line3=line3;}
 function write_ad(ad,pos) {
@@ -291,10 +295,16 @@ function write_ad(ad,pos) {
  	return res +'</div>';
  }
  function write_ads(AdsNum,Br,pos) {
- 	if(!IsMob&&ads_blocked&&google_kw)
- 		dw('<div id="alt_ad_'+pos+'"></div>');
+ 	if(g_cf&&pos==10) {
+ 		google_ad_client=g_client;google_color_url=google_color_link=color_link;google_override_format=true;google_ad_width=300;google_ad_height=60;
+ 		dw('<div style="width:300px;height:60px;margin:6px 0 3px 0"><script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></s'+'cript></div>');
+ 		g_cf-=1;return;
+ 	};
+ 	if(!IsMob&&ads_blocked&&google_kw) {
+ 		if(!ById('alt_ad_'+pos)) dw('<div id="alt_ad_'+pos+'"></div>');
+ 	}
  	else if(afs_pageOptions) {
- 		dw('<div id="afs_adcontainer'+AdBlocks.length+'"></div>');
+ 		dw('<div style="margin:6pt 0 0 0" id="afs_adcontainer'+AdBlocks.length+'"></div>');
  		if(Br) dw('<br clear=all>');
  		AdBlocks.push({ 'container': 'afs_adcontainer'+AdBlocks.length,'lines': 3,'width': (pos<3?550:250),'number': AdsNum,'fontSizeDomainLink': 11,'fontSizeTitle': 14,'colorDomainLink': '#000000','colorTitleLink': '#1d4994' });
  	}
@@ -376,10 +386,11 @@ window.status = '';
 }
 var sound_timeout=null;
 function play(File) {
+if(File.indexOf('/')<0) File='http:/'+'/img.tfd.com/hm/mp3/'+File;
 var andr = navigator.userAgent.indexOf('Android') > 0;
-var s = (andr ? File + '.mp3' : File.replace('/mp3/', '/prons/') + '.wav');
+var s=(andr?File+'.mp3':File.replace('/mp3/','/prons/')+'.wav');
 if (sound_timeout) clearTimeout(sound_timeout);
-var sndfr = ById("sound_frame");
+var sndfr=ById("sound_frame");
 if (IE && navigator.platform == 'Win32') {
 document.all.bgsound.src=s;
 sound_timeout=setTimeout('document.all.bgsound.src="about:blank"', 8000);
@@ -387,7 +398,7 @@ sound_timeout=setTimeout('document.all.bgsound.src="about:blank"', 8000);
 sndfr.src = 'about:blank';
 sndfr.src = s;
 sound_timeout=setTimeout('ById("sound_frame").src="about:blank"', 8000);
-} else 
+} else
 location=s;
 window.status='';
 }
@@ -729,10 +740,11 @@ if (wl && WordListHost && ById('word_list')) AsyncRequest('http://'+WordListHost
 if (!getCookie('track')) AsyncRequest('http:/' + '/www.thefreedictionary.com/_/misc/track.ashx?ref=' + encodeURIComponent(document.referrer) + '&loc=' + loc + '&r=' + Math.random());
 //dw('<s' + 'cript src="https:/'+'/apis.google.com/js/plusone.js">{"lang": "' + PageLang + '"}</s' + 'cript>');
 if (!IsMob) AsyncRequest('https:/' + '/apis.google.com/js/plusone.js', '{"lang": "' + PageLang + '"}');
-function getMobileType() {var ua = navigator.userAgent;var ret = "unknown";
+function getMobileType() {
+	var ua = navigator.userAgent;var ret = "unknown";
     if (/Windows.(NT|XP|ME|9)/i.test(ua) && !/Phone/i.test(ua) || /Win(9|.9|NT)/i.test(ua) || /Macintosh|PowerPC/i.test(ua) && !/Silk/i.test(ua) || /Linux/i.test(ua) && /X11/i.test(ua) || /Solaris|SunOS|BSD/i.test(ua)) {ret = "desktop";}
     else if (/Bot|Crawler|Spider|Yahoo|ia_archiver|Covario-IDS|findlinks|DataparkSearch|larbin|Mediapartners-Google|NG-Search|Snappy|Teoma|Jeeves|TinEye/i.test(ua) && !/Mobile/i.test(ua)) {ret = "desktop";}
-    else if (/iP(a|ro)d/i.test(ua) || /tablet/i.test(ua) && !/RX-34/i.test(ua) || /FOLIO/i.test(ua) || /Linux/i.test(ua) && /Android/i.test(ua) && !/Fennec|mobi|HTC.Magic|HTCX06HT|Nexus.One|SC-02B|fone.945/i.test(ua) || /Kindle/i.test(ua) || /Mac.OS/i.test(ua) && /Silk/i.test(ua)) {ret = "tablet";}
+    else if (/ipad|sgh-t849|sch-i800|dfp700|nook|mid1|mid4|mid6|mid7|mid8|mid9/i.test(ua) || /tablet/i.test(ua) && !/RX-34/i.test(ua) || /FOLIO/i.test(ua) || /Linux/i.test(ua) && /Android/i.test(ua) && !/Fennec|mobi|HTC.Magic|HTCX06HT|Nexus.One|SC-02B|fone.945/i.test(ua) || /Kindle/i.test(ua) || /Mac.OS/i.test(ua) || /Silk/i.test(ua)) {ret = "tablet";}
     else if (/GT-P10|SC-01C|SHW-M180S|SGH-T849|SCH-I800|SHW-M180L|SPH-P100|SGH-I987|zt180|HTC(.Flyer|_Flyer)|Sprint.ATP51|ViewPad7|pandigital(sprnova|nova)|Ideos.S7|Dell.Streak.7|Advent.Vega|A101IT|A70BHT|MID7015|Next2|nook/i.test(ua) || /MB511/i.test(ua) && /RUTEM/i.test(ua)) {ret = "tablet";}
     else if (/BOLT|Fennec|Iris|Maemo|Minimo|Mobi|mowser|NetFront|Novarra|Prism|RX-34|Skyfire|Tear|XV6875|XV6975|Google.Wireless.Transcoder/i.test(ua) || /Opera/i.test(ua) && /Windows.NT.5/i.test(ua) && /HTC|Xda|Mini|Vario|SAMSUNG-GT-i8000|SAMSUNG-SGH-i9/i.test(ua)) {ret = "mobile";}
     else if (/GoogleTV|SmartTV|Internet.TV|NetCast|NETTV|AppleTV|boxee|Kylo|Roku|DLNADOC|CE-HTML/i.test(ua) || /Xbox|PLAYSTATION.3|Wii/i.test(ua)) {ret = "tv";}
@@ -742,7 +754,8 @@ if (!IsApp && !getCookie('tfd_popup')) {
     var mobType = getMobileType();
     if (mobType == 'tablet' || (mobType == 'mobile' && IsMob)) {
         setCookie('tfd_popup', 1);
-        AsyncRequest('http:/'+'/img.tfd.com/popup.js');
+		var r=Math.floor(Math.random()*3)+1;
+        AsyncRequest('http:/'+'/img.tfd.com/popup'+r+'.js');
     }
 }
 }

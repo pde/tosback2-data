@@ -839,19 +839,21 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 				type: 'GET',
 				crossDomain: true,
 				dataType: 'jsonp',
-				success: function(data) {					
+				success: function(data) {
 					if(data && data.lat && data.lng){
-						var latUrl = '/data/latlonlocation';
+						var dynhost = "d.imwx.com" || "d.imwx.com";
+						var latUrl = 'http://'+dynhost+'/data/latlonlocation';						
 						var lat = data.lat;
 						var lon = data.lng;						
-						var akaURL = latUrl + '?lat=' + lat + '&lon=' + lon + '& cb=?';							
+						var akaURL = latUrl + '?lat=' + lat + '&lon=' + lon;
+						akaURL = encodeURI(akaURL);
 						$.ajax({								
 							url: akaURL,
+							dataType: "jsonp",
 							type:"GET",
 							success: function(loc) {
-								var locData = $.trim(loc);
-								currentLocation = $.parseJSON(locData);
-								if(currentLocation != null){
+								if(loc != null){
+									currentLocation = loc;								
 									currentLocation.updatedTime = new Date();
 									prvlgd.setUser("currentLocation",currentLocation);
 								}							

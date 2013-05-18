@@ -460,7 +460,7 @@ CQURLInfo = {
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -468,7 +468,7 @@ CQURLInfo = {
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -477,13 +477,27 @@ CQURLInfo = {
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -528,7 +542,7 @@ CQURLInfo = {
 								<ul> 
 											<li><a href="../../index.html">att.com</a></li> 
 											<li><a href="../../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -885,11 +899,6 @@ CQURLInfo = {
 	<!-- main content of page --> 
 	<div id="wrapper"> 
 		<div id="main-container"> 
-		<div class="breadcrumb gutter"> 
-            <div class="breadcrumb"> 
-    <a href="../../index.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../index.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="../wireless.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content/breadcrumb">Wireless</a>&nbsp;&nbsp;/&nbsp;&nbsp;International 
-    </div> 
-        </div> 
 <div class="base admgr marqueePromo"> 
 <div class="page-title-container"> 
 	    <div class="page-title"> 
@@ -1447,7 +1456,7 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Wireless Customer Agreement</a> | 
 	<a class="last" href="../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Cell Phone Records Security</a> 
 		   |<a class="openModal modal705" href="http://www.att.com/shop/en/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Other Monthly Charges</a>| 
-			<a class="postPaidLegalLink" href="../../wirelessterms.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Plan Terms</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Plan Terms</a>| 
 			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Online Pricing</a>| 
 			<div class='secondRow'> 
 				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/international/jcr:content;2013042">Returns Policy &amp; Early Termination Fee</a>| 
@@ -1562,7 +1571,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 222323040427194540659589752809071368360 --> 
+		 <!--X-Renderer: 225591369342701403400475807213038074559 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1570,30 +1579,15 @@ Messaging &amp; Data Charges</a>|
 <script src="../../media/cms/shop/scripts/uverseFamily.js" type="text/javascript"></script>  
 <script src="../../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
-<!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="280" /> 
-<meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="PA" /> 
-<meta name="DCSext.wt_aka_city" content="PITTSBURGH" /> 
-<meta name="DCSext.wt_aka_dma" content="508" /> 
-<meta name="DCSext.wt_aka_msa" content="6280" /> 
-<meta name="DCSext.wt_aka_areacode" content="412" /> 
-<meta name="DCSext.wt_aka_county" content="ALLEGHENY" /> 
-<meta name="DCSext.wt_aka_fips" content="42003" /> 
-<meta name="DCSext.wt_aka_lat" content="40.4338" /> 
-<meta name="DCSext.wt_aka_long" content="-79.8642" /> 
-<meta name="DCSext.wt_aka_timezone" content="EST" /> 
-<meta name="DCSext.wt_aka_zip" content="15201-15244+15250-15255+15257-15262+15264-15265+15267-15268+15270+15272+15274-15279+15281-15283+15286+15289-15290+15295" /> 
-<meta name="DCSext.wt_aka_continent" content="NA" /> 
-<meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
-<meta name="DCSext.wt_aka_bw" content="5000" /> 
-<meta name="DCSext.wt_aka_asnum" content="2828" /> 
-<meta name="DCSext.wt_aka_location_id" content="0" /> 
---> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
 <script src="../../media/cms/shop/scripts/wirelessCarousels.js" type="text/javascript"></script> 
-<script> 
+<script type="text/javascript"> 
 jQuery(document).ready(function () { 
+   if(jQuery("#cboxMiddleRight").find("div:last").attr("id") != "IEfix"){ 
+       jQuery("#cboxMiddleLeft").append('<div></div>');  
+       jQuery("#cboxMiddleRight").append('<div id="IEfix"></div>'); 
+   } 
+jQuery(document).bind("cbox_complete", function(){ setTimeout(jQuery.colorbox.resize, 1000); }); 
 	setTimeout(function() { 
 		ATT.util.printPreview({ 
 			selector:'.printCompareInternetPackages', 
@@ -1795,7 +1789,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","pB88RN4Gc21DWq71hzlf6wqk!-2106933376!1368225892260"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","vtJBRW7N7GRXpvXmLvq772pG!-729242582!1368849261050"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

@@ -418,7 +418,7 @@ jQuery('input[type=tel]').wrap('<span>');
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -426,7 +426,7 @@ jQuery('input[type=tel]').wrap('<span>');
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -435,13 +435,27 @@ jQuery('input[type=tel]').wrap('<span>');
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -486,7 +500,7 @@ jQuery('input[type=tel]').wrap('<span>');
 								<ul> 
 											<li><a href="../../../index.html">att.com</a></li> 
 											<li><a href="../../../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -1022,41 +1036,66 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filterbase filter"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#commitmentTerm input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                 jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#commitmentTerm input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>commitmentTerm radio Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>commitmentTerm radio Filter</h1> 
 </div> 
+<div id="div_commitmentTerm"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-commitmentTerm" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-commitmentTerm" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
-			<span onclick="filterCollapseExpand('commitmentTerm'); return false">Filter by Contract Length</span> 
-		</h3> 
-		<ul id="commitmentTerm" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Contract Length" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter/denfilteroptions/0" id="commitmentTerm1" type="radio" class="listFilterGroup" name="commitmentTerm" value="ALL" checked="checked" default="true"/> 
-					<label for="commitmentTerm1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Contract Length" data-tokencontent="2-year contract" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter/denfilteroptions/1" id="commitmentTerm2" type="radio" class="listFilterGroup" name="commitmentTerm" value="24" /> 
-					<label for="commitmentTerm2" >2-year contract</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Contract Length" data-tokencontent="Month-to-Month" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter/denfilteroptions/2" id="commitmentTerm3" type="radio" class="listFilterGroup" name="commitmentTerm" value="1" /> 
-					<label for="commitmentTerm3" >Month-to-Month</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('commitmentTerm');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter;2012322"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-commitmentTerm" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-commitmentTerm" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('commitmentTerm'); return false" /> 
+            <span onclick="filterCollapseExpand('commitmentTerm'); return false">Filter by Contract Length</span> 
+        </h3> 
+        <ul id="commitmentTerm" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Contract Length" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter/denfilteroptions/0" id="commitmentTerm1" type="radio" childFilter=""  class="listFilterGroup" name="commitmentTerm" value="ALL" checked="checked" default="true"/>                            
+                    <label for="commitmentTerm1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Contract Length" data-tokencontent="2-year contract" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter/denfilteroptions/1" id="commitmentTerm2" type="radio" childFilter=""  class="listFilterGroup" name="commitmentTerm" value="24" /> 
+                    <label for="commitmentTerm2" >2-year contract</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Contract Length" data-tokencontent="Month-to-Month" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter/denfilteroptions/2" id="commitmentTerm3" type="radio" childFilter=""  class="listFilterGroup" name="commitmentTerm" value="1" /> 
+                    <label for="commitmentTerm3" >Month-to-Month</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('commitmentTerm');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter;2012322"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
 </div> 
 <div class="clear"></div> 
+</div> 
 </div> 
 </div> 
 <div class="filterreference parbase section reference"> 
@@ -1064,47 +1103,72 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filterbase filterranged"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#rangePricing input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#rangePricing input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>rangePricing checkbox Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>rangePricing checkbox Filter</h1> 
 </div> 
+<div id="div_rangePricing"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-rangePricing" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-rangePricing" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
-			<span onclick="filterCollapseExpand('rangePricing'); return false">Filter by Pricing</span> 
-		</h3> 
-		<ul id="rangePricing" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/0" id="rangePricing1" type="checkbox" class="listFilterGroup" value="All" name="rangePricing" begin="0" end="10000" checked="checked" default="true"/> 
-					<label for="rangePricing1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="Free-$199.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/1" id="rangePricing2" type="checkbox" class="listFilterGroup" value="0-199.99" name="rangePricing" begin="0" end="199.99"  /> 
-					<label for="rangePricing2" >Free-$199.99</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$200.00-$299.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/2" id="rangePricing3" type="checkbox" class="listFilterGroup" value="200-299.99" name="rangePricing" begin="200" end="299.99"  /> 
-					<label for="rangePricing3" >$200.00-$299.99</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$300.00-$499.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/3" id="rangePricing4" type="checkbox" class="listFilterGroup" value="300-499.99" name="rangePricing" begin="300" end="499.99"  /> 
-					<label for="rangePricing4" >$300.00-$499.99</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Pricing" data-tokencontent="$500.00 +" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/4" id="rangePricing5" type="checkbox" class="listFilterGroup" value="500-10000" name="rangePricing" begin="500" end="10000"  /> 
-					<label for="rangePricing5" >$500.00 +</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('rangePricing');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged;2013099"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-rangePricing" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-rangePricing" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
+            <span onclick="filterCollapseExpand('rangePricing'); return false">Filter by Pricing</span> 
+        </h3> 
+        <ul id="rangePricing" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Pricing" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/0" id="rangePricing1" type="checkbox" class="listFilterGroup" childFilter="" value="All" name="rangePricing" begin="0" end="10000" checked="checked" default="true"/> 
+                    <label for="rangePricing1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Pricing" data-tokencontent="Free-$199.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/1" id="rangePricing2" type="checkbox" class="listFilterGroup" childFilter="" value="0-199.99" name="rangePricing" begin="0" end="199.99"/> 
+                    <label for="rangePricing2" >Free-$199.99</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Pricing" data-tokencontent="$200.00-$299.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/2" id="rangePricing3" type="checkbox" class="listFilterGroup" childFilter="" value="200-299.99" name="rangePricing" begin="200" end="299.99"/> 
+                    <label for="rangePricing3" >$200.00-$299.99</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Pricing" data-tokencontent="$300.00-$499.99" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/3" id="rangePricing4" type="checkbox" class="listFilterGroup" childFilter="" value="300-499.99" name="rangePricing" begin="300" end="499.99"/> 
+                    <label for="rangePricing4" >$300.00-$499.99</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Pricing" data-tokencontent="$500.00 +" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged/denfilteroptions/4" id="rangePricing5" type="checkbox" class="listFilterGroup" childFilter="" value="500-10000" name="rangePricing" begin="500" end="10000"/> 
+                    <label for="rangePricing5" >$500.00 +</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('rangePricing');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filterranged;2013099"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
+</div> 
 </div> 
 <div class="clear"></div> 
 </div> 
@@ -1114,41 +1178,66 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filter_0 filterbase filter"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#skuCondition input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                 jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#skuCondition input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>skuCondition radio Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>skuCondition radio Filter</h1> 
 </div> 
+<div id="div_skuCondition"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-skuCondition" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-skuCondition" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
-			<span onclick="filterCollapseExpand('skuCondition'); return false">Filter by Condition</span> 
-		</h3> 
-		<ul id="skuCondition" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Condition" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0/denfilteroptions/0" id="skuCondition1" type="radio" class="listFilterGroup" name="skuCondition" value="ALL" checked="checked" default="true"/> 
-					<label for="skuCondition1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Condition" data-tokencontent="New" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0/denfilteroptions/1" id="skuCondition2" type="radio" class="listFilterGroup" name="skuCondition" value="NEW" /> 
-					<label for="skuCondition2" >New</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Condition" data-tokencontent="Refurbished" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0/denfilteroptions/2" id="skuCondition3" type="radio" class="listFilterGroup" name="skuCondition" value="refurbished" /> 
-					<label for="skuCondition3" >Refurbished</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('skuCondition');return false;" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0;2012322"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-skuCondition" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-skuCondition" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('skuCondition'); return false" /> 
+            <span onclick="filterCollapseExpand('skuCondition'); return false">Filter by Condition</span> 
+        </h3> 
+        <ul id="skuCondition" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Condition" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0/denfilteroptions/0" id="skuCondition1" type="radio" childFilter=""  class="listFilterGroup" name="skuCondition" value="ALL" checked="checked" default="true"/>                            
+                    <label for="skuCondition1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Condition" data-tokencontent="New" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0/denfilteroptions/1" id="skuCondition2" type="radio" childFilter=""  class="listFilterGroup" name="skuCondition" value="NEW" /> 
+                    <label for="skuCondition2" >New</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Condition" data-tokencontent="Refurbished" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0/denfilteroptions/2" id="skuCondition3" type="radio" childFilter=""  class="listFilterGroup" name="skuCondition" value="refurbished" /> 
+                    <label for="skuCondition3" >Refurbished</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('skuCondition');return false;" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_0;2012322"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
 </div> 
 <div class="clear"></div> 
+</div> 
 </div> 
 </div> 
 <div class="filterreference parbase section reference"> 
@@ -1156,45 +1245,70 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filter_1 filterbase filter"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#taxoOperatingSystem input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                 jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#taxoOperatingSystem input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>taxoOperatingSystem checkbox Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>taxoOperatingSystem checkbox Filter</h1> 
 </div> 
+<div id="div_taxoOperatingSystem"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoOperatingSystem" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-taxoOperatingSystem" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
-			<span onclick="filterCollapseExpand('taxoOperatingSystem'); return false">Filter by Operating System</span> 
-		</h3> 
-		<ul id="taxoOperatingSystem" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Operating System" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/0" id="taxoOperatingSystem1" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="All" checked="checked" default="true"/> 
-					<label for="taxoOperatingSystem1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Operating System" data-tokencontent="Android" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/1" id="taxoOperatingSystem2" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-ANDROID" /> 
-					<label for="taxoOperatingSystem2" >Android</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Operating System" data-tokencontent="IOS&reg;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/2" id="taxoOperatingSystem3" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-APPLE" /> 
-					<label for="taxoOperatingSystem3" >IOS&reg;</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Operating System" data-tokencontent="Windows&reg; 8" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/3" id="taxoOperatingSystem4" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-WINDOWS-8" /> 
-					<label for="taxoOperatingSystem4" >Windows&reg; 8</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('taxoOperatingSystem');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1;2012322"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-taxoOperatingSystem" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-taxoOperatingSystem" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoOperatingSystem'); return false" /> 
+            <span onclick="filterCollapseExpand('taxoOperatingSystem'); return false">Filter by Operating System</span> 
+        </h3> 
+        <ul id="taxoOperatingSystem" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Operating System" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/0" id="taxoOperatingSystem1" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoOperatingSystem" value="All" checked="checked" default="true"/>                            
+                    <label for="taxoOperatingSystem1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Operating System" data-tokencontent="Android" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/1" id="taxoOperatingSystem2" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoOperatingSystem" value="OS-ANDROID" /> 
+                    <label for="taxoOperatingSystem2" >Android</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Operating System" data-tokencontent="IOS&reg;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/2" id="taxoOperatingSystem3" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoOperatingSystem" value="OS-APPLE" /> 
+                    <label for="taxoOperatingSystem3" >IOS&reg;</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Operating System" data-tokencontent="Windows&reg; 8" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1/denfilteroptions/3" id="taxoOperatingSystem4" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoOperatingSystem" value="OS-WINDOWS-8" /> 
+                    <label for="taxoOperatingSystem4" >Windows&reg; 8</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('taxoOperatingSystem');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_1;2012322"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
 </div> 
 <div class="clear"></div> 
+</div> 
 </div> 
 </div> 
 <div class="filterreference parbase section reference"> 
@@ -1202,85 +1316,110 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filter_3 filterbase filter"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#taxoFeatures input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                 jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#taxoFeatures input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>taxoFeatures checkbox Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>taxoFeatures checkbox Filter</h1> 
 </div> 
+<div id="div_taxoFeatures"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoFeatures" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-taxoFeatures" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
-			<span onclick="filterCollapseExpand('taxoFeatures'); return false">Filter by Feature</span> 
-		</h3> 
-		<ul id="taxoFeatures" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/0" id="taxoFeatures1" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="All" checked="checked" default="true"/> 
-					<label for="taxoFeatures1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="3G-capable" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/1" id="taxoFeatures2" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="3G-CAPABLE" /> 
-					<label for="taxoFeatures2" >3G-capable</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="4G HSPA+" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/2" id="taxoFeatures3" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="HSPA" /> 
-					<label for="taxoFeatures3" >4G HSPA+</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="4G LTE" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/3" id="taxoFeatures4" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="LTE" /> 
-					<label for="taxoFeatures4" >4G LTE</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Expandable Memory" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/4" id="taxoFeatures5" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="EXPANDABLE-MEMORY" /> 
-					<label for="taxoFeatures5" >Expandable Memory</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Front Camera" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/5" id="taxoFeatures6" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA-FRONT" /> 
-					<label for="taxoFeatures6" >Front Camera</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Full QWERTY Keyboard" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/6" id="taxoFeatures7" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="FULL-KEYBOARD" /> 
-					<label for="taxoFeatures7" >Full QWERTY Keyboard</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="HDMI Output" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/7" id="taxoFeatures8" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="HDMI-OUTPUT" /> 
-					<label for="taxoFeatures8" >HDMI Output</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Rear Camera" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/8" id="taxoFeatures9" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA-REAR" /> 
-					<label for="taxoFeatures9" >Rear Camera</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="SIM Card" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/9" id="taxoFeatures10" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="SIM-CARD" /> 
-					<label for="taxoFeatures10" >SIM Card</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Touchscreen" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/10" id="taxoFeatures11" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="TOUCH-SCREEN" /> 
-					<label for="taxoFeatures11" >Touchscreen</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Video Camera" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/11" id="taxoFeatures12" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA-VIDEO" /> 
-					<label for="taxoFeatures12" >Video Camera</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Wi-Fi" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/12" id="taxoFeatures13" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="WIFI" /> 
-					<label for="taxoFeatures13" >Wi-Fi</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Feature" data-tokencontent="Wireless Media Streaming" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/13" id="taxoFeatures14" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="WIRELESS-MEDIA-STREAMING" /> 
-					<label for="taxoFeatures14" >Wireless Media Streaming</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('taxoFeatures');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3;2013112"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-taxoFeatures" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-taxoFeatures" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoFeatures'); return false" /> 
+            <span onclick="filterCollapseExpand('taxoFeatures'); return false">Filter by Feature</span> 
+        </h3> 
+        <ul id="taxoFeatures" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/0" id="taxoFeatures1" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="All" checked="checked" default="true"/>                            
+                    <label for="taxoFeatures1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="3G-capable" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/1" id="taxoFeatures2" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="3G-CAPABLE" /> 
+                    <label for="taxoFeatures2" >3G-capable</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="4G HSPA+" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/2" id="taxoFeatures3" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="HSPA" /> 
+                    <label for="taxoFeatures3" >4G HSPA+</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="4G LTE" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/3" id="taxoFeatures4" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="LTE" /> 
+                    <label for="taxoFeatures4" >4G LTE</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Expandable Memory" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/4" id="taxoFeatures5" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="EXPANDABLE-MEMORY" /> 
+                    <label for="taxoFeatures5" >Expandable Memory</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Front Camera" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/5" id="taxoFeatures6" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="CAMERA-FRONT" /> 
+                    <label for="taxoFeatures6" >Front Camera</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Full QWERTY Keyboard" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/6" id="taxoFeatures7" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="FULL-KEYBOARD" /> 
+                    <label for="taxoFeatures7" >Full QWERTY Keyboard</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="HDMI Output" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/7" id="taxoFeatures8" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="HDMI-OUTPUT" /> 
+                    <label for="taxoFeatures8" >HDMI Output</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Rear Camera" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/8" id="taxoFeatures9" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="CAMERA-REAR" /> 
+                    <label for="taxoFeatures9" >Rear Camera</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="SIM Card" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/9" id="taxoFeatures10" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="SIM-CARD" /> 
+                    <label for="taxoFeatures10" >SIM Card</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Touchscreen" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/10" id="taxoFeatures11" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="TOUCH-SCREEN" /> 
+                    <label for="taxoFeatures11" >Touchscreen</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Video Camera" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/11" id="taxoFeatures12" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="CAMERA-VIDEO" /> 
+                    <label for="taxoFeatures12" >Video Camera</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Wi-Fi" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/12" id="taxoFeatures13" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="WIFI" /> 
+                    <label for="taxoFeatures13" >Wi-Fi</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Feature" data-tokencontent="Wireless Media Streaming" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3/denfilteroptions/13" id="taxoFeatures14" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoFeatures" value="WIRELESS-MEDIA-STREAMING" /> 
+                    <label for="taxoFeatures14" >Wireless Media Streaming</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('taxoFeatures');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_3;2013112"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
 </div> 
 <div class="clear"></div> 
+</div> 
 </div> 
 </div> 
 <div class="filterreference parbase section reference"> 
@@ -1288,61 +1427,86 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filter_4 filterbase filter"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#taxoManu input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                 jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#taxoManu input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>taxoManu checkbox Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>taxoManu checkbox Filter</h1> 
 </div> 
+<div id="div_taxoManu"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-taxoManu" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-taxoManu" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
-			<span onclick="filterCollapseExpand('taxoManu'); return false">Filter by Manufacturer</span> 
-		</h3> 
-		<ul id="taxoManu" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/0" id="taxoManu1" type="checkbox" class="listFilterGroup" name="taxoManu" value="All" checked="checked" default="true"/> 
-					<label for="taxoManu1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Apple®" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/1" id="taxoManu2" type="checkbox" class="listFilterGroup" name="taxoManu" value="APPLE" /> 
-					<label for="taxoManu2" >Apple®</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="ASUS" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/2" id="taxoManu3" type="checkbox" class="listFilterGroup" name="taxoManu" value="ASUS" /> 
-					<label for="taxoManu3" >ASUS</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="HTC" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/3" id="taxoManu4" type="checkbox" class="listFilterGroup" name="taxoManu" value="HTC" /> 
-					<label for="taxoManu4" >HTC</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Lenovo" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/4" id="taxoManu5" type="checkbox" class="listFilterGroup" name="taxoManu" value="LENOVO" /> 
-					<label for="taxoManu5" >Lenovo</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Pantech" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/5" id="taxoManu6" type="checkbox" class="listFilterGroup" name="taxoManu" value="PANTECH" /> 
-					<label for="taxoManu6" >Pantech</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Samsung" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/6" id="taxoManu7" type="checkbox" class="listFilterGroup" name="taxoManu" value="SAMSUNG" /> 
-					<label for="taxoManu7" >Samsung</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Sony" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/7" id="taxoManu8" type="checkbox" class="listFilterGroup" name="taxoManu" value="SONY" /> 
-					<label for="taxoManu8" >Sony</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('taxoManu');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4;2013070"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-taxoManu" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-taxoManu" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('taxoManu'); return false" /> 
+            <span onclick="filterCollapseExpand('taxoManu'); return false">Filter by Manufacturer</span> 
+        </h3> 
+        <ul id="taxoManu" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/0" id="taxoManu1" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="All" checked="checked" default="true"/>                            
+                    <label for="taxoManu1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="Apple®" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/1" id="taxoManu2" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="APPLE" /> 
+                    <label for="taxoManu2" >Apple®</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="ASUS" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/2" id="taxoManu3" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="ASUS" /> 
+                    <label for="taxoManu3" >ASUS</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="HTC" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/3" id="taxoManu4" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="HTC" /> 
+                    <label for="taxoManu4" >HTC</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="Lenovo" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/4" id="taxoManu5" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="LENOVO" /> 
+                    <label for="taxoManu5" >Lenovo</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="Pantech" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/5" id="taxoManu6" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="PANTECH" /> 
+                    <label for="taxoManu6" >Pantech</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="Samsung" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/6" id="taxoManu7" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="SAMSUNG" /> 
+                    <label for="taxoManu7" >Samsung</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Manufacturer" data-tokencontent="Sony" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4/denfilteroptions/7" id="taxoManu8" type="checkbox" childFilter=""  class="listFilterGroup" name="taxoManu" value="SONY" /> 
+                    <label for="taxoManu8" >Sony</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('taxoManu');return false;" data-cqpath="/content/sharedcontent/filters/tabletFilters/jcr:content/individual/filter_4;2013070"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
 </div> 
 <div class="clear"></div> 
+</div> 
 </div> 
 </div> 
 <div class="filterreference parbase section reference"> 
@@ -1350,41 +1514,66 @@ Tablet Group</div>
 	<h1>WARNING: DO NOT REFERENCE THIS WITH ANOTHER REFERENCE COMPONENT</h1> 
 </div> 
 <div class="parbase filterbase filter filter_5"> 
+<script type="text/javascript"> 
+//hiding child filter on page load 
+jQuery(document).ready(function(){ 
+    jQuery("#availability input").each(function(){ 
+        if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != "" ){ 
+            var divToHide = jQuery(this).attr("childFilter"); 
+             if(jQuery("#"+divToHide).length){ 
+                jQuery("#"+divToHide).find("input").removeAttr("checked").parent().attr("class", "");  
+                 jQuery("#"+divToHide).find("input").removeAttr("default"); 
+             } 
+            if(!jQuery(this).is(':checked')){ 
+                if(jQuery("#"+divToHide).length){ 
+                    jQuery("#div_"+divToHide).hide(); 
+                    jQuery("#div_"+divToHide).find("input").removeAttr("checked").parent().attr("class", ""); 
+                } 
+            }   
+            else 
+                jQuery("#div_"+divToHide).insertAfter(jQuery(this).closest("form"));                      
+        }         
+    });  
+    jQuery("#availability input").click(function(){showChild(this.id);});   
+}); 
+</script> 
 <div class="hidden"> 
-	<div class="toggleIndividual toggleCollapse"></div> 
-	<h1>availability checkbox Filter</h1> 
+    <div class="toggleIndividual toggleCollapse"></div> 
+    <h1>availability checkbox Filter</h1> 
 </div> 
+<div id="div_availability"> 
 <div class="individualComponent"> 
-	<form class="filterBy">  
-		<h3> 
-			<input type="image" class="filterCollapseControl" id="filter-collapse-availability" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('availability'); return false" /> 
-			<input type="image" class="filterExpandControl"   id="filter-expand-availability" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('availability'); return false" /> 
-			<span onclick="filterCollapseExpand('availability'); return false">Filter by Availability</span> 
-		</h3> 
-		<ul id="availability" class="styled_forms"> 
-				<li> 
-							<input data-tokencategory="Filter by Availability" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5/denfilteroptions/0" id="availability1" type="checkbox" class="listFilterGroup" name="availability" value="All" checked="checked" default="true"/> 
-					<label for="availability1" >All</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Availability" data-tokencontent="Currently available" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5/denfilteroptions/1" id="availability2" type="checkbox" class="listFilterGroup" name="availability" value="current" /> 
-					<label for="availability2" >Currently available</label> 
-				</li> 
-				<li> 
-							<input data-tokencategory="Filter by Availability" data-tokencontent="Pre-order" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5/denfilteroptions/2" id="availability3" type="checkbox" class="listFilterGroup" name="availability" value="preorder" /> 
-					<label for="availability3" >Pre-order</label> 
-				</li> 
-			<li class="filterItemToggle" style="display:none;"> 
-				<a href="tablets.html#" onclick="toggleFilterItems('availability');return false;" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5;2012300"> 
-					Show  
-					<span class="filterItemToggleMore">more</span> 
-					<span class="filterItemToggleLess">less</span> 
-				</a> 
-			</li> 
-		</ul> 
-	</form> 
+    <form class="filterBy">  
+        <h3> 
+            <input type="image" class="filterCollapseControl" id="filter-collapse-availability" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('availability'); return false" /> 
+            <input type="image" class="filterExpandControl"   id="filter-expand-availability" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('availability'); return false" /> 
+            <span onclick="filterCollapseExpand('availability'); return false">Filter by Availability</span> 
+        </h3> 
+        <ul id="availability" class="styled_forms"> 
+                <li> 
+                            <input data-tokencategory="Filter by Availability" data-tokencontent="All" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5/denfilteroptions/0" id="availability1" type="checkbox" childFilter=""  class="listFilterGroup" name="availability" value="All" checked="checked" default="true"/>                            
+                    <label for="availability1" >All</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Availability" data-tokencontent="Currently available" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5/denfilteroptions/1" id="availability2" type="checkbox" childFilter=""  class="listFilterGroup" name="availability" value="current" /> 
+                    <label for="availability2" >Currently available</label> 
+                </li> 
+                <li> 
+                            <input data-tokencategory="Filter by Availability" data-tokencontent="Pre-order" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5/denfilteroptions/2" id="availability3" type="checkbox" childFilter=""  class="listFilterGroup" name="availability" value="preorder" /> 
+                    <label for="availability3" >Pre-order</label> 
+                </li> 
+            <li class="filterItemToggle" style="display:none;"> 
+                <a href="tablets.html#" onclick="toggleFilterItems('availability');return false;" data-cqpath="/content/sharedcontent/filters/phoneFilters/jcr:content/individual/filter_5;2012300"> 
+                    Show  
+                    <span class="filterItemToggleMore">more</span> 
+                    <span class="filterItemToggleLess">less</span> 
+                </a> 
+            </li> 
+        </ul> 
+    </form> 
 </div> 
 <div class="clear"></div> 
+</div> 
 </div> 
 </div> 
 </div> 
@@ -1528,7 +1717,7 @@ Tablet Group</div>
 		<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="quickViewLink" data-skuid="sku6400289" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
 					<a href="http://www.att.com/shop/wireless/devices/lenovo/ideatab-a2107-black.html" class="clickStreamSingleItem" data-pid="prod6310267" title="Details for Lenovo IdeaTab A2107" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						<img id="image-sku6400289" class="inStockOpacity" alt="Details for Lenovo IdeaTab A2107" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/lenovo-ideatab&#32;a2107-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+						<img id="image-sku6400289" class="outOfStockOpacity" alt="Details for Lenovo IdeaTab A2107" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/lenovo-ideatab&#32;a2107-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 			<div class="list-compare "> 
@@ -1558,7 +1747,7 @@ Tablet Group</div>
 	</div> 
 	<div class="list-noHeight"></div> 
 	<div class="list-priceInfo"> 
-			<div class="list-price"> 
+			<div class="list-price-outOfStock"> 
 								<div class="listPrice">$99.99</div> 
 			</div> 
 		<div class="list-qtyView"> 
@@ -1573,6 +1762,9 @@ Tablet Group</div>
 	<div class="list-noHeight-clear"></div> 
 	<div class="list-button"> 
 		<div class="list-actionDiv" > 
+				<div class="list-finePrint"> 
+						<div class="list-outOfStock">OUT OF STOCK</div> 
+				</div> 
 		</div> 
 		<div class="list-noHeight-clear" ></div> 
 	</div> 
@@ -1592,10 +1784,10 @@ Tablet Group</div>
 					</a> 
 		</div> 
 			<div class="list-rating"> 
-						<div class="reviewStars s3_0"> 
+						<div class="reviewStars s3_4"> 
 							<a href="http://www.att.com/shop/wireless/devices/pantech/element-black-refurb.html#tab2" class="clickStreamSingleItem" data-pid="prod5510227" title="Reviews for Pantech Element&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(4)</span> 
+								<span class="numOfReviews">(5)</span> 
 							</a> 
 						</div> 
 			</div> 
@@ -1841,9 +2033,6 @@ Tablet Group</div>
 	<div class="list-image"> 
 		<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium-certifiedlikenew.html" class="quickViewLink" data-skuid="sku6580467" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-				<div class="list-newArrival"> 
-					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
-				</div> 
 					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-tab-2-titanium-certifiedlikenew.html" class="clickStreamSingleItem" data-pid="prod6210739" title="Details for Samsung Galaxy Tab® 2 10.1 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						<img id="image-sku6580467" class="inStockOpacity" alt="Details for Samsung Galaxy Tab® 2 10.1 (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;tab&#32;2&#32;10.1-titanium-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
@@ -2038,8 +2227,8 @@ Tablet Group</div>
 	</div> 
 								</div> 
 							</div> 
-							<div id="device_prod5710280R" class="list-devicePanel" > 
-								<div id="item_sku6200246" class="list-item"> 
+							<div id="device_prod5690235R" class="list-devicePanel" > 
+								<div id="item_sku6190316" class="list-item"> 
 		<div class="list-noHeight"></div> 
 		<div class="list-webOnly"> 
 			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
@@ -2047,31 +2236,31 @@ Tablet Group</div>
 		<div class="list-noHeight"></div> 
 	<div class="list-itemHeader"> 
 		<div class="list-title"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" data-sku="sku6200246" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" data-sku="sku6190316" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						Apple® iPad® with Wi-Fi + Cellular (Refurbished) 
 					</a> 
 		</div> 
 				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
 	</div> 
 	<div class="list-image"> 
-		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-white-refurb.html" class="quickViewLink" data-skuid="sku6200246" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6190316" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						<img id="image-sku6200246" class="inStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;32gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6190316" class="outOfStockOpacity" alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;wi-fi&#32;+&#32;cellular&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 			<div class="list-compare "> 
 						<div class="floatl"> 
-							<input type="checkbox" value="sku6200246" name="skuId" id="sku6200246" class="clickStreamGroupItem" data-pid="prod5710280" title="Compare Apple® iPad® with Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6200246','check');toggleCompareSelectionLabel('sku6200246');generateCompareThumbs();" /> 
+							<input type="checkbox" value="sku6190316" name="skuId" id="sku6190316" class="clickStreamGroupItem" data-pid="prod5690235" title="Compare Apple® iPad® with Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6190316','check');toggleCompareSelectionLabel('sku6190316');generateCompareThumbs();" /> 
 						</div> 
-						<div id="sku6200246-addtocompare" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6200246">                     
+						<div id="sku6190316-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6190316">                     
 								Add to Compare 
 							</label> 
 						</div> 
-						<div id="sku6200246-comparenow" style="display:none;" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6200246"> 
-								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6200246','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<div id="sku6190316-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6190316"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6190316','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 									Compare Now 
 								</a> 
 							</label> 
@@ -2087,14 +2276,14 @@ Tablet Group</div>
 	</div> 
 	<div class="list-noHeight"></div> 
 	<div class="list-priceInfo"> 
-			<div class="list-price"> 
+			<div class="list-price-outOfStock"> 
 								<div class="listPrice">$429.99 <span class='multiDevicePrice-to'>to</span> $529.99</div> 
 								<div class="multiDevicePrice">16 to 32 GB</div> 
 			</div> 
 		<div class="list-qtyView"> 
 			<div class="list-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-32gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5710280" title="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-							<img alt="Details for Apple® iPad® with Wi-Fi + Cellular 32GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-wi-fi-cellular-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5690235" title="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® with Wi-Fi + Cellular 16GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div>  
 		</div> 
@@ -2109,6 +2298,9 @@ Tablet Group</div>
 	<div class="list-noHeight-clear"></div> 
 	<div class="list-button"> 
 		<div class="list-actionDiv" > 
+				<div class="list-finePrint"> 
+						<div class="list-outOfStock">OUT OF STOCK</div> 
+				</div> 
 		</div> 
 		<div class="list-noHeight-clear" ></div> 
 	</div> 
@@ -2191,8 +2383,8 @@ Tablet Group</div>
 	</div> 
 								</div> 
 							</div> 
-							<div id="device_prod6240233R" class="list-devicePanel" > 
-								<div id="item_sku6520283" class="list-item"> 
+							<div id="device_prod6240227R" class="list-devicePanel" > 
+								<div id="item_sku6530229" class="list-item"> 
 		<div class="list-noHeight"></div> 
 		<div class="list-webOnly"> 
 			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" border="0" title="Web Only" alt="Web Only"/> 
@@ -2200,31 +2392,31 @@ Tablet Group</div>
 		<div class="list-noHeight"></div> 
 	<div class="list-itemHeader"> 
 		<div class="list-title"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-32gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod6240233" data-sku="sku6520283" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-64gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240227" data-sku="sku6530229" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 64GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished) 
 					</a> 
 		</div> 
 				<div class="list-speed"><img alt="4G_LTE" title="4G_LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
 	</div> 
 	<div class="list-image"> 
-		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-32gb-white-refurb.html" class="quickViewLink" data-skuid="sku6520283" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+		<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-64gb-black-refurb.html" class="quickViewLink" data-skuid="sku6530229" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-32gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod6240233" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-						<img id="image-sku6520283" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 32GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;32gb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-64gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240227" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 64GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<img id="image-sku6530229" class="inStockOpacity" alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 64GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-ipad&#32;with&#32;retina&#32;display&#32;wi-fi&#32;+&#32;cellular&#32;64gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 			<div class="list-compare "> 
 						<div class="floatl"> 
-							<input type="checkbox" value="sku6520283" name="skuId" id="sku6520283" class="clickStreamGroupItem" data-pid="prod6240233" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6520283','check');toggleCompareSelectionLabel('sku6520283');generateCompareThumbs();" /> 
+							<input type="checkbox" value="sku6530229" name="skuId" id="sku6530229" class="clickStreamGroupItem" data-pid="prod6240227" title="Compare Apple® iPad® with Retina™ display Wi-Fi + Cellular (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6530229','check');toggleCompareSelectionLabel('sku6530229');generateCompareThumbs();" /> 
 						</div> 
-						<div id="sku6520283-addtocompare" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6520283">                     
+						<div id="sku6530229-addtocompare" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6530229">                     
 								Add to Compare 
 							</label> 
 						</div> 
-						<div id="sku6520283-comparenow" style="display:none;" class="deviceCompareLink"> 
-							<label class="deviceCompare" for="sku6520283"> 
-								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6520283','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+						<div id="sku6530229-comparenow" style="display:none;" class="deviceCompareLink"> 
+							<label class="deviceCompare" for="sku6530229"> 
+								<a href="javascript:void(0);" onclick="javascript:checkCompareSelectionCount('sku6530229','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 									Compare Now 
 								</a> 
 							</label> 
@@ -2246,8 +2438,8 @@ Tablet Group</div>
 			</div> 
 		<div class="list-qtyView"> 
 			<div class="list-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-32gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod6240233" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
-							<img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 32GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/ipad/ipad-with-retina-display-wi-fi-cellular-64gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6240227" title="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 64GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
+							<img alt="Details for Apple® iPad® with Retina&trade; display Wi-Fi + Cellular 64GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div>  
 		</div> 
@@ -2693,9 +2885,6 @@ Tablet Group</div>
 	<div class="list-image"> 
 		<a href="http://www.att.com/shop/wireless/devices/att/att-sim-for-apple-ipad-2-wi-fi.html" class="quickViewLink" data-skuid="sku6580537" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-				<div class="list-newArrival"> 
-					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
-				</div> 
 					<a href="http://www.att.com/shop/wireless/devices/att/att-sim-for-apple-ipad-2-wi-fi.html" class="clickStreamSingleItem" data-pid="prod6480405" title="Details for SIM for Apple® iPad® 2 with Wi-Fi + 3G device" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						<img id="image-sku6580537" class="inStockOpacity" alt="Details for SIM for Apple® iPad® 2 with Wi-Fi + 3G device" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/at&amp;t-sim&#32;for&#32;ipad&#32;2&#32;with&#32;wi-fi-orange-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
@@ -2749,9 +2938,6 @@ Tablet Group</div>
 	<div class="list-image"> 
 		<a href="http://www.att.com/shop/wireless/devices/att/att-sim-for-apple-ipad-wi-fi-3g.html" class="quickViewLink" data-skuid="sku6580448" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
 		<div class="image"> 
-				<div class="list-newArrival"> 
-					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
-				</div> 
 					<a href="http://www.att.com/shop/wireless/devices/att/att-sim-for-apple-ipad-wi-fi-3g.html" class="clickStreamSingleItem" data-pid="prod6480334" title="Details for SIM for Apple® iPad® Wi-Fi + 3G device" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"> 
 						<img id="image-sku6580448" class="inStockOpacity" alt="Details for SIM for Apple® iPad® Wi-Fi + 3G device" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/at&amp;t-sim&#32;for&#32;ipad&#32;with&#32;wi-fi&#32;+&#32;3g-orange-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
@@ -2812,7 +2998,7 @@ Tablet Group</div>
 										</div> 
 										<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 										<div class="showAllGroup"> 
-											<span id="showAllDevicesText"><a href="javascript:void(0);" title="SHOW ALL DEVICES" onclick="ATT.listPage.setShowMorePref(20);jQuery('input#showMore').attr('value',20);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">SHOW ALL DEVICES </a></span> 
+											<span id="showAllDevicesText"><a href="javascript:void(0);" title="SHOW ALL DEVICES" onclick="ATT.listPage.setShowMorePref(20);jQuery('input#showMore').attr('value',20);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">SHOW ALL DEVICES</a></span> 
 											<span id="showAllDevicesImage"><a href="javascript:void(0);" title="SHOW ALL DEVICES" onclick="ATT.listPage.setShowMorePref(20);jQuery('input#showMore').attr('value','20');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show All Devices"/></a></span> 
 										</div> 
 									</div> 
@@ -2897,7 +3083,7 @@ Pricing effective 2/15/2013. Req. new 2-yr wireless agreement w/ data (min $14.9
 	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Wireless Customer Agreement</a> | 
 	<a class="last" href="../../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Cell Phone Records Security</a> 
 		   |<a class="openModal modal705" href="http://www.att.com/shop/en/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Other Monthly Charges</a>| 
-			<a class="postPaidLegalLink" href="../../../wirelessterms.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Plan Terms</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Plan Terms</a>| 
 			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Online Pricing</a>| 
 			<div class='secondRow'> 
 				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/devices/tablets/jcr:content;2013052">Returns Policy &amp; Early Termination Fee</a>| 
@@ -3026,7 +3212,7 @@ jQuery(document).ready(function(){
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 211491180122934724796442477323179114501 --> 
+		 <!--X-Renderer: 294471225788578210211051250283667342170 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -3205,7 +3391,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","D4F1RN4TckthKnnTCBQQVS2p!-1391173214!1368225902350"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","nxbQRW7JqthGwLGkqP2kTrZ8!86503043!1368849332642"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
@@ -3249,15 +3435,6 @@ lpMTagConfig.vars.push(["page","modalFlag","off"]);
 <noscript><iframe src="../../../../view.atdmt.com/iaction/cntcin_Tablet100Off_1.html" width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe></noscript> 
 </div> 
 	<!--  To create CLT cookies in existing customer flow --> 
-        <script type="text/javascript"> 
-            jQuery(document).ready(function() { 
-            jQuery.ajax({type: "GET",url:'/shop/wireless/devices/tablets.existcustlocalization.xhr.html', 
-            success: function (data){ 
-                jQuery('body').append(data); 
-            } 
-            }); 
-         }); 
-        </script>              
 <script language="javascript" type="text/javascript"><!-- 
 if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opModulesArray.length){ 
        for(var i=0;i<opModulesArray.length;i++){ 

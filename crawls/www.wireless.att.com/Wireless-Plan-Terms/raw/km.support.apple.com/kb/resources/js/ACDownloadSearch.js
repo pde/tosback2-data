@@ -294,10 +294,11 @@ var ACDownloadSearch = {
 				
 				var omnitureClickName = (ACDownloadSearch.pageNamePrefix + "::" + downloadId + "::" + downloads.downloads[i].title.replace('\'', '\\\'') + "::").toLowerCase();
 				// prodName added for <exp2://Ticket/8266890> iKnow: Products are deleted in "My Most Recent Products:" 
-				var prodName=escape(downloads.downloads[i].prodName);				
+				var prodName=escape(downloads.downloads[i].prodName);
+				var desc = downloads.downloads[i].title.replace(/'/g, "\\'");
 				//exp2://Ticket/12390683 : Product names in EN in My most recent products
 				//var aHref = "<a onclick=\"ACRecentProducts.add('" + downloads.downloads[i].productname + "', '" + downloads.downloads[i].parent + "', '" + prodName + "');ACUtil.setIteminBrowserCache('"+downloadId+"','"+downloads.downloads[i].productname+"');ACUtil.clickTracking('" + omnitureClickName + "listdetail');\" href=\"" + (downloads.downloads[i].answerurl ? downloads.downloads[i].answerurl: downloads.downloads[i].url) + "\">";
-				var aHref = "<a onclick=\"ACRecentProducts.add('" + downloads.downloads[i].productname + "', '" + downloads.downloads[i].parent + "', '" + downloads.downloads[i].title + "');ACUtil.setIteminBrowserCache('"+downloadId+"','"+downloads.downloads[i].productname+"');ACUtil.clickTracking('" + omnitureClickName + "listdetail');\" href=\"" + (downloads.downloads[i].answerurl ? downloads.downloads[i].answerurl: downloads.downloads[i].url) + "\">";
+				var aHref = "<a onclick=\"ACRecentProducts.add('" + downloads.downloads[i].productname + "', '" + downloads.downloads[i].parent + "', '" + desc + "');ACUtil.setIteminBrowserCache('"+downloadId+"','"+downloads.downloads[i].productname+"');ACUtil.clickTracking('" + omnitureClickName + "listdetail');\" href=\"" + (downloads.downloads[i].answerurl ? downloads.downloads[i].answerurl: downloads.downloads[i].url) + "\">";
 				var fileUrl = "";
 				
 				resultList += "<li class=\"top-results dt-thumbnail\"><h3>"+aHref+"<img class=\"thumbnail\" src=\"" + ACUtil.getImageSrc(ACDownloadSearch.akamaiUrl + downloads.downloads[i].thumbnail) + "\" alt=\"\">";

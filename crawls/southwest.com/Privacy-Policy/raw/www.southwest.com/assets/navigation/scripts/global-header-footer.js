@@ -1,25 +1,33 @@
 var defaultTextGlobalNav={globalnav_header_utility_search_input:"Search Southwest"};
-$(document).ready(function(){$("#globalnav_footer_site_links_morelinks_toggle").css({display:"inline-block"});
-for(var c in defaultTextGlobalNav){var b=$("#"+c);
-b.focus(function(){if($(this).hasClass("show_defaulttext")){$(this).val("");
+$(document).ready(function(){var a=$("#globalnav_footer_site_links_morelinks_toggle");
+a.css({display:"inline-block"});
+var g=$("#globalnav_footer_site_links_container").height();
+$(".globalnav_footer_site_links").css({height:g});
+var b=$("#globalnav_footer_container");
+b.css({height:b.height()});
+if(typeof globalNavLoadFooterExpanded=="undefined"){$("#globalnav_footer_site_links_container").css({height:40});
+a.removeClass("globalnav_footer_site_links_morelinks_toggle_open").addClass("globalnav_footer_site_links_morelinks_toggle globalnav_footer_site_links_morelinks_toggle_closed")
+}for(var f in defaultTextGlobalNav){var d=$("#"+f);
+d.focus(function(){if($(this).hasClass("show_defaulttext")){$(this).val("");
 $(this).removeClass("show_defaulttext")
 }});
-b.blur(function(){if($(this).val()==""){$(this).addClass("show_defaulttext");
+d.blur(function(){if($(this).val()==""){$(this).addClass("show_defaulttext");
 $(this).val(defaultTextGlobalNav[$(this).attr("id")])
 }});
-if($(b).val()==""||$(b).val()==defaultTextGlobalNav[c]){b.addClass("show_defaulttext");
-b.val(defaultTextGlobalNav[c])
-}}$("#globalnav_footer_site_links_morelinks_toggle").click(function(){if($(this).hasClass("globalnav_footer_site_links_morelinks_toggle_open")&&!$(this).hasClass("globalnav_footer_site_links_morelinks_toggle_inprogress")){$(this).removeClass("globalnav_footer_site_links_morelinks_toggle_open");
-$(this).addClass("globalnav_footer_site_links_morelinks_toggle_closed globalnav_footer_site_links_morelinks_toggle_inprogress");
-growShrinkFooter("globalnav_footer_site_links_container",-20,40)
-}else{if($(this).hasClass("globalnav_footer_site_links_morelinks_toggle_closed")){$(this).removeClass("globalnav_footer_site_links_morelinks_toggle_closed");
-$(this).addClass("globalnav_footer_site_links_morelinks_toggle_open globalnav_footer_site_links_morelinks_toggle_inprogress");
-growShrinkFooter("globalnav_footer_site_links_container",20,215)
+if($(d).val()==""||$(d).val()==defaultTextGlobalNav[f]){d.addClass("show_defaulttext");
+d.val(defaultTextGlobalNav[f])
+}}$("#globalnav_footer_site_links_morelinks_toggle").click(function(){var h=$(this);
+if(h.hasClass("globalnav_footer_site_links_morelinks_toggle_open")&&!h.hasClass("globalnav_footer_site_links_morelinks_toggle_inprogress")){h.removeClass("globalnav_footer_site_links_morelinks_toggle_open").addClass("globalnav_footer_site_links_morelinks_toggle_closed globalnav_footer_site_links_morelinks_toggle_inprogress");
+e(40)
+}else{if(h.hasClass("globalnav_footer_site_links_morelinks_toggle_closed")){h.removeClass("globalnav_footer_site_links_morelinks_toggle_closed").addClass("globalnav_footer_site_links_morelinks_toggle_open globalnav_footer_site_links_morelinks_toggle_inprogress");
+e(g)
 }}return false
 });
-$("#globalnav_header_primary .globalnav_header_primary_link").hover(function(){var d=this;
+function e(h){$("#globalnav_footer_site_links_container").animate({height:h},function(){$("#globalnav_footer_site_links_morelinks_toggle").removeClass("globalnav_footer_site_links_morelinks_toggle_inprogress")
+})
+}$("#globalnav_header_primary .globalnav_header_primary_link").hover(function(){var h=this;
 $(this).addClass("globalnav_header_subnav_ishovered");
-setTimeout(function(){if($(d).hasClass("globalnav_header_subnav_ishovered")){showSubNav(d)
+setTimeout(function(){if($(h).hasClass("globalnav_header_subnav_ishovered")){showSubNav(h)
 }},500)
 },function(){$(this).removeClass("globalnav_header_subnav_ishovered");
 hideSubNav(this)
@@ -32,9 +40,9 @@ repositionHoverBackdropIframe("hidden",0,0,0,0)
 });
 if($.browser.msie&&parseInt($.browser.version,10)==6){$(document.body).append('<iframe src="/assets/navigation/blank.html" scrolling="no" width="0" height="0" frameborder="0" id="globalnav_header_hover_backdrop_iframe"></iframe>')
 }$(document.body).append("<div id='globalnav_preload_container'></div>");
-var a=$("#globalnav_preload_container");
-a.addClass("globalnav_preload_container_primary_nav_hover");
-a.hide()
+var c=$("#globalnav_preload_container");
+c.addClass("globalnav_preload_container_primary_nav_hover");
+c.hide()
 });
 function toggleTravelTools(g){var e=$(g);
 var f=e.parent();
@@ -65,14 +73,7 @@ return false
 }return false
 }function closeTravelTools(){$("#globalnav_header_utility_travel_tools_hover_container").remove();
 repositionHoverBackdropIframe("hidden",0,0,0,0)
-}function growShrinkFooter(e,d,a){var c=$("#"+e);
-var b=parseInt(c.css("height"));
-b+=parseInt(d);
-if((d<0&&b>a)||(d>0&&b<a)){c.css("height",b+"px");
-setTimeout("growShrinkFooter('"+e+"',"+d+","+a+");",25)
-}else{c.css("height",a+"px");
-$("#globalnav_footer_site_links_morelinks_toggle").removeClass("globalnav_footer_site_links_morelinks_toggle_inprogress")
-}}function showSubNav(k){var e=$(k);
+}function showSubNav(k){var e=$(k);
 var i=e;
 var n=e.attr("id");
 var h=e.parent();

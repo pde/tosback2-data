@@ -35,11 +35,11 @@ if (typeof iCopyright == 'undefined') {
         }
     };
     var icx_orientation = 'horz';
-    iCopyright.insertStyles('//d2uzdrx7k4koxz.cloudfront.net/rights/style/horz-toolbar.css?v=20130503-1712');
+    iCopyright.insertStyles('//d2uzdrx7k4koxz.cloudfront.net/rights/style/horz-toolbar.css?v=20130517-1319');
     iCopyright.insertScript('//license.icopyright.net:80/rights/js/icx-pub-' + icx_publication_id + '.js');
-    iCopyright.insertScript('//d2uzdrx7k4koxz.cloudfront.net/rights/js/icx-functions.js?v=20130503-1712');
-    iCopyright.insertScript('//d2uzdrx7k4koxz.cloudfront.net/rights/js/icx-toolbar.js?v=20130503-1712');
-    iCopyright.insertScript('//d2uzdrx7k4koxz.cloudfront.net/rights/js/icx-page-view.js?v=20130503-1712');
+    iCopyright.insertScript('//d2uzdrx7k4koxz.cloudfront.net/rights/js/icx-functions.js?v=20130517-1319');
+    iCopyright.insertScript('//d2uzdrx7k4koxz.cloudfront.net/rights/js/icx-toolbar.js?v=20130517-1319');
+    iCopyright.insertScript('//d2uzdrx7k4koxz.cloudfront.net/rights/js/icx-page-view.js?v=20130517-1319');
 } else {
     icx_writeToolbar();
     icx_writePageView();

@@ -1,32 +1,31 @@
-/*$(document).ready(function(){
- $("#subscribe_box").click(function(){
- event.stopPropagation();
- $("div#mainsearchbarform").animate({height:'40px',top:'-22px'}, 300);
- });
- $(document).click(function(){
- $("div#mainsearchbarform").animate({height:'20px',top:'0'}, 300);
- });
- });
- */
 var validateForm = {
     
     checkFields : function(formID){
-            var inputPath = formID + ' > input';
-            var selectPath = formID + ' > select';
-            if( !$(inputPath).val() ||
-                !$(selectPath).val() ||
-                $(inputPath).val() === "email address" ||
-                $(inputPath).val() === "first name" ||
-                $(inputPath).val() === "last name" ||
-                $(inputPath).val() === "Enter email address here..." ||
-                $(inputPath).val() === "Enter first name here..." ||
-                $(inputPath).val() === "Enter last name here..."
-            ) {
-                alert('Please fill out all fields.');
-                return false;
-            }else{
-                return true;
-            }
+        $(formID).isHappy({
+			fields: {
+			  '#subscribeTitle': {
+				required: true,
+				message: 'Please select a Title'				
+			  },
+			  '#subscribeFirstName': {
+				required: true,
+				message: 'Please enter your first name',
+				test: happy.notEqual,
+				arg: 'Enter first name here...'
+			  },
+			  '#subscribeLastName': {
+				required: true,
+				message: 'Please enter your surname',
+				test: happy.notEqual,
+				arg: 'Enter last name here...'
+			  },
+			  '#email': {
+				required: true,
+				message: 'Please enter your email address',
+				test: happy.email // this can be *any* function that returns true or false
+			  }
+			}
+		  });  
     }
     
 }
@@ -42,3 +41,6 @@ var animateForm = {
     }
     
 }
+$(document).ready(function () {
+	validateForm.checkFields('#popup_form');
+});

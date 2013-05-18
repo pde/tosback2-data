@@ -1,0 +1,133 @@
+$(document).ready(function(){
+	$("ul .delete_jobs").click(function()		
+		{						 
+			var arr_id = $(this).parent('li').attr('id');	
+			var status = 'removeJobs';
+			$(this).parent('li').remove(); 	
+			$.get("/automd/removejobs/?status="+status+"&rem_id="+arr_id, function(data,status){});
+		});	
+		
+});
+
+function removeUserVehicle(vehicle_id,status,element){		
+    $.get("/managevehicle/?status="+status+"&id="+vehicle_id, function(data,status){
+		if(status=="success"){
+			window.parent.location.href = removeVehicleQuery(element);
+		}
+    });
+}
+
+function removeVehicleQuery(element){
+	params 		= window.parent.location.search;
+	hostname	= window.parent.location.hostname;
+	protocol	= window.parent.location.protocol;
+	pathname	= window.parent.location.pathname;
+	href		= window.parent.location.href;
+	_pathname	= pathname;
+	_params		= '';
+
+
+	if( $("#mySelectedVehiclePivot:hidden").length > 0 && $("#mySelectedVehicleInfo:hidden").length > 0 ){
+		arrParams = params.substring(1).split('&');
+		vpivot 		= $("#mySelectedVehiclePivot:hidden").val().replace(/\+/g,' ');
+		vinfo		= unescape($("#mySelectedVehicleInfo:hidden").val()).replace(/\+/g,' ');
+		arrVpivot 	= vpivot.split(' ');
+		arrVinfo 	= vinfo.split('|');
+		newParams 	= '';
+
+		if(pathname.search(/^\/vehicle\//) != -1){
+			if(element == 0){
+				if( $("div #divmyvehicles a[href^='/vehicle/']").eq(1).length > 0 ){
+					_pathname = $("div #divmyvehicles a[href^='/vehicle/']").eq(1).attr('href');
+				}else{
+					_pathname = '/';
+				}
+			}else{
+				_params = params;
+			}
+		}else if(pathname.search(/^\/copart\//) != -1){
+			_pathname = '/';
+		}else{
+			if(element == 0){
+				for( i = 0; i < arrParams.length; i++){
+					arrQuery = arrParams[i].split('=');
+					switch(arrQuery[0]){
+						case 'VN':
+						case 'V':
+							newQVehiclePivot = '';
+							qVehiclePivot = unescape(arrQuery[1]).replace(/\+/g,' ');
+							arrQVehiclePivot = qVehiclePivot.split(' ');
+
+							for( x = 0; x < arrVpivot.length; x++ ){
+								for( _i = 0; _i < arrQVehiclePivot.length; _i++){
+									if( arrQVehiclePivot[_i] != 0 && arrVpivot[x]  == arrQVehiclePivot[_i] ){
+										qVehiclePivot = qVehiclePivot.replace(arrVpivot[x].toLowerCase(), '');
+										qVehiclePivot = qVehiclePivot.replace(/\+/g,' ');
+										newQVehiclePivot = qVehiclePivot.replace(/^\s+|\s+$/g,"");
+									}
+								}
+							}
+
+							if('VN' == arrQuery[0]){
+								if( newQVehiclePivot.length > 0 ){
+									newQVehiclePivot = 'VN='.concat(escape(newQVehiclePivot));
+									newParams += '&'.concat(newQVehiclePivot);
+								}
+							}else{
+								if(newQVehiclePivot.length > 0){
+									newQVehiclePivot = 'V='.concat(escape(newQVehiclePivot));
+									newParams += '&'.concat(newQVehiclePivot);
+								}
+							}
+
+						break;
+
+						case 'D':
+						case 'Ntt':
+						case 'Vh':
+							qVehicleInfo = unescape(arrQuery[1]).replace(/\+/g,' ').toLowerCase();
+
+							for( _i = 0; _i < arrVinfo.length; _i++){
+								if(qVehicleInfo.search(arrVinfo[_i].toLowerCase()) != -1){
+									qVehicleInfo = qVehicleInfo.replace(arrVinfo[_i].toLowerCase(), '');
+									qVehicleInfo = qVehicleInfo.replace(/\+/g,' ');
+									qVehicleInfo = qVehicleInfo.replace(/^\s+|\s+$/g,"")
+								}
+							}
+
+							if(qVehicleInfo.length > 0){
+								if('Ntt' == arrQuery[0]){
+									newQVehicleInfo = 'Ntt='.concat(escape(qVehicleInfo));
+								}else if('Vh' == arrQuery[0]){
+									newQVehicleInfo = 'Vh='.concat(escape(qVehicleInfo));
+								}else{
+									newQVehicleInfo = 'D='.concat(escape(qVehicleInfo));
+								}
+
+								newParams += '&'.concat(newQVehicleInfo);
+							}
+						break;
+
+						default:
+							newParams += '&'.concat(arrParams[i]);
+					}
+				}
+
+				if(newParams.substring(1).length > 0){
+					_params = '?'.concat(newParams.substring(1));
+				}
+			}else{
+				_params = params;
+			}
+		}
+
+		href = protocol.concat('//').concat(hostname).concat(_pathname).concat(_params);
+	} else if(pathname.search(/^\/shop_years\//) != -1){
+		/* Redirects to home page */
+		_pathname = '/';
+		_params = '';
+		href = protocol.concat('//').concat(hostname).concat(_pathname).concat(_params);
+	}
+
+	return href;
+}

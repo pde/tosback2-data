@@ -1,0 +1,1062 @@
+/**
+ * @namespace For account functions
+ */
+AccountFacade = {};
+
+AccountFacade.ACCOUNT_MODE_RELOAD = "accountModeReload"  // reload account after rename, upload and so on
+AccountFacade.ACCOUNT_MODE_NO_RELOAD = "accountModeNoReload"  // not reload account after rename, upload and so on. We need it in case of opened options, playlists, etc.
+AccountFacade.accountReloadMode = AccountFacade.ACCOUNT_MODE_RELOAD;
+
+AccountFacade.RECYCLE_BIN_DIR_ID = 'StJ70-En'
+AccountFacade.SEARCH_RESULT_DIR_ID = '67UaUnW7'
+AccountFacade.INCOMPLETED_DIR_ID = 'cpLWtpmv'
+AccountFacade.SHARED_FOLDERS_DIR_ID = 'ggFKXjP8'
+AccountFacade.SHARED_TOOLS_DIR_ID = '1raEeMxb'
+AccountFacade.FRIENDS_DIR_ID = 'VdF9WzF8'
+AccountFacade.WEB_DOWNLOAD_DIR_ID = 'l6nLEv53'
+AccountFacade.FAVORITES_DIR_ID = 'v_y2pOnK'
+AccountFacade.MESSAGES_DIR_ID = 'g95sFWeO'
+AccountFacade.SENT_MESSAGES_DIR_ID = 'tngvJxfz'
+AccountFacade.FRIENDS_RECENT_DIR_ID = 'yb8xabwW'
+
+
+
+AccountFacade.loadingDiv
+AccountFacade.timeOut
+AccountFacade.sId
+AccountFacade.setSid = function(sId) {
+  AccountFacade.sId = sId;
+  return false;
+}
+AccountFacade.showLoadingDiv = function(element) {
+  if (AccountFacade.loadingDiv) AccountFacade.loadingDiv.remove()
+  AccountFacade.loadingDiv = $($('#accountLoadingDiv').html()).show()
+  element = element || '#mainbar'
+  $(element).prepend(AccountFacade.loadingDiv)
+  AccountFacade.timeOut = setTimeout(function() {
+    AccountFacade.loadingDiv.find(".load1").hide()
+    AccountFacade.loadingDiv.find(".load2").show()
+  }, 5000)
+}
+
+AccountFacade.hideLoadingDiv = function() {
+  clearTimeout(AccountFacade.timeOut)
+  AccountFacade.loadingDiv.remove()
+}
+
+AccountFacade.reloadCurrentDir = function() {
+  if (AccountFacade.accountReloadMode == AccountFacade.ACCOUNT_MODE_RELOAD) {
+    changeDirLeft(currentDirId)
+  }
+}
+
+
+AccountFacade.specialDirIds =
+    [AccountFacade.RECYCLE_BIN_DIR_ID,
+      AccountFacade.SEARCH_RESULT_DIR_ID,
+      AccountFacade.INCOMPLETED_DIR_ID,
+      AccountFacade.SHARED_FOLDERS_DIR_ID,
+      AccountFacade.SHARED_TOOLS_DIR_ID,
+      AccountFacade.FRIENDS_DIR_ID,
+      AccountFacade.WEB_DOWNLOAD_DIR_ID,
+      AccountFacade.FAVORITES_DIR_ID,
+      AccountFacade.MESSAGES_DIR_ID,
+      AccountFacade.SENT_MESSAGES_DIR_ID,
+      AccountFacade.FRIENDS_RECENT_DIR_ID]
+
+
+  function LeftMenuHelper() {
+    return this;
+  }
+
+  LeftMenuHelper.ICON_ROOT = "froot";
+  LeftMenuHelper.ICON_FOLDER = "folder";
+  LeftMenuHelper.ICON_OPEN_FOLDER = "fopen";
+  LeftMenuHelper.ICON_SHARED_FOLDER = "fshared";
+  LeftMenuHelper.ICON_SHARED_FOR_MEMBERS = "fmembers";
+  LeftMenuHelper.ICON_SHARED_FOR_MEMBERS_OPEN = "fmembersopen";
+  LeftMenuHelper.ICON_SHARED_WITH_ME_FOLDER = "sharedwme";
+  LeftMenuHelper.ICON_SHARED_OPEN_FOLDER = "fsharedopen";
+  LeftMenuHelper.ICON_RECYCLE_BIN = "ftrash";
+  LeftMenuHelper.ICON_INCOMPLETED = "fincompleted";
+  LeftMenuHelper.ICON_TOOLS = "ftools";
+  LeftMenuHelper.ICON_MESSAGES = "fmessages";
+  LeftMenuHelper.ICON_SENT_MESSAGES = "fmessages";
+  LeftMenuHelper.ICON_FAVORITES = "ffavorites";
+  LeftMenuHelper.ICON_SEARCH_RESULT = "fsearch";
+  LeftMenuHelper.ICON_FRIENDS = "ffriends";
+  LeftMenuHelper.ICON_FRIENDS_RECENT = "frecent";
+  LeftMenuHelper.ICON_FRIEND = "fsubscriber";
+  LeftMenuHelper.ICON_WEB_DOWNLOAD = "fgrabbed";
+
+LeftMenuHelper.FOLDER_PRIVATE_MODE = 0;
+LeftMenuHelper.FOLDER_SHARED_FOR_ALL_MODE = 1;
+LeftMenuHelper.FOLDER_MEMBERS_ONLY_MODE = 2;
+
+LeftMenuHelper.specialDirsParams = {}
+LeftMenuHelper.specialDirsParams[AccountFacade.RECYCLE_BIN_DIR_ID] = {icon:LeftMenuHelper.ICON_RECYCLE_BIN, openIcon:LeftMenuHelper.ICON_RECYCLE_BIN, cssClass:"gaClick", dataElement:30}
+LeftMenuHelper.specialDirsParams[AccountFacade.SEARCH_RESULT_DIR_ID] = {root:true, icon:LeftMenuHelper.ICON_SEARCH_RESULT, openIcon:LeftMenuHelper.ICON_SEARCH_RESULT, cssClass:"webfx-tree-virtual gaClick", dataElement:34}
+LeftMenuHelper.specialDirsParams[AccountFacade.INCOMPLETED_DIR_ID] = {icon:LeftMenuHelper.ICON_INCOMPLETED, openIcon:LeftMenuHelper.ICON_INCOMPLETED, cssClass:"gaClick", dataElement:28}
+LeftMenuHelper.specialDirsParams[AccountFacade.SHARED_FOLDERS_DIR_ID] = {root:true, icon:LeftMenuHelper.ICON_SHARED_WITH_ME_FOLDER, openIcon:LeftMenuHelper.ICON_SHARED_WITH_ME_FOLDER, cssClass:"webfx-tree-root gaClick", dataElement:29, contClass:"contentBottomBorder"}
+LeftMenuHelper.specialDirsParams[AccountFacade.SHARED_TOOLS_DIR_ID] = {root:true, icon:LeftMenuHelper.ICON_TOOLS, openIcon:LeftMenuHelper.ICON_TOOLS, cssClass:"webfx-tree-virtual gaClick", dataElement:31}
+LeftMenuHelper.specialDirsParams[AccountFacade.FRIENDS_DIR_ID] = {root:true, icon:LeftMenuHelper.ICON_FRIENDS, openIcon:LeftMenuHelper.ICON_FRIENDS, cssClass:"webfx-tree-virtual gaClick", dataElement:32, isDefaultClosed:true, menu:"open"}
+LeftMenuHelper.specialDirsParams[AccountFacade.WEB_DOWNLOAD_DIR_ID] = {root:true, icon:LeftMenuHelper.ICON_WEB_DOWNLOAD, openIcon:LeftMenuHelper.ICON_WEB_DOWNLOAD, cssClass:"webfx-tree-virtual gaClick", dataElement:33, menu:"open"}
+LeftMenuHelper.specialDirsParams[AccountFacade.FAVORITES_DIR_ID] = {icon:LeftMenuHelper.ICON_FAVORITES, openIcon:LeftMenuHelper.ICON_FAVORITES, cssClass:"gaClick", dataElement:26}
+//LeftMenuHelper.specialDirsParams[AccountFacade.MESSAGES_DIR_ID] = {icon:LeftMenuHelper.ICON_MESSAGES, openIcon:LeftMenuHelper.ICON_MESSAGES, cssClass:"gaClick", dataElement:27, isDefaultClosed:true}
+//LeftMenuHelper.specialDirsParams[AccountFacade.SENT_MESSAGES_DIR_ID] = {icon:LeftMenuHelper.ICON_SENT_MESSAGES, openIcon:LeftMenuHelper.ICON_SENT_MESSAGES, cssClass:"gaClick", dataElement:27.1}
+LeftMenuHelper.specialDirsParams[AccountFacade.FRIENDS_RECENT_DIR_ID] = {icon:LeftMenuHelper.ICON_FRIENDS_RECENT, openIcon:LeftMenuHelper.ICON_FRIENDS_RECENT, cssClass:"gaClick", dataElement:32.1, menu:"open"}
+
+
+LeftMenuHelper.specialActions = {}
+LeftMenuHelper.specialActions[AccountFacade.SHARED_TOOLS_DIR_ID] = {action:"changeDirToTools", params:true};
+
+
+
+
+
+LeftMenuHelper.configureMenuNode = function (treeNode, objectNode) {
+
+    if (LeftMenuHelper.specialDirsParams[objectNode.id]) {
+      for (var key in LeftMenuHelper.specialDirsParams[objectNode.id]) {
+        treeNode[key] = LeftMenuHelper.specialDirsParams[objectNode.id][key];
+      }
+    } else if (objectNode.nodeType == "rootFolder") {
+      treeNode.openIcon = LeftMenuHelper.ICON_ROOT
+      treeNode.icon = LeftMenuHelper.ICON_ROOT
+      treeNode.cssClass="webfx-tree-root gaClick"
+
+    }else {
+
+      switch (objectNode.mode) {
+        case LeftMenuHelper.FOLDER_PRIVATE_MODE:
+          treeNode.openIcon = LeftMenuHelper.ICON_OPEN_FOLDER
+          treeNode.icon = LeftMenuHelper.ICON_FOLDER
+          break;
+        case LeftMenuHelper.FOLDER_MEMBERS_ONLY_MODE:
+          treeNode.openIcon = LeftMenuHelper.ICON_SHARED_FOR_MEMBERS_OPEN
+          treeNode.icon = LeftMenuHelper.ICON_SHARED_FOR_MEMBERS
+          break;
+        case LeftMenuHelper.FOLDER_SHARED_FOR_ALL_MODE:
+          treeNode.openIcon = LeftMenuHelper.ICON_SHARED_OPEN_FOLDER
+          treeNode.icon = LeftMenuHelper.ICON_SHARED_FOLDER
+          break;
+      }
+    }
+    treeNode.imgDirId = objectNode.id
+    treeNode.sharingMode = objectNode.mode
+  }
+
+LeftMenuHelper.getStandardAction = function (id) {
+    return "javascript:changeDirLeft('"+ id +"')";
+  }
+
+LeftMenuHelper.treeNodes = {}
+
+LeftMenuHelper.objectTreeToJsTree = function (oNode, root) {
+    var text = oNode.text;
+    var action
+    if (LeftMenuHelper.specialActions[oNode.id]) {
+       if (LeftMenuHelper.specialActions[oNode.id].params)
+          action = "javascript:"+ LeftMenuHelper.specialActions[oNode.id].action +"('"+oNode.id+"')";
+       else
+          action = "javascript:"+ LeftMenuHelper.specialActions[oNode.id].action +"()";
+    }else {
+      if (!root) action = LeftMenuHelper.getStandardAction(oNode.id);
+    }
+    var parent = null;
+    var icon = oNode.icon;
+    var openIcon = oNode.openIcon;
+
+    var tNode;
+    if (root){
+      tNode = new WebFXTree(text,action);
+      LeftMenuHelper.leftMenuRoot = tNode;
+      tNode.isRoot = true;
+    } else if (oNode.notItem) {
+      tNode = new WebFXTree(text, action, false)
+      tNode.dirId = oNode.id
+      tNode.type = "folder"
+      LeftMenuHelper.configureMenuNode(tNode, oNode);
+    } else {
+      tNode = new WebFXTreeItem(text, action, parent, icon, openIcon);
+      tNode.dirId = oNode.id;
+      tNode.type = "folder"; // there are only folders in the left menu
+      tNode.dirSize = oNode.dirSize;
+
+      LeftMenuHelper.configureMenuNode(tNode, oNode);
+    }
+    if (oNode.id)
+      LeftMenuHelper.treeNodes[oNode.id] = tNode;
+    var cs = oNode.children;
+    if (cs != null){
+      var l = cs.length;
+      for (var i = 0; i < l; i++) {
+        tNode.add( LeftMenuHelper.objectTreeToJsTree(cs[i],false));
+      }
+    }
+
+    return tNode;
+  }
+
+
+  LeftMenuHelper.saveLeftMenuState = function () {
+//    LeftMenuHelper.openNodes = []
+//    for (var id in LeftMenuHelper.treeNodes) {
+//        if (LeftMenuHelper.treeNodes[id].open) {
+//          LeftMenuHelper.openNodes.push(id)
+//        }
+//     }
+    if (LeftMenuHelper.leftMenuRoot && LeftMenuHelper.leftMenuRoot.getSelected()) {
+      LeftMenuHelper.leftMenuSelectedNodeId = LeftMenuHelper.leftMenuRoot.getSelected().dirId;
+    } else {
+      LeftMenuHelper.leftMenuSelectedNodeId = null;
+    }
+
+  }
+
+  LeftMenuHelper.recoverLeftMenuState = function () {
+    if (currentDirId != null && LeftMenuHelper.leftMenuSelectedNodeId != currentDirId)
+      LeftMenuHelper.leftMenuSelectedNodeId = currentDirId;
+
+    if (LeftMenuHelper.leftMenuSelectedNodeId != null && LeftMenuHelper.treeNodes.hasOwnProperty(LeftMenuHelper.leftMenuSelectedNodeId)) {
+      var nodeSelected = LeftMenuHelper.treeNodes[LeftMenuHelper.leftMenuSelectedNodeId]
+      nodeSelected.select();
+      nodeSelected.expand();
+      nodeSelected.parentDirId == AccountFacade.SHARED_FOLDERS_DIR_ID ? nodeSelected.parentNode.expand() : { }
+    }
+  }
+
+/**
+ * @class
+ */
+AccountFacade.PathObject = function(path, ids) {
+  /**
+   * @lends AccountFacade.PathObject
+   */
+  return {
+    path : path,
+    ids : ids
+  };
+}
+
+
+/**
+ * Return current folders path
+ *
+ * @static
+ * @returns {AccountFacade.PathObject | null} pathObject - Object that contain list of id's and names of folders
+ *
+ */
+AccountFacade.getCurrentPath = function(){
+  var tNode = LeftMenuHelper.leftMenuRoot.getSelected();
+  if (!tNode) return null;
+
+  var path = [];
+  var ids = [];
+  while (tNode) {
+    path.push(tNode.text);
+    ids.push(tNode.dirId);
+    tNode = tNode.parentNode;
+  }
+  path.pop(); // last elem is an unvisible root node.
+  ids.pop();
+  path.reverse();
+  ids.reverse();
+  return new AccountFacade.PathObject(path, ids);
+}
+
+/**
+ * Update breadcrumbs for current path
+ */
+AccountFacade.updateBreadCrumbs = function () {
+  var isRightRename = AccountFacade.getCurrentRights() ? Boolean(AccountFacade.getCurrentRights()['Rename']) : false;
+
+  /** @type AccountFacade.PathObject */
+  var pathObj = AccountFacade.getCurrentPath();
+  if(pathObj)
+    AccountFacade.showFullPath(pathObj.path, pathObj.ids,isRightRename);
+}
+
+AccountFacade.showFullPath = function(namePath, idPath, isRightsRename) {
+  var maxPathWidth=$(".folderPath").width()-$("#backBtn").width()-$("#forwardBtn").width()-$("#rightPart").width()-50;
+  var names = namePath;
+  var ids = idPath;
+
+  var pString = ""
+
+  $("#pathString").html('<div class="icon16 ftree"></div>');
+
+  if (names.length <= 0) return;
+
+  $(".ftree").after('<a id="firstDir" href="javascript:changeDirLeft(\''+ids[0]+'\')" class="pathItem">'+names[0]+'</a>');
+
+  if (names.length <= 1) {
+    $("#firstDir").addClass("last");
+//      if (isRightsRename)
+//        $("#firstDir").after('<a href="#" class="jsRenameButton" onclick="return renameItemFromMainMenu(this, event)"><span class="icon9 navEdit"></span></a>');
+    return;
+  }
+
+  var maxFolderNameLenght = 30; // chars per name
+  var longNames = [];
+  //last dir
+  var lastHtml = '<a href="javascript:changeDirLeft(\''+ids[names.length-1]+'\')" class="pathItem last">'+names[names.length-1]+'</a>';
+  if (isRightsRename)
+    lastHtml = lastHtml + '<a href="#" class="jsRenameButton" onclick="return renameItemFromMainMenu(this, event)"><span class="icon9 navEdit"></span></a>';
+  $("#firstDir").after(lastHtml);
+
+  //other dirs
+  for (var i=names.length-2; i > 0; i--){
+    $("#firstDir").after('<a id="p'+i+'" href="javascript:changeDirLeft(\''+ids[i]+'\')" class="pathItem">'+names[i]+'</a>' +
+      '<span id="s'+i+'" class="icon9 navArrow"></span>');
+    if (names[i].length > maxFolderNameLenght) {
+      longNames.push(i);
+    }
+  }
+  $("#firstDir").after('<span class="icon9 navArrow"></span>');
+
+  if ($("#pathString").width()>maxPathWidth  && longNames.length > 0) {
+    for (var i=0; i<longNames.length; i++) {
+      var p = longNames[i];
+      var str = $("#p"+p).html();
+      str = str.substr(0,maxFolderNameLenght) + "...";
+      $("#p"+p).html(str);
+    }
+  }
+
+  var k=1;
+  var flag = false;
+  while ($("#pathString").width()>maxPathWidth && k<names.length-1) {
+    flag = true;
+    $("#p"+k).remove();
+    $("#s"+k).remove();
+    k++;
+  }
+  if (flag) {
+    $("#firstDir").after('<span class="icon9 navArrow"></span>...');
+  }
+  flag = false;
+  var lastHtmlNode = $(".last","#pathString")
+  while ($("#pathString").width()>maxPathWidth-10) {
+    flag = true;
+    var str = lastHtmlNode.html();
+    str = String(str).substr(0,str.length-1)
+    lastHtmlNode.html(str);
+  }
+
+  if (flag) {
+    lastHtmlNode.html(lastHtmlNode.html()+"... ");
+  }
+
+}
+
+AccountFacade.refreshLeftMenuTree = function (callback) {
+
+  var url = "/web/accountActions/getLeftMenuTree"
+  AccountFacade.showLoadingDiv()
+
+  LeftMenuHelper.saveLeftMenuState();
+
+  $.post(url, {dirId:$('.jsRootId').val()}, function (data) {
+
+    if (data.status == "ok") {
+      var i
+      initWebFXTreeHandler();
+      for (i = 0; i < data.tree.children.length; i++) data.tree.children[i].notItem = true;
+      var jsTreeItem = LeftMenuHelper.objectTreeToJsTree(data.tree,true);
+      $("#foldertree").html(jsTreeItem.toString());
+      for(i=0; i< data.rights.length; i++) AccountFacade.setRights(data.rights[i])
+    }
+
+    LeftMenuHelper.recoverLeftMenuState();
+    AccountFacade.updateBreadCrumbs();
+    AccountFacade.hideLoadingDiv();
+    Events.fireEvent('account.loaded')
+    if (callback != undefined && callback != null)
+      callback()
+  })
+}
+
+
+AccountFacade.reloadFolderTree = function(callback) {
+  AccountFacade.refreshLeftMenuTree(callback)
+}
+
+AccountFacade.openOrReloadFolderTree = function(callback) {
+  var node = LeftMenuHelper.treeNodes[currentDirId]
+  if(!node) return AccountFacade.refreshLeftMenuTree(callback)
+  node.select()
+  node.expand()
+  AccountFacade.updateBreadCrumbs();
+}
+
+//cgdcont=1
+AccountFacade.isSpecialDir = function(dir) {
+  var flag = false;
+  var i = 0;
+  while (!flag && i < AccountFacade.specialDirIds.length) {
+    flag = AccountFacade.specialDirIds[i] == dir;
+    i++;
+  }
+  return flag;
+}
+
+AccountFacade.isRecycleBin = function(dir) {
+  return dir == AccountFacade.RECYCLE_BIN_DIR_ID
+}
+
+AccountFacade.isSearchResult = function(dir) {
+  return dir == AccountFacade.SEARCH_RESULT_DIR_ID
+}
+
+AccountFacade.isIncompletedDir = function(dir) {
+  return dir == AccountFacade.INCOMPLETED_DIR_ID
+}
+
+AccountFacade.isSharedWithMeDir = function(dir) {
+  return dir == AccountFacade.SHARED_FOLDERS_DIR_ID
+}
+
+AccountFacade.isWebDownloadDir = function(dir) {
+  return dir == AccountFacade.WEB_DOWNLOAD_DIR_ID
+}
+
+AccountFacade.is4sharedToolsDir = function(dir) {
+  return dir == AccountFacade.SHARED_TOOLS_DIR_ID
+}
+
+AccountFacade.isFriendsDir = function(dir) {
+  return dir == AccountFacade.FRIENDS_DIR_ID
+}
+
+AccountFacade.isFavoriteFiles = function(dir) {
+  return dir == AccountFacade.FAVORITES_DIR_ID
+}
+
+/*
+ onclick(e)
+
+ AccountFacade.userPromt({
+ event: e,
+ description: 'Edit folder name',
+ title: 'Edit folder name',
+ value: 'Current folder name',
+ offsetx: 100,
+ offsety: 100,
+ width: 300,
+ height: 500
+ }, function(value) {
+
+ })
+ */
+AccountFacade.userPromt = function(params, callback) {
+  var id = Math.random()
+  var content = '<form name="prompt" id="id' + id + '"><div class="lucida f13 dark-gray" style="padding: 0 5px 10px">' + params.description + '</div>' +
+    '<div class="input-light-small floatLeft"><input type="text" name="promptText" value="' + params.value + '" style="width: 200px" /></div> ' +
+    '<input type="submit" value="Ok" class="bluePopupButton marginT15 round5 floatLeft marginL10" style="height: 28px; margin-top: 0" /></form>';
+
+  var promtPopup = AccountFacade.popup({title: params.title, content: content});
+  promtPopup.promptText.focus();
+  promtPopup.promptText.select();
+
+  $('form[id="id' + id + '"]').submit(function() {
+    callback($('input[name=promptText]', this).val())
+    promtPopup.hidePopup();
+    return false
+  })
+}
+
+AccountFacade.alert = function (params, cancelCallback) {
+  var content = $('#confirmPopup').clone()
+  if (params.iconClass) content.find(".confirmPopupBody").addClass(params.iconClass)
+  content.find('.jsConfirmOk').text(params.okButtonVal)
+  content.find('.jsClose').hide()
+  content.find('.jsConfirmMsg').html(params.content)
+
+  closeCallback = function() {
+    if (cancelCallback) cancelCallback()
+    $('body').unbind('keydown', keyDownEvent)
+  }
+  var alertPopup = AccountFacade.popup({title:params.title, content:content.html(), afterClose:closeCallback, closeOnClickOnOutsideArea:true, notCloseOthers:params.notCloseOthers})
+  $('body').keydown(keyDownEvent)
+  function keyDownEvent(event) {
+    if (event.which == 13) {
+      closeCallback()
+      alertPopup.closePopup()
+    }
+  }
+  alertPopup.find('.jsConfirmOk').click(function () {
+    closeCallback()
+    alertPopup.closePopup()
+  })
+}
+
+AccountFacade.confirm = function (params, okCallback, cancelCallback) {
+  var content = $('#confirmPopup').clone()
+  if (params.iconClass) content.find(".confirmPopupBody").addClass(params.iconClass)
+  content.find('.jsConfirmOk').text(params.okButtonVal)
+  content.find('.jsClose').text(params.cancelButtonVal)
+  content.find('.jsConfirmMsg').html(params.confirmMsg)
+  var closeCallback = function() {
+    $('body').unbind('keydown', keyDownEvent)
+  }
+  var confPopup = AccountFacade.popup({title:params.title, content:content.html(), afterClose:closeCallback, onClose:cancelCallback, closeOnClickOnOutsideArea:true, notCloseOthers:params.notCloseOthers})
+  $('body').keydown(keyDownEvent)
+  function keyDownEvent(event) {
+    if (event.which == 13) {
+      if (okCallback) okCallback()
+      confPopup.closePopup()
+    }
+  }
+  confPopup.find('.jsConfirmOk').click(function () {
+    if (okCallback) okCallback()
+    confPopup.closePopup()
+  })
+}
+
+AccountFacade.popup = function(params) {
+  if (!params.notCloseOthers) {
+    $('.p_window').remove()
+    $('.p_overlay').remove()
+  }
+
+  var closeText = params.closeButton !== false ? "<a class='close'></a>" : ""
+  if (params.element) params.content = params.element.html()
+
+  var popup = $('<div class="p_window"><div class="ii"><div class="hh"><span id="accountPopupTitle"></span>' + closeText + "</div><div class='cc'>" + params.content + '<div class="clear"></div></div></div></div>')
+  var bg = $('<div class="p_overlay"></div>')
+
+  if (params.notCloseOthers) $('body .p_window:first').after(bg, popup)
+  else $('body').prepend(bg, popup)
+
+  popup.find('.hh').width(popup.outerWidth() - 47)
+  popup.find('#accountPopupTitle').text(params.title)
+
+  popup.calculatePosition = function() {
+    /* Grab viewport height middle position */
+    var vph = $(window).height() / 2;
+    /* Grab viewport width middle position */
+    var vpw = $(window).width() / 2;
+    /* Grab overlay height middle position */
+    var vbh = popup.height() / 2;
+    /* Grab overlay width middle position */
+    var vbw = popup.width() / 2;
+    /* Assign top offset to overlay and make visible */
+    popup.css({'top':"50%", 'left':"50%", 'margin-left':"-" + vbw + "px", 'margin-top':"-" + vbh + "px", 'visibility':'visible', 'display':'block'});
+  }
+
+  popup.calculatePosition()
+
+  $('body').keydown(keyDownEvent)
+  function keyDownEvent(event) {
+    if (event.which == 27) popup.closePopup()
+  }
+
+  popup.closePopup = function() {
+    $('body').unbind('keydown', keyDownEvent)
+
+    if (params.onClose && !params.onClose()) return
+
+    popup.fadeOut('fast', function() {
+      $(this).remove()
+    });
+
+    bg.fadeOut('fast', function() {
+      $(this).remove()
+    })
+    if (params.afterClose) params.afterClose()
+  }
+
+  popup.setTitle = function(newTitle) {
+    popup.find("#accountPopupTitle").text(newTitle);
+  }
+
+  popup.find('.close, .jsClose').click(popup.closePopup)
+  if (params.closeOnClickOnOutsideArea) bg.click(popup.closePopup)
+
+
+  if ($.browser.msie) popup.show()
+  else popup.fadeIn('fast')
+
+  if (params.loadingDiv) {
+    popup.showLoading = function () {
+      $("#" + params.loadingDiv).show()
+    }
+    popup.hideLoading = function () {
+      $("#" + params.loadingDiv).hide()
+    }
+    popup.showLoading()
+  }
+
+  attachTips(true)
+  popup.find('.jsDynamicPlaceholder[placeholder]').placeholder()
+  return popup
+}
+
+
+AccountFacade.writeDragContent = ''
+AccountFacade.writeDrag = function(params) {
+  if (!AccountFacade.writeDragContent) {
+    AccountFacade.writeDragContent = $('#writeDragMain').html()
+    $('#writeDragMain').remove()
+  }
+  $('#wdMain').remove()
+
+  var main = $(AccountFacade.writeDragContent).appendTo($(document.body))
+
+  $('.dragDivTitle', main).html(params.title)
+  if (params.content) {
+    $('.dragDivContent', main).html(params.content)
+  } else if (params.element) {
+    $('.dragDivContent', main).html(params.element.html())
+  }
+
+  var dialog = new WriteDrag('wdMain')
+  dialog.doNotHideFlag = true
+  dialog.hideFlag = false
+  dialog.set({}, undefined, params.width ? params.width : 410, 'c', 'c', undefined, params.height ? params.height : undefined)
+
+  var onHide = function() {
+    Events.removeListener('WriteDrag.hide', onHide)
+    if (params.onClose) params.onClose()
+  }
+  Events.addListener('WriteDrag.hide', onHide)
+
+  $('.close', main).unbind('click').click(function() {
+    Events.removeListener('WriteDrag.hide', onHide)
+    dialog.hide()
+    if (params.onClose) params.onClose()
+    return false
+  })
+
+  return dialog
+}
+
+AccountFacade.saveButtonPressed = function(button, pressed) {
+  var value = $.cookie('pressed.buttons')
+
+  var buttons = []
+  var index = -1
+  if (value) {
+    value = value.replace(',,', ',')
+    buttons = value.split(',')
+    index = Utils.indexOf(buttons, button)
+  }
+
+  if (pressed && index < 0) {
+    buttons.push(button)
+  } else if (!pressed && index >= 0) {
+    buttons.splice(index, 1)
+  }
+
+  $.cookie('pressed.buttons', buttons.length > 0 ? buttons.join(',') : '', {path: '/'})
+}
+
+AccountFacade.goToMessagePage = function(body, title){
+  var form = $("<form action='/web/message' method='post'></form>")
+  form.append($("<input type='hidden' name='body'>").val(body))
+    .append("<input type='submit'/>")
+  if(title){
+    form.append($("<input type='hidden' name='title'>").val(title))
+  }
+  $("body").append(form)
+  form.submit()
+}
+
+
+var features = {}
+var dirRights = {}
+var currentDirRight = {}
+
+AccountFacade.setCurrentRights = function (right) {
+  currentDirRight = right.commands;
+}
+
+AccountFacade.getCurrentRights = function () {
+  return currentDirRight
+}
+
+AccountFacade.setRights = function (right) {
+  dirRights['rights' + right.dirId] = right.commands;
+}
+
+AccountFacade.getRights = function (id) {
+  if (dirRights['rights' + id]) return dirRights['rights' + id]
+  return {'OpenDir':true}
+}
+
+AccountFacade.hasFeatures = function (feature) {
+  return features[feature];
+}
+
+AccountFacade.setFeatures = function (featurez) {
+  features = featurez
+}
+
+AccountFacade.useChangeDirSpring = function (dirId) {
+//  return false
+    return ! (dirId == AccountFacade.SEARCH_RESULT_DIR_ID ||
+              dirId == AccountFacade.SHARED_TOOLS_DIR_ID ||
+              dirId == AccountFacade.FRIENDS_DIR_ID ||
+              dirId == AccountFacade.FRIENDS_RECENT_DIR_ID ||
+              dirId == AccountFacade.WEB_DOWNLOAD_DIR_ID ||
+              dirId == AccountFacade.FAVORITES_DIR_ID)
+  return true
+}
+
+AccountFacade.info = {}
+
+AccountFacade.getDirType = function() {
+  if (AccountFacade.isRecycleBin(currentDirId)) return "jsRecycleBin"
+  if (AccountFacade.isIncompletedDir(currentDirId)) return "jsIncompleted"
+  if (AccountFacade.isFavoriteFiles(currentDirId)) return "jsFavoriteFiles"
+  if (AccountFacade.isSharedWithMeDir(currentDirId)) return "jsSharedWithMe"
+  return ""
+}
+
+AccountFacade.fillFileListDetails = function(data) {
+  var eventId = Math.random();
+
+  AccountFacade.fillFileListDetails.latestEventId = eventId;
+
+  var dirType = AccountFacade.getDirType()
+  var notRecycledNotIncomplete = dirType!='jsIncompleted' && dirType!='jsRecycleBin'
+  if (!$('#filespace').length) $("#files").remove()
+  else $('#includeFileList *').remove()
+
+  $('#includeFileList').append('<div id="files"></div>')
+  $("#files").addClass(dirType)
+  var content = $('<table id="jsFilesTable" class="filesTable lucida ffshadow" cellspacing="0" cellpadding="0"/>')
+  var tmp = $("#itemDetailTmp")
+  var delta = 100;
+  var folderI = 0;
+  var fileI = 0;
+  (function () {
+    if(eventId!=AccountFacade.fillFileListDetails.latestEventId) return;
+
+    var endFlag = true
+    var max = folderI + delta
+    for (var i = folderI; i < max; i++) {
+      if (folderI == AccountFacade.info.dirs.length) break
+      folderI++
+      endFlag = false
+      var clone = tmp.clone()
+      var f = AccountFacade.info.dirs[i];
+      var id = 'ml_folder_' + f.id
+      $(".checkFiles", clone).attr("name", "ch_d").attr("value", f.id)
+      clone.attr("id", id)
+      content.append(clone)
+    }
+    if(folderI==AccountFacade.info.dirs.length){
+      max = fileI + delta
+      for (var i = fileI; i < max; i++) {
+        if (fileI == AccountFacade.info.files.length) break
+        fileI++
+        endFlag = false
+        var f = AccountFacade.info.files[i];
+        var clone = tmp.clone()
+        var id = 'ml_file_' + f.id
+        $(".checkFiles", clone).attr("value", f.id)
+        clone.attr("id", id)
+        content.append(clone)
+      }
+    }
+    if (endFlag) {
+      $('#files').append(content)
+      callback()
+      if (data) AccountFacade.setCurrentRights(data)
+      Events.fireEvent('set.menu.state')
+      Events.fireEvent('folder.reload')
+      AccountFacade.hideLoadingDiv()
+    }
+    else {
+      setTimeout(arguments.callee, 0);
+    }
+  })();
+  function callback() {
+    var rows = $('#files tr');
+    var addTmp = $("#col2DetailTmp").clone()
+
+    if (!AccountFacade.getCurrentRights().DownloadAll) $('.jsDownload', addTmp).remove()
+    if (dirType!='jsIncompleted') $('.jsReUpload', addTmp).remove()
+
+    var total = (AccountFacade.info.dirs.length + AccountFacade.info.files.length)
+    AccountFacade.showItemsCounter(total)
+
+    showVisible()
+
+    $('#files').scroll(showVisible)
+
+    var col = total / ($('#files').prop('scrollHeight') / 49)
+    function showVisible() {
+      var start = ~~($('#files').scrollTop() / 49 * col)
+      for (var i = start; i < start + 30; i++) {
+        addContent(i)
+      }
+    }
+
+    function addContent(i) {
+        if (i >= total) return
+
+        var el = $(rows[i])
+        if (el.attr("file-size")) return
+
+        var f = (i < AccountFacade.info.dirs.length) ? AccountFacade.info.dirs[i] : AccountFacade.info.files[i - AccountFacade.info.dirs.length]
+        var clone = addTmp.clone()
+        clone.removeAttr("id")
+        el.attr("file-size", f.size)
+        clone.addClass(f.fileCss)
+        $(".jsName", clone).prepend(f.name)
+        $(".description", clone).html(f.descr)
+        if (f.canEdit) el.addClass("jsCanEdit")
+        if (f.canPreview && notRecycledNotIncomplete) el.addClass("jsCanPreview")
+        if (AccountFacade.getCurrentRights().ShareItem) el.addClass("jsCanShare")
+        if (i >= AccountFacade.info.dirs.length) {
+          var message = "Type of file: " + AccountFacade.info.files[i - AccountFacade.info.dirs.length].ftype + "<br/>Times downloaded: " + AccountFacade.info.files[i - AccountFacade.info.dirs.length].dcount
+          var tempItm = clone.find(".jsTip").attr("data-tip", message)
+          attachTipsForItemLR($(tempItm[0]), "r", "data-tip")
+          tempItm = clone.find(".jsName").attr("data-tip", message)
+          attachTipsForItem($(tempItm[0]), "data-tip")
+        }
+
+      el.append(clone).append('<td class="TfilesSize f11">' + Utils.readablizeBytes(f.size) + '</td>').append('<td class="TfilesModify f11 paddingL10">' + f.time + '</td>')
+    }
+  }
+}
+
+AccountFacade.fillFileListThumbnails = function(data) {
+  var eventId = Math.random();
+
+  AccountFacade.fillFileListThumbnails.latestEventId = eventId;
+
+  var dirType = AccountFacade.getDirType()
+  var notRecycledNotIncomplete = dirType!='jsIncompleted' && dirType!='jsRecycleBin'
+  if (!$('#filespace').length) $("#files").remove()
+  else $('#includeFileList *').remove()
+
+  $('#includeFileList').append('<div id="files"></div>')
+  $("#files").removeAttr("class").addClass(dirType).addClass("thumbnailView jsIsThumbnail")
+
+  var content = $('<div id="jsFilesTable" class="filesTable"></div>')
+  var tmp = $("#itemThumbnailTmp")
+  var delta = 100;
+  var folderI = 0;
+  var fileI = 0;
+  (function () {
+    if(eventId!=AccountFacade.fillFileListThumbnails.latestEventId) return;
+
+    var endFlag = true
+    var max = folderI + delta
+    for (var i = folderI; i < max; i++) {
+      if (folderI == AccountFacade.info.dirs.length) break
+      folderI++
+      endFlag = false
+      var clone = tmp.clone()
+      var f = AccountFacade.info.dirs[i];
+      var id = 'ml_folder_' + f.id
+      $(".thumbFilenameCheckbox", clone).attr("name", "ch_d").attr("value", f.id)
+      clone.attr("id", id)
+      content.append(clone)
+    }
+    if(folderI==AccountFacade.info.dirs.length){
+      max = fileI + delta
+      for (var i = fileI; i < max; i++) {
+        if (fileI == AccountFacade.info.files.length) break
+        fileI++
+        endFlag = false
+        var f = AccountFacade.info.files[i];
+        var clone = tmp.clone()
+        var id = 'ml_file_' + f.id
+        $(".thumbFilenameCheckbox", clone).attr("value", f.id)
+        clone.attr("id", id)
+        content.append(clone)
+      }
+    }
+    if (endFlag) {
+      $('#files').append(content)
+      callback()
+      if (data) AccountFacade.setCurrentRights(data)
+      Events.fireEvent('set.menu.state')
+      Events.fireEvent('folder.reload')
+      AccountFacade.hideLoadingDiv()
+    }
+    else {
+      setTimeout(arguments.callee, 0);
+   }
+  })();
+  function callback() {
+    var divs = $('#jsFilesTable').children()
+    var addTmp = $("#col2ThumbnailTmp").clone()
+    if (!AccountFacade.getCurrentRights().DownloadAll) $('.jsDownload', addTmp).remove()
+
+    var addTmp2 = $("#col3ThumbnailTmp").clone()
+
+    var total = (AccountFacade.info.dirs.length + AccountFacade.info.files.length)
+    AccountFacade.showItemsCounter(total)
+
+    showVisible()
+
+    $('#files').scroll(showVisible)
+
+    var col = total / ($('#files').prop('scrollHeight') / 261)
+    function showVisible() {
+      var start = ~~($('#files').scrollTop() / 261 * col)
+      for (var i = start; i < start + 20; i++) {
+        addContent(i)
+      }
+    }
+
+    function addContent(i) {
+      if (i >= total) return
+      var el = $(divs[i])
+      if (el.attr("file-size")) return
+
+      var f = (i < AccountFacade.info.dirs.length) ? AccountFacade.info.dirs[i] : AccountFacade.info.files[i - AccountFacade.info.dirs.length]
+      var clone = addTmp.clone()
+      clone.removeAttr("id")
+      el.attr("file-size", f.size)
+      $(".jsName", clone).html(f.name)
+      if (f.canEdit) el.addClass("jsCanEdit")
+      if (f.canPreview && notRecycledNotIncomplete) el.addClass("jsCanPreview")
+      if (AccountFacade.getCurrentRights().ShareItem) el.addClass("jsCanShare")
+      $(".thumbFilename", el).append(clone.children())
+
+      clone = addTmp2.clone()
+      clone.removeAttr("id")
+      var bg = (f.prStyle) ? 'background-image : url("/img/' + f.prStyle + '")' : ''
+      $(".thumbPreviewImage", clone).addClass(f.typeCss).attr('style', bg).reloadBackground({
+        onSuccess : function(){
+          el.css("background","none");
+        }
+      });
+      if ((f.typeCss.indexOf('image') > -1 || f.typeCss.indexOf('video') > -1)) el.addClass('imageThumb')
+      $(".thumbFileTypeIcon", clone).addClass(f.fileCss)
+      $(".hoverDescription", clone).html(f.descr)
+      el.append(clone.children())
+      if (i >= AccountFacade.info.dirs.length) {
+        var message = "Type of file: " + AccountFacade.info.files[i - AccountFacade.info.dirs.length].ftype + "<br/>Times downloaded: " + AccountFacade.info.files[i - AccountFacade.info.dirs.length].dcount
+        var tempItm = el.find(".thumbFileTypeIcon").attr("data-tip", message)
+        attachTipsForItemLR($(tempItm[0]), "r", "data-tip")
+        tempItm = el.find(".thumbFilenameText .jsName").attr("data-tip", message)
+        attachTipsForItem($(tempItm[0]), "data-tip")
+      }
+    }
+  }
+}
+
+AccountFacade.sort = function() {
+  var sortMode = AccountFacade.getSortMode()
+  var mode = sortMode[0]
+  var asc  = (sortMode[1] == 'true')
+  var f = (mode == 'TIME' ? byModified : (mode == 'SIZE' ? bySize : byName))
+
+  AccountFacade.info.dirs  = $(AccountFacade.info.dirs).sort(f)
+  AccountFacade.info.files = $(AccountFacade.info.files).sort(f)
+
+  function byName(a,b) {
+    var a1 = $('<div></div>').html(a.name).text()
+    var b1 = $('<div></div>').html(b.name).text()
+    var res = a1.localeCompare(b1)
+    return (!asc) ? -1*res : res
+  }
+
+  function bySize(a,b) {
+    var res = a.size > b.size ? 1 : -1
+    return (!asc) ? -1*res : res
+  }
+
+  function byModified(a,b) {
+    var ma = a.time.split('-')
+    var mb = b.time.split('-')
+    var sa = ma[2]+ma[0]+ma[1]
+    var sb = mb[2]+mb[0]+mb[1]
+    var res = sa > sb ? 1 : -1
+    return (!asc) ? -1*res : res
+  }
+}
+
+AccountFacade.saveSortMode = function(mode, asc) {
+  $.cookie("sortMode", mode + '-' + (asc ? 'true' : 'false'), {expires: 0, path: "/"})
+}
+
+AccountFacade.getSortMode = function() {
+  var val = $.cookie("sortMode")
+  return (val) ? val.split('-') : ["NAME", "true"]
+}
+
+AccountFacade.showItemsCounter = function(total) {
+  var totalCount = $('.jsPagerCounter .jsTotal')
+  if (total < 1 || !AccountFacade.useChangeDirSpring(currentDirId)) {
+    totalCount.text('')
+    return
+  }
+  totalCount.text(totalCount.data('translate').replace('$[p1]', total))
+}
+
+AccountFacade.unCheckAll = function() {
+  $(':checked').removeAttr("checked")
+  $('.jsChecked').removeClass('jsChecked')
+  $('.trclick').removeClass('trclick') // for search results
+  Events.fireEvent('set.menu.state')
+}
+
+/**
+ *
+ * @param itemType
+ * @param itemId
+ */
+AccountFacade.getItem = function(itemType, itemId){
+  var FOLDER_ID_PREFIX = "#ml_folder_"
+  var FILE_ID_PREFIX = "#ml_file_"
+  return $((itemType=="FILE"?FILE_ID_PREFIX:FOLDER_ID_PREFIX)+itemId);
+}
+
+/**
+ * Scroll to specific file
+ *
+ * @param itemType (FOLDER|FILE)
+ * @param itemId (number)
+ *
+ * @return item
+ */
+AccountFacade.scrollToItem = function(itemType, itemId){
+  var FILES_SCROLL_ITEM = $("#files");
+  var item = AccountFacade.getItem(itemType, itemId);
+  if(!item.length) return item;
+  FILES_SCROLL_ITEM.scrollTop(item.offset().top - FILES_SCROLL_ITEM.offset().top + FILES_SCROLL_ITEM.scrollTop() - FILES_SCROLL_ITEM.height()/2);
+
+  return item;
+}
+
+/**
+ * Scroll to specific file and select it
+ *
+ * @param itemType (FOLDER|FILE)
+ * @param itemId (number)
+ */
+AccountFacade.checkItem = function(itemType, itemId){
+  var item = AccountFacade.getItem(itemType, itemId);
+  $(item).click();
+  return item;
+}
+
+AccountFacade.updateNavButtons = function(backnext) {
+  if (backnext.indexOf('back') > -1) $('#backSpan').removeClass('navBackNA').addClass('navBackA')
+  else $('#backSpan').removeClass('navBackA').addClass('navBackNA');
+  if (backnext.indexOf('next') > -1) $('#forwardSpan').removeClass('navNextNA').addClass('navNextA')
+  else $('#forwardSpan').removeClass('navNextA').addClass('navNextNA');
+}
+
+AccountFacade.goBackAjax = function() {
+  if ($('#backSpan').hasClass('navBackA'))
+    changeDirLeftSpring({dirId:currentDirId, navigation:'back'})
+}
+
+AccountFacade.goForwardAjax = function() {
+  if ($('#forwardSpan').hasClass('navNextA'))
+    changeDirLeftSpring({dirId:currentDirId, navigation:'next'})
+}
+
+AccountFacade.allowSearch = function(allow){
+  $.get("/web/account/setAllowSearch?allow="+!!allow, null, null, 'text')
+}

@@ -102,6 +102,26 @@ var ACProductBrowser = {
 		}
 	},
 	
+	'fetchStaticProducts': function(categoryKey, callBack, doctype) {
+		var categoryParam = categoryKey!==undefined ? "&category=" + categoryKey : "";
+		var callBackParam = callBack!==undefined ? "&callback=" + callBack : "&callback=ACProductBrowser.loadProducts";
+		var doctypeParam = doctype!==undefined ? "&doctype=" + doctype : "&doctype=" + ACProductBrowser.doctype;
+		
+		var getUrl = ACProductBrowser.akamaiUrl + '/kb/index?page=mainproducts&locale=' + ACProductBrowser.locale + doctypeParam + categoryParam + callBackParam;
+		var dynamicScript = new JSONscriptRequest(getUrl);
+	
+		if(dynamicScript.headLoc) {
+		
+			try {
+				dynamicScript.buildScriptTag();
+				dynamicScript.addScriptTag();
+			}
+			catch(ex) {
+				// IE 5 for Mac will throw an exception here.
+			}
+		}
+	},
+	
 	'checkAndLoadProduct': function(prodName, callback, type, callback2) {
 		var type = type===undefined ? 'urlpath' : type;
 		

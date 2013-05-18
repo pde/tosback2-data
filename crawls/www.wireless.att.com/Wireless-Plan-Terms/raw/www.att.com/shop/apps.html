@@ -388,7 +388,7 @@ jQuery('input[type=tel]').wrap('<span>');
 			/*  
 		        IE Browsers found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
 		    if(BrowserDetect.browser == 'Explorer') { 
 		        //if(BrowserDetect.version < 8 && !doesGNSESSCookieExist()) 
@@ -396,7 +396,7 @@ jQuery('input[type=tel]').wrap('<span>');
 		        { 
 					var myCookieGNSESS = getCookie("GNSESS"); 
 					if (myCookieGNSESS == null) { 
-						// cookie doesn't exist 
+						// cookie doesn't exist so show message 
 						jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 					} 
 		        } 
@@ -405,13 +405,27 @@ jQuery('input[type=tel]').wrap('<span>');
 		    /*  
 		        Modern Browsers are found so check if 
 		        version is less than we support 
-		        Updated as of: 3/1/2013  
+		        Updated as of: 4/11/2013  
 		    */ 
-		    if(BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 17 && !doesGNSESSCookieExist()) { 
+		    if(BrowserDetect.browser == 'Firefox') { 
+		        if(BrowserDetect.version < 17) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
 		    }  
-		    if(BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 23 && !doesGNSESSCookieExist()) { 
+		        } 
+		    }  
+		    if(BrowserDetect.browser == 'Chrome') { 
+		        if(BrowserDetect.version < 23) 
+		        { 
+					var myCookieGNSESS = getCookie("GNSESS"); 
+					if (myCookieGNSESS == null) { 
+						// cookie doesn't exist so show message 
 		        jQuery(".ge5p_z0-message-container").slideToggle('slow'); 
+		    }    
+		} 
 		    }    
 		} 
 	}); 
@@ -456,7 +470,7 @@ jQuery('input[type=tel]').wrap('<span>');
 								<ul> 
 											<li><a href="../index.html">att.com</a></li> 
 											<li><a href="../../www.att.net/index.html">att.net</a></li> 
-											<li><a href="http://uverseonline.att.net">uverse.com</a></li> 
+											<li><a href="../../uverseonline.att.net/index.html">uverse.com</a></li> 
 								</ul> 
 							</div> 
 						</li> 
@@ -852,26 +866,19 @@ jQuery('input[type=tel]').wrap('<span>');
 	</map> 
 	<img id="socialMedia" src="../../1.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/ico-social-media-share-tablet.png" alt="Share" usemap="#sharemap"> 
 </div> 
-<div  id="underNav" class="breadcrumbGutter"> 
-      <div class="undernav-ribbon-wrapper"> 
-              <div id="undernav-right"> 
-                  <div id="lpButtonDiv" style="display:inline;"></div> 
-                  <div id="mini-cart-link-container" style="display:inline;"> 
-                      <a id="minicart-link" href="apps.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/apps/jcr:content;2013036">My Wireless Cart  
-                          <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
-                          <span id="minicart-count"></span> 
-                      </a><br/> 
-                      <div id="cart-preview-container" style="display:none;float:right;"></div> 
-                      <div id="cart-bubble-container" style="display:none;float:right;"></div> 
-                  </div> 
-                  <div class="clear"></div> 
-              </div> 
-              <div class="breadcrumb breadcrumb-undernav"> 
-     			 <div class="breadcrumb"> 
-    <a href="../index.html" data-cqpath="/content/att/shop/en/apps/jcr:content/breadcrumb">Home</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="index.html" data-cqpath="/content/att/shop/en/apps/jcr:content/breadcrumb">Shop</a>&nbsp;&nbsp;/&nbsp;&nbsp;Apps 
-    </div> 
-			</div> 
-		</div> 
+<div  id="underNav"> 
+	<div id="undernav-right"> 
+	    <div id="lpButtonDiv" style="display:inline;"></div> 
+	    <div id="mini-cart-link-container" style="display:inline;"> 
+	        <a id="minicart-link" href="apps.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/apps/jcr:content;2013036">My Wireless Cart  
+	            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
+	            <span id="minicart-count"></span> 
+	        </a><br/> 
+	        <div id="cart-preview-container" style="display:none;float:right;"></div> 
+	        <div id="cart-bubble-container" style="display:none;float:right;"></div> 
+	    </div> 
+	    <div class="clear"></div> 
+	</div> 
 </div> 
 	<!-- main content of page --> 
 	<div id="wrapper"> 
@@ -1246,7 +1253,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 96115729626626210898077264552487788142 --> 
+		 <!--X-Renderer: 52069124999125148756233765525885982500 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Webtrend global --> 
@@ -1441,7 +1448,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","yqWfRN4QD8RbvvxGj1L7Q1B1!210698881!1368225984610"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","rBSSRW7ZppvLHQ0Jn7GhqQv8!806392661!1368849273115"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

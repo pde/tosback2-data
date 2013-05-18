@@ -1,0 +1,239 @@
+/* -------------------------------------------------------------------------------------------- */
+/* Fichier de fonctions javascript share sur tous les sites
+/* -------------------------------------------------------------------------------------------- */
+
+
+//creer un compteur de caracteres sur le textarea et bloque l'utilisateur lorsqu il est atteint
+function maxlength_textarea(id, crid, maxCaract)
+{
+        var txtarea = document.getElementById(id);
+        document.getElementById(crid).innerHTML=maxCaract-txtarea.value.length;
+        txtarea.onkeypress=function(){eval('v_maxlength("'+id+'","'+crid+'",'+maxCaract+');')};
+        txtarea.onblur=function(){eval('v_maxlength("'+id+'","'+crid+'",'+maxCaract+');')};
+        txtarea.onkeyup=function(){eval('v_maxlength("'+id+'","'+crid+'",'+maxCaract+');')};
+        txtarea.onkeydown=function(){eval('v_maxlength("'+id+'","'+crid+'",'+maxCaract+');')};
+}
+function v_maxlength(id, crid, maxCaract)
+{
+        var txtarea = document.getElementById(id);
+        var crreste = document.getElementById(crid);
+        var len = txtarea.value.length;
+        if(len>maxCaract)
+        {
+                txtarea.value=txtarea.value.substr(0,maxCaract);
+        }
+        len = txtarea.value.length;
+        crreste.innerHTML=maxCaract-len;
+}
+
+
+// usage: log('inside coolFunc',this,arguments);
+// http://paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
+window.log = function(){
+  log.history = log.history || [];   // store logs to an array for reference
+  log.history.push(arguments);
+  if(this.console){
+    console.log( Array.prototype.slice.call(arguments) );
+  }
+};
+
+var boitePopulaires = {};
+jQuery(document).ready(function(){
+/**
+ * Model of our most-read box
+ * Model Configuration object related to the mostreadBox - DOM
+ * TODO : Could be backbonned.
+ * @type {Object}
+ */
+var model = {
+    module : '.nbox-populaire',
+    self : window,
+    cookieName : 'Mostread_tab_',
+    channelId : null,
+    moduleConstruct : 'boitePopulaires',
+    menu : {
+      contSelector : '#tab-popular',
+      childSelector : 'a'
+    },
+    tabs : {
+      contSelector : '.popular-tab-content',
+      childSelector : 'div.tab-content'
+    }
+  };
+
+   /**
+    * Affiche le Tab sélectionné
+    * @param  {int} which Zero based iterator, based on the dom node of the tab list.
+    * @param  {boolean} anim  If passed true, will animate instead of show/hide
+    * @param  {module} dom  Dom container containing the module
+    * @return {event}       Update the dom with the correct logic
+    */
+  boitePopulaires.initTab = function(which, anim, module) {
+    var tabs = module.find(model.tabs.contSelector).find(model.tabs.childSelector), 
+        menus = module.find(model.menu.contSelector).children();
+
+    // Cycle throught tabs, show only the selected one or
+    //log('why', which, anim, module);
+    jQuery.each(tabs, function(i, index) {
+      var tab = jQuery(index), menu = jQuery(menus.get(i));
+      if (anim) {
+        (i == which) ? tab.stop().slideDown(500) : tab.stop().slideUp() ;        
+      } else {
+        (i == which) ? tab.stop().show() : tab.stop().hide() ;
+      }
+
+      // Toggle selected nav
+      (i == which) ? menu.addClass('active') : menu.removeClass('active') ;
+    });
+  };
+
+  /**
+   * Init mostread box modules as singletons based on cookie
+   * @return {int} Dom binded with events relative to the box functionnality
+   */
+  boitePopulaires.matchCookie = function(channelId) {
+    var cookieName = "Mostread_tab_" + model.cookieName,
+        cookieForMostRead = (document.cookie.length > 0 && document.cookie.indexOf(cookieName) != -1), 
+        current = 0; // Default, first tab.
+
+    // Test for cookie to add it to all for which onglet to open up
+    // Est-ce que les cookies des plus populaires utilise le même cookie ou c'est box based.
+    if (cookieForMostRead) {
+
+        currentFromCookie = readCookie(cookieName).substring(0,1);
+        channelIdFromCookie = readCookie(cookieName).substring(2,5);
+
+        if(channelIdFromCookie == channelId.toString()) {
+          current = currentFromCookie;
+        }
+    }
+
+    // Make sure we init the good tab based on the cookie or defaults
+    return current;
+  };
+
+  /**
+   * Based on the type of box, sometime menu links are build dynamicaly and have to be fixed based on content.
+   * @param  {moduleSelector} module Dom selector for the module container
+   * @return {UpdatedDom}        Dom updated with heights and widths.
+   */
+  boitePopulaires.adjustMenuHeightPadding = function(module) {
+    var onglets = module.find(model.menu.contSelector + ' ' + model.menu.childSelector), hh = 0, widthIncrement = 0; // highest height
+    
+    // Make sure we have node
+    if (onglets.length > 0 ) {
+      
+      // Get highest tabs
+      jQuery(onglets).each(function(i, index) {
+        
+        var blop = jQuery(index)[0].style.padding;
+        if (blop.indexOf(',') != -1 || blop.indexOf(' ') != -1) {
+          var padding = jQuery(index).css('padding').split(','), tmpPadding = tmpWidth = tmpBorder = 0;
+        } else {
+          padding = [0, 0, 0 ,0], tmpPadding = tmpWidth = tmpBorder = 0;
+        }
+          c = padding.length - 1;
+
+        // Cycling throught padding value
+        while(c >= 0) {
+          if (c == 1 || c == 3) { // left and right paddings.
+            tmpPadding += parseInt(padding[c], 10);
+          }
+          c--;
+        }
+        // Largeur du A
+        tmpWidth = jQuery(index).width();
+
+        var hauteurElement = jQuery(index).height();
+        if (hh < hauteurElement) {
+          hh = hauteurElement;
+        }
+        widthIncrement += tmpPadding + tmpWidth + tmpBorder;
+      });
+
+      // Adjust tabs heights and paddings
+      jQuery(onglets).each(function(i, index) {
+        var incr = (i == 0) ? hh : hh, padding = '', modulo, largeur;
+        jQuery(index).height(incr);
+
+        // Ajustement du parent (devrais pas à avoir à le faire si c'était bien intégré)
+        largeur = 83 + Math.round( ((jQuery(model.module).width() - widthIncrement) / 3) / 4);
+        largeur = (jQuery.browser.mozilla || jQuery.browser.msie !== 'undefined') ? largeur -2 : largeur;
+        jQuery(index).parent().width(largeur);
+        
+        if (i == 0) {
+          jQuery(index).parent().css('margin-left', '4px');
+        }
+
+        // only adjust for the customflux
+        /*if (module[0].className.search(/custom-flux/) !== -1) {
+          jQuery('#tab-popular').height(34);
+        }*/
+      });
+    }
+  };
+
+  /**
+   * Hide all tabs
+   * @return {dom} Every tabs are hidden, normaly called from init.
+   * TODO Intègrateur : Bien intégrer les boites, pas besoin de fix js..........
+   */
+  boitePopulaires.hideAllTabs = function(mod) {
+    // Patch anciennes boites n'ayant pas un maintient du flux du layout (clearfix)
+    mod.find(model.tabs.contSelector).addClass('ui-helper-clearfix').find(model.tabs.childSelector).css({'min-height' : 225}).hide();
+  };
+
+  /**
+   * Match dependancies based HTML content : Menu and tabs
+   * @param  {[boolean]} initialisation If its called from initialisation pattern
+   * @return {nothing}  Array already updated. [window.mostreadManager]
+   */
+  boitePopulaires.matchDependancies = function(initialisation) {
+
+    // Based on box model, make sure we have the correct dom
+    jQuery(model.module).each(function(i, index) {
+      var self = this, 
+          mod = jQuery(index);
+      
+      // Make sure we have a menu and tabs available in the dom
+      if (mod.find(model.menu.contSelector).length > 0 && mod.find(model.tabs.childSelector).length > 0 ) {
+        // Ajustement du state de la boite populaire
+        
+        model.module = '.' + index.className.split(' ')[0];
+        model.self = index;
+        // Hide all tabs
+        boitePopulaires.hideAllTabs(mod);
+        // Height selector thing to ajust
+        boitePopulaires.adjustMenuHeightPadding(mod);
+        // Bind events to the dom tree related to this module
+        mod.find(model.menu.contSelector).delegate(model.menu.childSelector, 'click', function(evt) {
+
+          // Cookie box based, unique per box, each box as her own cookie logic (tab open / selected)
+          model.cookieName = 'Mostread_tab_' + model.module.substring(1).replace('-', '_');
+          
+          // Get the iterator value of the menu
+          jQuery.each(mod.find(model.menu.contSelector).find(model.menu.childSelector), function(i, index) {
+            var valeurCookie = '';
+            
+            // Set Tab selection cookie based on the menu choice 
+            if (evt.currentTarget == index) {
+              valeurCookie = i + '-' + mod.attr('data-channel'); // TOFIX
+              setCookie(model.cookieName, valeurCookie, 1);
+              boitePopulaires.initTab(i, false, mod);
+            }
+          });
+
+          // Update channel id.
+          model.channelId = mod.attr('data-channel');
+          evt.preventDefault();
+        });
+      }
+
+      // On initialisation, test cookie and toggle tab.
+      boitePopulaires.initTab(0, false, mod);
+    });
+  };
+
+  // Find popular box and attach events.
+  boitePopulaires.matchDependancies(true);
+});

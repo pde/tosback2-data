@@ -162,6 +162,11 @@ window.A21 = window.A21 || {};
 				type:"GET",
 				success: function(data) {
 					if(data){
+						var layer = TWC.pco.get('user.mapPrefs.layerName');
+						if(layer.indexOf('_') > 0) {
+							layer = layer.substring(0, layer.indexOf('_'));
+						}
+						data.keywords[data.keywords.length] = "mlayer=" + layer;
 						TWC.pco.set("ad",data);
 					}
 				}

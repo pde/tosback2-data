@@ -46,6 +46,52 @@ var wpAd, placeAd2;
         wpAd.dai.executed = true;
       }
     },
+    postscribe: {
+      ready: false,
+      queue: [],
+      init: function(){
+        wpAd.tools.ajax({
+          url: 'http://js.washingtonpost.com/wp-srv/ad/postscribe.min.js',
+          cache: true,
+          dataType: 'script',
+          timeout: 2000,
+          crossDomain: true,
+          error: function(err){
+            if(wpAd.flags.debug){
+              try{win.console.log('postscribe ajax error:', err);}catch(e){}
+            }
+          },
+          success: function(data){
+            wpAd.postscribe.on_load();
+          }
+        });
+      },
+      on_load: function(){
+        // This timeout fixes issues with wordpress pages:
+        setTimeout(function(){
+          wpAd.postscribe.ready = true;
+          var q = wpAd.postscribe.queue,
+              l = q.length;
+          while(l--){
+            postscribe(q[l].id, q[l].src);
+          }
+        }, 150);
+
+        if(wpAd.flags.debug){
+          try{win.console.log('postscribe script loaded');}catch(e){}
+        }
+      },
+      exec: function(id, script){
+        if(!wpAd.postscribe.ready){
+          wpAd.postscribe.queue.push({
+            id: id,
+            src: script
+          });
+        } else {
+          postscribe(id, script);
+        }
+      }
+    },
     exec: {
       vi: function(){
         if(!wpAd.viewableImpressions){
@@ -65,8 +111,8 @@ var wpAd, placeAd2;
       },
       adj: function () {
         var slug = doc.getElementById('wpni_adi_' + wpAd.briefcase.pos) || doc.getElementById('slug_' + wpAd.briefcase.pos);
-        if(wpAd.flags.postscribe && slug && win.postscribe){
-          postscribe('#' + slug.id, wpAd.tools.tagBuilder());
+        if(wpAd.flags.postscribe && slug){
+          wpAd.postscribe.exec('#' + slug.id, wpAd.tools.tagBuilder());
         } else{
           doc.write(wpAd.tools.tagBuilder());
         }
@@ -1233,7 +1279,7 @@ var wpAd, placeAd2;
     allAds: !!/allAds/i.test(location.search),
     IE: !!/msie/i.test(navigator.userAgent),
     debugAds: !!/debugAds/i.test(location.search),
-    postscribe: !!/postscribe/i.test(location.search) || !!/prodprev\.digitalink\.com/i.test(location.href),
+    postscribe: !!/postscribe/i.test(location.search),
     hpRefresh: !!wpAd.tools.urlCheck('reload=true'),
     is_homepage: !!(win.commercialNode && /^homepage|^washingtonpost\.com/i.test(commercialNode)),
     is_local: wpAd.tools.checkCookieVal('WPATC', 'C=1:'),

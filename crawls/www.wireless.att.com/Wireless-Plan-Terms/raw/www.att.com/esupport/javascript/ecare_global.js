@@ -815,11 +815,25 @@ function getDcsParameters(destinationURI){
 			dcs_array[2] = dcscvtemp;
 		}
 	}
-	if(null!=URL.match('email.jsp')){
-		dcs_array[4] = 'esupport_email_Pg';
-	}else{
-		dcs_array[4] = 'eSupportMain_Pg';
+	switch(dcsarry1[3]){
+		case 'storeappointment':
+			if(null!=URL.match('welcome.jsp')){
+				dcs_array[4] = 'eSupport_Welcome_Pg';
+			}else if(null!=URL.match('travelAndIntl.jsp')){
+				dcs_array[4] = 'eSupport_travelAndIntl_Pg';
+			}else {
+				dcs_array[4] = 'eSupport_Home_Pg';
+			}
+			break;
+		default:
+			if(null!=URL.match('email.jsp')){
+				dcs_array[4] = 'esupport_email_Pg';
+			}else {
+				dcs_array[4] = 'eSupportMain_Pg';
+			}
+			
 	}
+	
 	return dcs_array;
 	
 }

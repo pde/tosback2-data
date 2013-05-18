@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<script id="hiconversion_head_script" type="text/javascript">
-		var hiconversion_load = new Date();
-		function hiconversion_head_load() {
-			var external ="";
-			var script = document.createElement("script");
-			script.id = "hiconversion_head_include";
-			script.async = "async";
-			script.type = "text/javascript";
-			script.src = (document.location.protocol == "https:" ? "https://ssl" : "http://update") + ".hiconversion.com/app/update?async=true&external=" + external + "&version=2.0";
-			var nodes = document.getElementsByTagName("script");
-			if (nodes.length > 0) {
-				nodes[0].parentNode.insertBefore(script, nodes[0]);
-			}
-		}
-		hiconversion_head_load();
-	</script>
-
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<script>
 			
@@ -57,9 +40,15 @@
 
 
 
-		<link type="text/css" rel="stylesheet" href="../assets/yaml/core/base.css" />
+		<link href="../../../cloud.typography.com/635622/694420/css/fonts.css" rel="stylesheet" >
 			<link type="text/css" rel="stylesheet" href="../assets/styles/css/min/styles.min.css" />
-		<link rel="stylesheet" href="../../../reviews.finishline.com/static/9345/bazaarvoice.css" type="text/css">
+	<link type="text/css" rel="stylesheet" href="../assets/yaml/print/print_draft.css" />
+
+
+
+
+
+	<link rel="stylesheet" href="../../../reviews.finishline.com/static/9345/bazaarvoice.css" type="text/css">
 	<script>
 		window.FL = window.FL || {};
 		FL.setup = FL.setup || {};
@@ -88,7 +77,7 @@
 		FL.setup.specificScript = "";
 		FL.setup.specificPage = "";
 		FL.setup.doProductDetails = false;
-		FL.setup.customerId = "1616627093";
+		FL.setup.customerId = "1624987787";
 		FL.setup.category = "";
 		FL.setup.categoryId = "";
 		FL.setup.subCategory = "";
@@ -111,74 +100,117 @@
 	<script>
 		var scServerCode = 'finishlineprod';
 	</script>
-	
-	
+
+
 	<script type="text/x-jquery-tmpl" id="dynamicCart_tmpl">
-	<div id="dcProducts">
-		{{if data}}
-			{{each(i, product) data.products}}
-				<div id="product{{= i}}" class="product">
-					<div>
-						<div class="thumbnail">
-							<a href="http://www.finishline.com/store/catalog/product.jsp?productId={{=&#32;product.productId}}" title="View {{= product.name}}"><img src="http://www.finishline.com/store/customer_service/{{=&#32;product.thumbnail}}" alt="{{= product.name}}" title="{{= product.name}}"/></a>
-						</div>
-						<div class="text">
-							{{if i == 0}}
-								{{if message}}
-									{{if message.display}}
-										<div class="justAdded">{{= message.text}}</div>
-									{{/if}}
-								{{/if}}
-							{{/if}}
-
-
-
-							<a href="http://www.finishline.com/store/catalog/product.jsp?productId={{=&#32;product.productId}}" title="View {{= product.name}}"><div class="name">{{= product.name}}</div></a>
-
-							{{if product.salesText}}
-								<div class="salesText">{{= product.salesText}}</div>
-							{{/if}}
-							
-							<div>{{= product.color}}</div>
-							<div>Size: {{= product.size}}</div>
-							<div>Qty: {{= product.quantity}}</div>
-							<div>Price :
-								{{if product.listPrice == product.originalPrice}}
-									<span class="price">{{= product.listPrice}}</span>
-								{{/if}}
-								{{if product.listPrice < product.originalPrice}}
-									<span class="price sale">{{= product.listPrice}}</span>
-									<span class="original">{{= product.originalPrice}}</span>
-								{{/if}}
-								{{if product.listPrice > product.originalPrice}}
-									<span class="price">{{= product.listPrice}}</span>
-								{{/if}}
+	<div id="dcProductsWrapper">
+		<div id="dynamicCartContentsWrapperShadow">
+		</div>
+		<div id="dcProducts">
+			{{if data}}
+				{{each(i, product) data.products}}
+					<div id="product{{= i}}" class="product">
+						<div class="row-fluid">
+							<div class="span4">
+								<div class="thumbnail">
+									<a href="http://www.finishline.com/store/catalog/product.jsp?productId={{=&#32;product.productId}}" title="View {{= product.name}}"><img src="http://www.finishline.com/store/customer_service/{{=&#32;product.thumbnail}}" alt="{{= product.name}}" title="{{= product.name}}"/></a>
+								</div>
 							</div>
-							{{if product.isFreeShipping == 'true'}}
-								<div class="dcClosenessQualifierText">This item is eligible for free shipping!</div>
-							{{/if}}
-							{{if product.isFressShipping == '2w4'}}
-								<div class="dcClosenessQualifierText">This item available for half off shipping!</div>
-							{{/if}}
+							<div class="span8">
+								<div class="dcProductDetailsWrapper">
+									<div class="dcProductDetails">
+										{{if i == 0}}
+											{{if message}}
+												{{if message.display}}
+													<div class="message fade in">{{= message.text}}</div>
+												{{/if}}
+											{{/if}}
+										{{/if}}
+
+
+
+										<a href="http://www.finishline.com/store/catalog/product.jsp?productId={{=&#32;product.productId}}" title="View {{= product.name}}">
+											<h4 class="name">{{= product.name}}</h4>
+										</a>
+
+										{{if product.salesText}}
+											<p class="salesText">{{= product.salesText}}</p>
+										{{/if}}
+										
+										<p class="color-description">{{= product.color}}</p>
+										
+										<div class="row-fluid">
+											<div class="span3 attributes">
+												<p>
+													<strong class="label">Size:</strong><span class="value size">{{= product.size}}</span>
+												</p>
+											</div>
+											<div class="span6">
+											</div>
+											<div class="span3 attributes text-right">
+										
+												{{if product.listPrice == product.originalPrice}}
+													<p class="value price"></p>
+												{{/if}}
+												{{if product.listPrice < product.originalPrice}}
+													<p class="value price sale">{{= product.listPrice}}</p>
+												{{/if}}
+												{{if product.listPrice > product.originalPrice}}
+													<p class="value price"></p>
+												{{/if}}
+												
+											</div>
+										</div>
+										<div class="row-fluid">
+											<div class="span3 attributes">
+												<p>
+													<strong class="label">Qty:</strong><span class="value quantity">{{= product.quantity}}</span>
+												</p>
+											</div>
+											<div class="span6 promotion-icons">
+												{{if product.isFreeShipping === true}}
+													<img class="free-shipping-icon messaging-icon" src="../../media/images/products/free-shipping-icon.png" alt="This item is eligible for free shipping!">
+												{{/if}}
+												{{if product.isFressShipping == '2w4'}}
+													<p class="dcClosenessQualifierText">This item available for half off shipping!</p>
+												{{/if}}
+											</div>
+											<div class="span3 attributes text-right">
+										
+												{{if product.listPrice == product.originalPrice}}
+													<p class="value price">{{= product.listPrice}}</p>
+												{{/if}}
+												{{if product.listPrice < product.originalPrice}}
+													<p class="value price original">{{= product.originalPrice}}</p>
+												{{/if}}
+												{{if product.listPrice > product.originalPrice}}
+													<p class="value price">{{= product.listPrice}}</p>
+												{{/if}}
+												
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
 						</div>
 					</div>
-				</div>
-			{{/each}}
-		{{/if}}
-		{{if cart}}
-			<div>{{= cart.number}} {{= cart.plural}} in cart</div>
-		{{/if}}
-	</div>
-
-	<div id="dcEndImage" class="bottom">
-		<div id="dynamicCartCheckoutLink" class="buttonWrapper">
-			<a id="dynamicCartCheckoutButton" class="button ui-state-default ui-priority-primary ui-corner-all viewCartButton">View Cart</a>
+				{{/each}}
+			{{/if}}
 		</div>
-		<div class="finalSubtotal">Subtotal</div>
-		<div class="finalSubtotalAmount">{{= Subtotal}}</div>
-		{{if ClosenessQualifier != ''}}
-			<div id="dcCQ">{{= ClosenessQualifier}}</div>
-		{{/if}}
+		
+	</div>
+	<div id="dcTrailingInfo">
+
+		<p class="finalSubtotal"><strong>Subtotal:</strong> <span class="finalSubtotalAmount">{{= Subtotal}}</span></p>
+		
+		<a href="http://www.finishline.com/store/checkout/cart.jsp" id="dynamicCartCheckoutButton" class="btn btn-primary btn-large btn-block has-arrow right">View Cart and Checkout</a>
+		
+		<div id="dcEndImage" class="bottom">
+			{{if ClosenessQualifier != ''}}
+				<div id="dcCQ">{{= ClosenessQualifier}}</div>
+			{{/if}}
+		</div>
 	</div>
 </script><script type="text/x-jquery-tmpl" id="dialog_tmpl">
 	<div id="{{= id }}"></div>
@@ -187,10 +219,10 @@
 <script type="text/x-jquery-tmpl" id="dialog_iframe_tmpl">
 	<iframe src="http://www.finishline.com/store/customer_service/{{=&#32;page&#32;}}" scrolling="auto" frameborder="0" name="popupFrame" width="100%" height="98%"></iframe>
 </script><script src="../../../ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-			<script>window.jQuery || document.write('<script src="../assets/scripts/library/jquery-1.6.4.min.js"><\/script>')</script>
+			<script>window.jQuery || document.write('<script src="../assets/scripts/library/jquery-1.7.2.min.js"><\/script>')</script>
 			<script src="../../../ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 			<script>window.jQuery.ui || document.write('<script src="../assets/scripts/library/jquery-ui-1.8.15.custom.min.js"><\/script>')</script>
-			<script src="../assets/scripts/min/78f2dcbe14c0b5d8c5a54d2570c916d4.alpha.min.js"></script>
+			<script src="../assets/scripts/min/15062da6042e3be16bf3be9f8f09ff96.alpha.min.js"></script>
 				<script src="../../../connect.facebook.net/en_US/all.js#xfbml=1"></script>
 
 
@@ -202,20 +234,30 @@
 		<script src="/store/assets/scripts/patches/if.lte.ie7.adds-carat-to-buttons.js"></script>
 		<script src="/store/assets/scripts/patches/if.lte.ie7.adds-depth-under-nav-bar.js"></script>
 	<![endif]-->
-	
+
+	<!-- access to the brightcove player API -->
+	<script src="../../../admin.brightcove.com/js/APIModules_all.js"></script>
+
 	<script src="../../../cdn.gigya.com/JS/socialize.js%3Fapikey=2_OnD3JG0Zquc6MKvfNAnOEXWTKUptFsUTAeqD2fkRMFd-YKdrjggls0cUKxtUgtmY"></script>
+<script id="hiconversion_head_script" type="text/javascript">
+    var hiconversion_load = new Date();
+    function hiconversion_head_load() {
+        var external ="";
+        var script = document.createElement("script");
+        script.id = "hiconversion_head_include";
+        script.async = "async";
+        script.type = "text/javascript";
+        script.src = (document.location.protocol == "https:" ? "https://ssl" : "http://update") + ".hiconversion.com/app/update?async=true&external=" + external + "&version=2.0";
+        var nodes = document.getElementsByTagName("script");
+        if (nodes.length > 0) {
+            nodes[0].parentNode.insertBefore(script, nodes[0]);
+        }
+    }
+    hiconversion_head_load();
+</script>
 <!--[if lt IE 9]>
-			<link href="/store/assets/styles/css/conditional/ie_fixes/patch_my_layout.ltie9.css" rel="stylesheet" type="text/css" >
+			<link href="/store/assets/styles/css/full/conditional/ie_fixes/iehacks.css" rel="stylesheet" type="text/css" >
 		<![endif]-->
-
-		<!--[if lte IE 7]>
-			<link href="/store/assets/styles/css/conditional/ie_fixes/patch_my_layout.lteie7.css" rel="stylesheet" type="text/css" >
-		<![endif]-->
-
-		<!--[if lte IE 6]>
-			<link href="/store/assets/styles/css/conditional/ie_fixes/patch_my_layout.lteie6.css" rel="stylesheet" type="text/css" >
-		<![endif]-->
-
 
 
 	</head>
@@ -239,15 +281,17 @@
 									<div id="mastheadWrapper">
 										<a id="mastheadLogoLink" href="http://www.finishline.com/" title="Go to the FinishLine.com Home Page"><img src="../../media/images/logos/finishline.com_logo_235x36_trans.png" width="355" height="104px" alt="FinishLine" style="visibility: hidden;"/></a>
 									</div>
+
 									<div id="topnavWrapper">
 										<div id="topnav" class="nav">
 											<ul>
 													<li><a href="http://www.finishline.com/store/customer_service/faq_index.jsp">Help</a></li>
-												<li><a id="wishList" class="headerLinks" href="http://www.finishline.com/store/gifts/wishlist_landing.jsp">WishList</a></li>
 
-													<li><a id="showOrderInquiry" class="popup_dialog" href="http://www.finishline.com/store/global/fragments/order_inquiry.jsp?orderId=&amp;zip=" data-dialog='{"id" : "order_inquiry", "height" : 600, "width" : 800, "title" : "Order Inquiry", "load" : "iframe"}'>Order Inquiry</a></li>
-												<li><a href="http://www.finishline.com/store/storelocator/storelocator.jsp" class="headerLinks">Store Locator</a></li>
-													<li><a href="http://www.finishline.com/store/my_account/signin.jsp;jsessionid=910CEBCEB46409730C4C1DF08968AA0F.FLP10706">My Account (Sign In or Sign-Up)</a></li>
+													<li><a id="wishList" class="headerLinks" href="http://www.finishline.com/store/gifts/wishlist_landing.jsp">WishList</a></li>
+															<li><a id="showOrderInquiry" class="popup_dialog" href="http://www.finishline.com/store/global/fragments/order_inquiry.jsp?orderId=&amp;zip=" data-dialog='{"id" : "order_inquiry", "height" : 600, "width" : 900, "title" : "Order Inquiry", "load" : "iframe"}'>Track Your Order</a></li>
+														<li><a href="http://www.finishline.com/store/storelocator/storelocator.jsp" class="headerLinks">Store Locator</a></li>
+													<li><a href="http://www.finishline.com/store/my_account/signin.jsp;jsessionid=54F19F157B9C4CAE476877D75A1430A1.FLP10607">My Account (Sign In or Sign-Up)</a></li>
+
 												<li class="last-child"><a href="http://www.finishline.com/store/" class="headerLinks">Home</a></li>
 												</ul>
 											<ul>
@@ -257,24 +301,23 @@
 																<div id="dynamicCart">
 					<div id="dcTitle">
 						<div id="dynamicCartCheckoutLink" class="buttonWrapper">
-							<a href="http://www.finishline.com/store/checkout/cart.jsp" id="dynamicCartHeaderCheckoutButton" class="button ui-state-default ui-priority-primary ui-corner-all viewCartButton">View Cart</a>
+							
+							<a href="http://www.finishline.com/store/checkout/cart.jsp" id="dynamicCartHeaderCheckoutButton" class="viewCartButton">
+								<span class="itemsIndicatorWrapper">
+									<span class="itemsIndicator">
+										
+												0
+											</span>
+								</span>
+								My Cart
+							</a>
 						</div>
 
 						<div id="dynamicCartCheckoutTotal">$0.00</div>
 
 
-						<div id="dynamicCartCheckoutText">
-							
-									0 items
-								
-							in <a href="http://www.finishline.com/store/checkout/cart.jsp">your cart</a>
 						</div>
-					</div>
-					<div id="dynamicCartContentsWrapper">
-
-
-
-
+					<div id="dynamicCartContentsWrapper" class="fade">
 					</div>
 				</div>
 			</div>
@@ -290,7 +333,6 @@
 												<a id="navigation" name="navigation"></a>
 												<div class="list horizontal">
 													<!-- main navigation: horizontal list -->
-													<!--  -->
 													<ul id="menu">
 	<li class="" id="mrd-tab-men">
 
@@ -468,7 +510,7 @@
 				<a href="http://www.finishline.com/reebok-shoes-apparel?icid=Topnav+Brand+Reebok+01-01-13">Reebok Shoes &amp; Apparel</a>
 			</li>
 			<li>
-				<a href="http://www.finishline.com/store/shop/puma/_/N-1z141x0/Ne-5Z1sb8cZ1sb8vZ1sb97Z2/Ns-P_BestSellers%7C1/Nf-P_SalePercent%7CLTEQ+30?categoryId=cat300414&amp;dim=Brand">Puma Shoes &amp; Apparel</a>
+				<a href="http://www.finishline.com/store/shop/puma/_/N-1z141x0/Ne-5Z1sb8cZ1sb8vZ1sb97Z2/Ns-P_DaysOld/Nf-P_SalePercent%7CLTEQ+30?categoryId=cat300414&amp;dim=Brand">Puma Shoes &amp; Apparel</a>
 			</li>
 			<li>
 				<a href="http://www.finishline.com/store/shop/adidas/_/N-1z141xk/Ne-5Z1sb8cZ1sb8vZ1sb97Z2/Ns-P_BestSellers%7C1/Nf-P_SalePercent%7CLTEQ+30?categoryId=catAdidas">adidas Shoes &amp; Apparel</a>
@@ -598,10 +640,9 @@
 				</div>
 <div class="sideNavLinksBox">
 					<ul>
-			<li class="sideNavLargeLink"><a href='https://twitter.com/intent/tweet?screen_name=FinishLineHelp' class='twitter-mention' data-related='FinishLineHelp' data-dnt='true'>@FinishLineHelp</a></li>
-			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/storelocator/storelocator.jsp" class="nav_indent">Store Locator</a></li>
-			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/contact_us.jsp" class=
-av_indent">Phone / Email</a></li>
+			<li class="sideNavLargeLink"><a href='https://twitter.com/intent/tweet?screen_name=FinishLineHelp' class='twitter-mention normalLink' data-related='FinishLineHelp' data-dnt='true'>@FinishLineHelp</a></li>
+			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/contact_us.jsp" class="nav_indent normalLink">Phone / Email</a></li>
+			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/storelocator/storelocator.jsp" class="nav_indent normalLink">Store Locator</a></li>
 		</ul>
 	</div>
 </div>
@@ -611,6 +652,7 @@ av_indent">Phone / Email</a></li>
 				</div>
 <div class="sideNavLinksBox">
 					<ul>
+			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/tracking_order.jsp" class="nav_indent">Tracking an Order</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/faq_index.jsp" class="nav_indent">Index of FAQ's</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/shopping_online.jsp" class="nav_indent">Shopping Online</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/making_purchase.jsp" class="nav_indent">Making a Purchase</a></li>
@@ -618,7 +660,6 @@ av_indent">Phone / Email</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/promo_info.jsp" class="nav_indent">Promotions</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/shipping_info.jsp" class="nav_indent">Shipping Information</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/instore_info.jsp" class="nav_indent">In-Store Pickup Information</a></li>
-			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/tracking_order.jsp" class="nav_indent">Tracking an Order</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/change_request.jsp" class="nav_indent">Cancel &amp; Change Requests</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/returning_purchase.jsp" class="nav_indent">Returning a Purchase</a></li>
 			<li class="sideNavLargeLink"><a href="http://www.finishline.com/store/customer_service/security.jsp" class="nav_indent">Security</a></li>
@@ -744,7 +785,7 @@ av_indent">Phone / Email</a></li>
 				<option value="">
 					Select Brand
 				</option>
-				<option value="4294967240">adidas</option><option value="4294967042">adidas Accessories</option><option value="4294965186">Ah By Android Homme</option><option value="4294967112">And 1</option><option value="4294967178">Asics</option><option value="4294967192">Brooks</option><option value="4294966825">Cadillac Footwear</option><option value="4294967132">Casio</option><option value="4294965112">Champion Custom Products</option><option value="4294965585">Clinch Gear</option><option value="4294967134">Colosseum</option><option value="4294965683">Coloud</option><option value="4294967260">Converse</option><option value="4294967200">Cowboys Merchandising</option><option value="4294965819">Creative Recreation</option><option value="4294967052">Dr. Martens</option><option value="4294965099">Dynasty</option><option value="4294965538">Eddie Bauer / Eastman</option><option value="4294961868">Ektio</option><option value="4294965196">Feetures</option><option value="4294967161">Fila</option><option value="4294967208">Finish Line</option><option value="4294965710">Finish Line</option><option value="4294967197">Finl365</option><option value="4294967235">For Bare Feet</option><option value="4294961982">G-star</option><option value="4294965680">Garmin</option><option value="4294967230">Gift Cards</option><option value="4294967199">Gift Cards/donations</option><option value="4294965066">Gorilla Usa</option><option value="4294961867">Heaton</option><option value="4294965134">Hello Kitty</option><option value="4294961991">Homedics</option><option value="4294965126">Ihome</option><option value="4294965832">Inov-8 Llc</option><option value="4294967149">Jansport</option><option value="4294965543">Jordan</option><option value="4294966833">Jump Usa</option><option value="4294967257">K-swiss</option><option value="4294965056">Kangaroos-shane&shawn</option><option value="4294967019">Keds</option><option value="4294966165">Klone Lab</option><option value="4294967206">Lacoste</option><option value="4294966828">Levi's Footwear</option><option value="4294967201">Lugz</option><option value="4294967176">Majestic</option><option value="4294965165">Marvel</option><option value="4294965540">Mission Skincare</option><option value="4294967169">Mizuno</option><option value="4294965712">Moving Comfort Inc</option><option value="4294967238">New Balance</option><option value="4294967219">New Era</option><option value="4294967177">New Ride</option><option value="4294967226">Nike</option><option value="4294966007">Nike Accessories</option><option value="4294965128">Nike Hs</option><option value="4294966846">Nike Infant</option><option value="4294967221">Nike Team Sports</option><option value="4294965068">Nike Team Youth</option><option value="4294967232">Oakley</option><option value="4294967164">Palladium</option><option value="4294967150">Pastry</option><option value="4294967160">Pf Flyers</option><option value="4294966848">Phiten</option><option value="4294967039">Polar</option><option value="4294965101">Polo Kids</option><option value="4294967188">Polo Ralph Lauren</option><option value="4294967032">Power Balance</option><option value="4294967071">Press Box</option><option value="4294967220">Puma</option><option value="4294965537">Recon</option><option value="4294967242">Reebok</option><option value="4294967267">Reebok Onfield</option><option value="4294967124">Rocawear</option><option value="4294965556">Rock & Candy By Zigi Ny</option><option value="4294967075">Rocket Dog</option><option value="4294967020">Rumbatime</option><option value="4294967018">Ryka</option><option value="4294967157">Salomon</option><option value="4294967159">Sanuk</option><option value="4294967168">Saucony</option><option value="4294966841">Saucony Kids</option><option value="4294967136">Skechers</option><option value="4294965541">Sms Audio</option><option value="4294967263">Sof Sole</option><option value="4294965243">Spalding</option><option value="4294965166">Sperry</option><option value="4294966845">Sperry Kids</option><option value="4294966028">Sportiqe</option><option value="4294967073">Step Ahead</option><option value="4294965204">Sugar</option><option value="4294967209">T-shirt International Inc</option><option value="4294967175">The North Face Inc</option><option value="4294967274">Timberland</option><option value="4294967205">Top Of The World</option><option value="4294965825">Topline</option><option value="4294965822">Twin</option><option value="4294967222">Under Armour</option><option value="4294967036">Under Armour Performance Eyewear</option><option value="4294967180">Under Armour Socks</option><option value="4294967183">Under Armour Team Gear</option><option value="4294961921">Unk</option><option value="4294967044">Vlado</option><option value="4294965708">Yurbuds</option><option value="4294965835">Zephyr</option></select>
+				<option value="4294967240">adidas</option><option value="4294967042">adidas Accessories</option><option value="4294966844">adidas Watch</option><option value="4294965186">Ah By Android Homme</option><option value="4294967112">And 1</option><option value="4294967178">Asics</option><option value="4294967192">Brooks</option><option value="4294966825">Cadillac Footwear</option><option value="4294967132">Casio</option><option value="4294965112">Champion Custom Products</option><option value="4294965585">Clinch Gear</option><option value="4294967134">Colosseum</option><option value="4294965683">Coloud</option><option value="4294967260">Converse</option><option value="4294967200">Cowboys Merchandising</option><option value="4294965819">Creative Recreation</option><option value="4294967052">Dr. Martens</option><option value="4294965099">Dynasty</option><option value="4294965538">Eddie Bauer / Eastman</option><option value="4294961868">Ektio</option><option value="4294965196">Feetures</option><option value="4294967161">Fila</option><option value="4294967208">Finish Line</option><option value="4294965710">Finish Line</option><option value="4294967197">Finl365</option><option value="4294967235">For Bare Feet</option><option value="4294961982">G-star</option><option value="4294965680">Garmin</option><option value="4294967230">Gift Cards</option><option value="4294967199">Gift Cards/donations</option><option value="4294965066">Gorilla Usa</option><option value="4294961867">Heaton</option><option value="4294965134">Hello Kitty</option><option value="4294961991">Homedics</option><option value="4294965126">Ihome</option><option value="4294965832">Inov-8 Llc</option><option value="4294967149">Jansport</option><option value="4294965543">Jordan</option><option value="4294966833">Jump Usa</option><option value="4294967257">K-swiss</option><option value="4294965056">Kangaroos-shane&shawn</option><option value="4294967019">Keds</option><option value="4294966165">Klone Lab</option><option value="4294967206">Lacoste</option><option value="4294966828">Levi's Footwear</option><option value="4294961851">Look See</option><option value="4294967201">Lugz</option><option value="4294967176">Majestic</option><option value="4294965165">Marvel</option><option value="4294965540">Mission Skincare</option><option value="4294967169">Mizuno</option><option value="4294965712">Moving Comfort Inc</option><option value="4294967238">New Balance</option><option value="4294967219">New Era</option><option value="4294967177">New Ride</option><option value="4294967226">Nike</option><option value="4294966007">Nike Accessories</option><option value="4294965128">Nike Hs</option><option value="4294966846">Nike Infant</option><option value="4294967221">Nike Team Sports</option><option value="4294965068">Nike Team Youth</option><option value="4294967232">Oakley</option><option value="4294967164">Palladium</option><option value="4294967150">Pastry</option><option value="4294967160">Pf Flyers</option><option value="4294966848">Phiten</option><option value="4294967039">Polar</option><option value="4294965101">Polo Kids</option><option value="4294967188">Polo Ralph Lauren</option><option value="4294967032">Power Balance</option><option value="4294967071">Press Box</option><option value="4294967220">Puma</option><option value="4294965537">Recon</option><option value="4294967242">Reebok</option><option value="4294967267">Reebok Onfield</option><option value="4294967124">Rocawear</option><option value="4294965556">Rock & Candy By Zigi Ny</option><option value="4294967075">Rocket Dog</option><option value="4294967020">Rumbatime</option><option value="4294967018">Ryka</option><option value="4294967159">Sanuk</option><option value="4294967168">Saucony</option><option value="4294966841">Saucony Kids</option><option value="4294967136">Skechers</option><option value="4294965541">Sms Audio</option><option value="4294967263">Sof Sole</option><option value="4294965243">Spalding</option><option value="4294965166">Sperry</option><option value="4294966845">Sperry Kids</option><option value="4294966028">Sportiqe</option><option value="4294967073">Step Ahead</option><option value="4294965204">Sugar</option><option value="4294967209">T-shirt International Inc</option><option value="4294967175">The North Face Inc</option><option value="4294967274">Timberland</option><option value="4294967205">Top Of The World</option><option value="4294965825">Topline</option><option value="4294965822">Twin</option><option value="4294967222">Under Armour</option><option value="4294967036">Under Armour Performance Eyewear</option><option value="4294967180">Under Armour Socks</option><option value="4294967183">Under Armour Team Gear</option><option value="4294961921">Unk</option><option value="4294967044">Vlado</option><option value="4294965708">Yurbuds</option><option value="4294965835">Zephyr</option></select>
 
 			<div class="buttonWrapper">
 				<a href="http://www.finishline.com/store/results/index.jsp" id="fysGoButton" class="button ui-state-default ui-corner-all ui-priority-secondary goButton fysGoButton" >Go</a>
@@ -905,10 +946,10 @@ We may share your information with third parties in the following circumstances:
 		<div id="footerLinksPrimary">
 			<ul style="float: left; margin: -4px 0 0 165px; position: absolute">
 					<p style="float: left; margin: 5px -5px 0 0">Connect</p>
-					<li><a style="border-right: none; margin-right: -33px" href="https://www.facebook.com/finishline"><img src="../../media/images/footer/social/social_icon_Facebook.png" alt="facebook"></a></li>
-					<li><a style="border-right: none; margin-right: -33px" href="https://twitter.com/finishline"><img src="../../media/images/footer/social/social_icon_Twitter.png" alt="facebook"></a></li>
-					<li><a style="border-right: none; margin-right: -33px" href="http://pinterest.com/finishlineusa/"><img src="../../media/images/footer/social/social_icon_pinterest.png" alt="facebook"></a></li>
-					<li><a style="border-right: none" href="https://plus.google.com/+finishline/"><img src="../../media/images/footer/social/social_icon_Gplus.png" alt="facebook"></a></li>
+					<li><a style="border-right: none; margin-right: -33px" href="https://www.facebook.com/finishline"><img src="../../media/images/footer/social/social_icon_Facebook.png" alt="Facebook"></a></li>
+					<li><a style="border-right: none; margin-right: -33px" href="https://twitter.com/finishline"><img src="../../media/images/footer/social/social_icon_Twitter.png" alt="Twitter"></a></li>
+					<li><a style="border-right: none; margin-right: -33px" href="http://pinterest.com/finishlineusa/"><img src="../../media/images/footer/social/social_icon_pinterest.png" alt="Pinterest"></a></li>
+					<li><a style="border-right: none" href="https://plus.google.com/+finishline/"><img src="../../media/images/footer/social/social_icon_Gplus.png" alt="Google Plus"></a></li>
 				</ul>
 				<ul style="margin-left: 205px;">
 					<li><a style="border-left: 1px dotted #a0a0a0; padding-left: 15px" href="http://www.finishline.com/store/customer_service/contact_us.jsp">Customer Care</a></li>
@@ -944,8 +985,8 @@ We may share your information with third parties in the following circumstances:
 		</div><!-- /.wall-tile-1 -->
 
 		<!-- 
-<link rel="stylesheet" type="text/css" href="/store/global/css/popup-style.css;jsessionid=910CEBCEB46409730C4C1DF08968AA0F.FLP10706" />
-<link rel="stylesheet" type="text/css" href="/store/global/css/subModal.css;jsessionid=910CEBCEB46409730C4C1DF08968AA0F.FLP10706" />
+<link rel="stylesheet" type="text/css" href="/store/global/css/popup-style.css;jsessionid=54F19F157B9C4CAE476877D75A1430A1.FLP10607" />
+<link rel="stylesheet" type="text/css" href="/store/global/css/subModal.css;jsessionid=54F19F157B9C4CAE476877D75A1430A1.FLP10607" />
 -->
 
 <div id="popupMask" onclick="maskClicked();">&nbsp;</div>
@@ -970,7 +1011,23 @@ We may share your information with third parties in the following circumstances:
 		</script>
 	<!-- pixelsmain -->
 	<script src="../assets/scripts/min/1709515bf9fcbe1ec102831192480143.pixelsmain.min.js"></script>
-				<!-- pixelManager -->
+				<!-- HiConversion e-Optimizer : According to the HiConversion doc, the following script must be added to the content directly before the closing body tag -->
+<script id="hiconversion_body_script" type="text/javascript">
+    function hiconversion_body_run(arg) {
+        var then = new Date();
+        var diff = then - arg.ran;
+        if (diff < arg.wait) {
+            if (typeof hiconversion_body_update == "function") {
+                hiconversion_body_update({async: true, pass: arg.pass, ran: arg.ran, then: then });
+            } else {
+                arg.pass = arg.pass + 1;
+                setTimeout(function() { hiconversion_body_run(arg); }, 100);
+            }
+        }
+    }
+    hiconversion_body_run({ async: true, pass: 0, ran: new Date(), wait: 30000 });
+</script>
+<!-- pixelManager -->
 		<!-- CLEARSALEING MAIN INCLUDE START -->
 	<script type="text/javascript" src="../../../dsa.csdata1.com/data/js/5209267/csgather.js"></script><!-- CLEARSALEING MAIN INCLUDE END -->
 <!-- BEGIN: Google Trusted Store -->
@@ -1108,7 +1165,7 @@ var google_remarketing_only = true;
 			, top2: '100000'
 			, top1: '100000'
 			, appid: 'finishline01'
-			, customerid: '1616627093'
+			, customerid: '1624987787'
 			
 		});
 
@@ -1139,7 +1196,7 @@ var google_remarketing_only = true;
 			<script src="../global/omniture/s_code_prod.js"></script>
 			<script>
 			function invokeOmniEvent(productId) {
-				s.eVar49=productId;
+				s.eVar49 = productId;
 				var s_code=s.t();if(s_code)document.write(s_code)
 			}
 			/* You may give each page an identifying name, server, and channel on
@@ -1179,6 +1236,7 @@ var google_remarketing_only = true;
 			s.eVar36=""
 
 			/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
+			
 			var s_code=s.t();if(s_code)document.write(s_code);
 			</script>
 			<script language="JavaScript" type="text/javascript"><!--
@@ -1187,6 +1245,8 @@ var google_remarketing_only = true;
 			src="../../../finishlinedev.112.2o7.net/b/ss/finishlinedev/1/H.15.1--NS/0"
 			height="1" width="1" border="0" alt="" /></a></noscript><!--/DO NOT REMOVE/-->
 			<!-- End SiteCatalyst code version: H.15.1. -->
+
+			<!-- /omniture_tagger -->
 		<!--[if lte IE 8]>
 		<script type="text/javascript" src="/store/assets/scripts/patches/if.lte.ie8.adds-depth-under-nav-bar.js"></script>
 	<![endif]-->

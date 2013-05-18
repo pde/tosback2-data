@@ -39,7 +39,7 @@
             if( $CQ.inArray( options.componentPath, CQ_Analytics.Sitecatalyst.frameworkComponents) < 0 )
                 return false;    // component not in framework, skip SC callback
             CQ_Analytics.Sitecatalyst.saveEvars();
-            CQ_Analytics.Sitecatalyst.updateEvars();
+            CQ_Analytics.Sitecatalyst.updateEvars(options);
             CQ_Analytics.Sitecatalyst.updateLinkTrackVars();
             return false;
         }, 10);
@@ -126,12 +126,6 @@
                         this.updateLinkTrackEvents();
                     }
                 } else if (value != '') {
-                    var tmp = value.split(".");
-                    var storename = tmp[0];
-                    var key = tmp[1];
-                    //var store = CQ_Analytics.StoreRegistry.getStore(storename);
-                    //s[evar] = store.getProperty(key);
-
                     // set up direct references to datastores for use in expressions
                     for (var store in this.stores)
                         try {
@@ -140,12 +134,12 @@
                         }
                     // evaluate expression using direct references to stores
                     try {
-                        s[evar] = eval(value);
+                        s[evar] = CQ_Analytics.Variables.replaceVariables(eval(value));
                     } catch(e) {
                         console.log("Could not set " + evar + ": " + e);
                     }
 
-                    if (storename == "eventdata" && this.trackVars.indexOf(evar) < 0) {
+                    if (this.trackVars.indexOf(evar) < 0) {
                         this.trackVars.push(evar);
                     }
                 }
@@ -265,7 +259,7 @@
                 var elements = document.getElementsByTagName("*");
                 var evnts = {};
                 var alldata = {};
-                var store = CQ_Analytics.StoreRegistry.getStore("eventdata");
+                var eventdata = CQ_Analytics.StoreRegistry.getStore("eventdata");
                 for (var i = 0; i < elements.length; i++) {
                     if (elements[i].getAttribute("record")) {
                         var trackres = eval("record(" + elements[i].getAttribute("record") + ",true)");
@@ -273,7 +267,13 @@
                         evnts[event] = event;
                         var data = trackres[1];
                         for (var j in data) {
-                            store.setProperty(j, data[j]);
+                            var store = eventdata;
+                            var prop = j.split('.');
+                            if (j.indexOf('.') >= 0 && CQ_Analytics.StoreRegistry.getStore(prop[0])) {
+                                store = CQ_Analytics.StoreRegistry.getStore(prop[0]);
+                                prop = prop[1];
+                            }
+                            store.setProperty(prop, data[j]);
                         }
                     }
                 }
@@ -281,7 +281,7 @@
                 for (i in evnts) {
                     myevents.push(i);
                 }
-                store.setProperty("events", myevents.join("\u2026"));
+                eventdata.setProperty("events", myevents.join("\u2026"));
             }
 
         };

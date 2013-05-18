@@ -558,10 +558,14 @@ CIM.cookie = (function () {
          *  }
         */
         setCookieInObject: function (name, object) {
-            var cookie = CIM.cookie.read(name), i, key, values;
+            var
+                cookie = CIM.cookie.read(name),
+                i,
+                key,
+                value,
+                values;
 
             if (cookie) {
-                cookie = unescape(cookie);
                 values = cookie.split("&");
                 i = values.length;
                 while(i) {

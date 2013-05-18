@@ -1,19 +1,19 @@
-﻿jQuery(document).ready(function () {
+﻿$(document).ready(function () {
 
-    if (jQuery('#home-featured').length > 0) {
-        jQuery().homeFeature();
+    if ($('#home-featured').length > 0) {
+        $().homeFeature();
     }
 
-    if (jQuery('div.carousel div.panel').length == 1) {
-        jQuery().slider({
-            holder: jQuery('div.carousel div.panel'),
+    if ($('div.carousel div.panel').length == 1) {
+        $().slider({
+            holder: $('div.carousel div.panel'),
             btnNextStr: "btn-next",
             btnPrevStr: "btn-previous",
-            numItems: jQuery('div.carousel div.panel > .box').length,
-            moveVal: jQuery('div.carousel div.panel > .box').outerWidth(true),
+            numItems: $('div.carousel div.panel > .box').length,
+            moveVal: $('div.carousel div.panel > .box').outerWidth(true),
             numItemsVisible: 4,
             swapFeature: true,
-            swapHolder: jQuery('.spotlight2'),
+            swapHolder: $('.spotlight2'),
             swapHolderItemClass: ".spotlight-item",
             itemClass: "div.carousel div.panel > .box",
             autoRotate: true,
@@ -21,17 +21,17 @@
         });
     }
 
-    if (jQuery('div.scroll ul.features-link').length == 1) {
-        jQuery().slider({
+    if ($('div.scroll ul.features-link').length == 1) {
+        $().slider({
             direction: "vert",
-            holder: jQuery('.features-link'),
+            holder: $('.features-link'),
             btnNextStr: "btn-arrowDown",
             btnPrevStr: "btn-arrowUp",
-            numItems: jQuery('.features-link > li').length,
+            numItems: $('.features-link > li').length,
             moveItem: "li",
             numItemsVisible: 5,
             swapFeature: true,
-            swapHolder: jQuery('.scroll-features'),
+            swapHolder: $('.scroll-features'),
             swapHolderItemClass: ".scroll-item",
             itemClass: ".features-link > li",
             autoRotate: true,

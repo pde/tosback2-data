@@ -9,17 +9,17 @@ function addLoadEvent(func) {
       }
       func();
     }
-  }  
+  }
 }
 addLoadEvent(function(){
     var lhid = document.createElement('input');
     lhid.setAttribute('type','hidden');
     lhid.setAttribute('name','lang');
-    lhid.setAttribute('value',icl_lang);     
-    src = document.getElementById('searchform');   
+    lhid.setAttribute('value',icl_lang);
+    src = document.getElementById('searchform');
     if(src){
         src.appendChild(lhid);
-        src.action=icl_home; 
+        src.action=icl_home;
     }
 });
 
@@ -31,7 +31,7 @@ function icl_retry_mtr(a){
         url_glue='?';
     }else{
         url_glue='&';
-    }    
+    }
     location.href=loc+url_glue+'retry_mtr='+spl[3]+'&nonce='+spl[4];
     return false;
 }

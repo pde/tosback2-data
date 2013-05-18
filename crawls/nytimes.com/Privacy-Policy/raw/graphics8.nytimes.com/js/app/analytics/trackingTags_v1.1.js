@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 123979 2013-04-09 17:16:44Z sliau $
+* $Id: trackingTags_v1.1.js 125534 2013-05-07 17:38:09Z sliau $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -38,22 +38,26 @@ var gfpcdom=".nytimes.com";
 var gdomain="wt.o.nytimes.com";
 var js_host = NYTD.Hosts.jsHost + "/js/app/analytics/";
 
+var includeJsFile = function (incFilename, async) {
+
+    var incFileJS = document.createElement("script");
+    incFileJS.setAttribute("type", "text/javascript");
+    incFileJS.setAttribute("src", incFilename);
+    if (async === true) {
+        incFileJS.async = true;
+    }
+    document.getElementsByTagName("head").item(0).appendChild(incFileJS);
+
+}
 
 // Include WebTrends wtid.js
 var wt_initObj = { enabled:true, fpc:"WT_FPC", domain:gdomain, dcsid:gdcsid };
 if (wt_initObj.enabled&&(document.cookie.indexOf(wt_initObj.fpc+"=")==-1)&&(document.cookie.indexOf("WTLOPTOUT=")==-1)){
-var wtid_js_host="http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+wt_initObj.domain+"/"+wt_initObj.dcsid+"/"
-var wtidjs = document.createElement('script');
-wtidjs.setAttribute('type', 'text/javascript');
-wtidjs.setAttribute('src', wtid_js_host+'wtid.js');
-document.getElementsByTagName('head').item(0).appendChild(wtidjs);
+var wtid_js_host="http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+wt_initObj.domain+"/"+wt_initObj.dcsid+"/";
+includeJsFile(wtid_js_host+'wtid.js');
 }
 
-var wtInc = document.createElement('script');
-wtInc.setAttribute('language', 'javascript');
-wtInc.setAttribute('type', 'text/javascript');
-wtInc.setAttribute('src', js_host+'controller_v1.1.js');
-document.getElementsByTagName('head').item(0).appendChild(wtInc);
+includeJsFile(js_host+'controller_v1.1.js');
 // END WEBTRENDS JS TAG
 
 // AudienceScience block
@@ -90,11 +94,7 @@ document.getElementsByTagName('head').item(0).appendChild(wtInc);
     }
 
     // AudienceScience script tag 
-    var audienceSciTag = document.createElement('script');
-    audienceSciTag.setAttribute('language', 'javascript');
-    audienceSciTag.setAttribute('type', 'text/javascript');
-    audienceSciTag.setAttribute('src', 'http://js.revsci.net/gateway/gw.js?csid=H07707&auto=t');
-    document.getElementsByTagName('head').item(0).appendChild(audienceSciTag);
+    includeJsFile('http://js.revsci.net/gateway/gw.js?csid=H07707&auto=t');
 }());
 // End AudienceScience block
 
@@ -335,12 +335,7 @@ try {
  (function() {
     function loadChartbeat() {
         window._sf_endpt = (new Date()).getTime();
-        var e = document.createElement('script');
-        e.setAttribute('language', 'javascript');
-        e.setAttribute('type', 'text/javascript');
-        e.setAttribute('src',
-        (("https:" == document.location.protocol) ? "https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/" : "http://static.chartbeat.com/") + "js/chartbeat.js");
-        document.body.appendChild(e);
+        includeJsFile((("https:" == document.location.protocol) ? "https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/" : "http://static.chartbeat.com/") + "js/chartbeat.js");
     }
     
     if (window.addEventListener) {
@@ -742,6 +737,9 @@ NYTD.pageEventTracker = (function (updateFrequency) {
 
     return tracker;
 })();
+
+//including TagX client library
+includeJsFile(NYTD.Hosts.jsHost + '/bi/js/tagx/tagx.js', true);
 
 /* END ANALYTICS TRACKING */
 /* NOTE: ALL NEW CODE NEEDS TO BE ADDED ABOVE THIS LINE */

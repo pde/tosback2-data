@@ -197,6 +197,12 @@ $(window).load( function() {
 	function showDropdown(elem){
 		$(this).find('.dropdown').css('visibility','visible');
 		$(this).addClass('active');
+		if(($(elem).attr("target").id === 'costco-cashcard-dropdown')){
+			var frameElement = document.getElementById("CashCardIFrame");
+			if (frameElement !=null && frameElement.src == ''){
+				frameElement.src = cashCardBalanceUrl;
+			}
+		}
 	}
 	function hideDropdown(elem){
 		if(($(elem).attr("srcElement")=== undefined) || ($(elem).attr("srcElement").id != 'header_warehouseLocationsNum')){

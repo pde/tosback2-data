@@ -4,7 +4,6 @@ function loadNonDashboardFiles()
 	var filesToLoad = [];
 	if (setUpComplete())
 		return;
-	
 	filesToLoad.push({fileName: '/commonspot/javascript/util.js', fileType: 'script', fileID: 'cs_util_js'});
 	filesToLoad.push({fileName: '/commonspot/dashboard/css/buttons.css', fileType: 'link', fileID: 'buttons_css'});
 	filesToLoad.push({fileName: '/commonspot/javascript/lightbox/lightbox.css', fileType: 'link', fileID: 'cs_lightbox_css'});
@@ -99,7 +98,7 @@ function GetHttpRequest(counter, fileID, fileName, fileType, arrFiles)
 			}
 		}
 		connections[counter].open('GET', fileName, true);
-		connections[counter].send("");		 
+		connections[counter].send("");
 	}
 };
 
@@ -320,6 +319,91 @@ function unescapeHTML(msg)
 	var msg = msg.replace(/<\/?[^>]+>/gi, '');
 	return msg.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
 }
+
+// this function is duplicated in browser-all.js and util.js; if you change one, change the other!
+function BrowserCheck() {
+	var b = navigator.appName.toString();
+	var b_ver;
+	var up = navigator.platform.toString();
+	var ua = navigator.userAgent.toString().toLowerCase();
+	var re_opera = /Opera.([0-9\.]*)/i;
+	var re_msie = /MSIE.([0-9\.]*)/i;
+	var re_gecko = /gecko/i;
+	// mozilla/5.0 (macintosh; u; intel mac os x 10_6_7; en-us) applewebkit/533.20.25 (khtml, like gecko) version/5.0.4 safari/533.20.27
+	var re_safari = /safari\/([\d\.]*)/i;
+	var re_mozilla = /firefox\/([\d\.]*)/i;
+	var re_chrome = /chrome\/([\d\.]*)/i;
+	var ie_documentMode = 0;
+	var browserType = {};
+	browserType.mozilla = browserType.ie = browserType.opera = r = false;
+	browserType.version = (ua.match(/.+(?:rv|it|ra|ie|me)[\/: ]([\d.]+)/) || [])[1];
+	browserType.chrome = /chrome/.test(ua);
+	browserType.safari = /webkit/.test(ua) && !/chrome/.test(ua);
+	browserType.opera = /opera/.test(ua);
+	browserType.ie = /msie/.test(ua) && !/opera/.test(ua);
+	browserType.mozilla = /mozilla/.test(ua) && !/(compatible|webkit)/.test(ua);
+	
+	if (ua.match(re_opera))
+	{
+	    r = ua.match(re_opera);
+	    browserType.version = parseFloat(r[1]);
+	}
+	else if (ua.match(re_msie))
+	{
+	    r = ua.match(re_msie);
+	    browserType.version = parseFloat(r[1]);
+	    ie_documentMode = browserType.version;
+	    if (browserType.version <= 7)
+	    {
+	        re_ver = /trident\/([\d\.]*)/i;
+	        r = ua.match(re_ver);
+	        // in IE compat mode, trident=4.0 (IE8), =5.0 (IE9), =6.0 (IE10) etc, i.e, version=trident+4.
+	        if (r && parseFloat(r[1]) >= 4)
+	        {
+	            browserType.version = parseFloat(r[1]) + 4;
+	            ie_documentMode = document.documentMode;
+	        }
+	    }
+	}
+	else if (browserType.safari && !browserType.chrome)
+	{
+	    re_ver = /version\/([\d\.]*)/i;
+	    if (ua.match(re_ver))
+	    {
+	        r = ua.match(re_ver);
+	        browserType.version = parseFloat(r[1]);
+	    }
+	}
+	else if (browserType.chrome)
+	{
+	    b_ver = ua.match(re_chrome);
+	    r = b_ver[1].split('.');
+	    browserType.version = parseFloat(r[0]);
+	}
+	else if (ua.match(re_gecko))
+	{
+	    var re_gecko_version = /rv:\s*([0-9\.]+)/i;
+	    r = ua.match(re_gecko_version);
+	    browserType.version = parseFloat(r[1]);
+	    if (ua.match(re_mozilla))
+	    {
+	        r = ua.match(re_mozilla);
+	        browserType.version = parseFloat(r[1]);
+	    }
+	}
+	else if (ua.match(re_mozilla))
+	{
+	    r = ua.match(re_mozilla);
+	    browserType.version = parseFloat(r[1]);
+	}
+	browserType.windows = browserType.mac = browserType.linux = false;
+	browserType.Platform = ua.match(/windows/i) ? "windows" : (ua.match(/linux/i) ? "linux" : (ua.match(/mac/i) ? "mac" : ua.match(/unix/i) ? "unix" : "unknown"));
+	this[browserType.Platform] = true;
+	browserType.v = browserType.version;
+	browserType.valid = browserType.ie && browserType.v >= 6 || browserType.mozilla && browserType.v >= 1.4 || browserType.safari && browserType.v >= 5 || browserType.chrome && browserType.v >= 12;
+	browserType.okToAuthor = (browserType.ie && browserType.v >= 8 && ie_documentMode >= 7) || (browserType.mozilla && browserType.v >= 3.6);
+	return browserType;
+};
 
 function setCommonspot()
 {

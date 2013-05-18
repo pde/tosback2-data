@@ -280,5 +280,10 @@ if (document.images)
 	carepackages_off.src = "/img/lnav3_3carepackages_off.gif";
 	var carepackages_on = new Image();
 	carepackages_on.src = "/img/lnav3_3carepackages_on.gif";
+	
+	var collegebeddingkits_off = new Image();
+	collegebeddingkits_off.src = "/img/lnav3_3collegebeddingkits_off.gif";
+	var collegebeddingkits_on = new Image();
+	collegebeddingkits_on.src = "/img/lnav3_3collegebeddingkits_on.gif";
 }
 //-->

@@ -155,6 +155,11 @@
 				relatedElement.attr("checked", false);
 				relatedElement.checked = false;
 				
+				var arrElements = element.toArray();
+                for(var cnt=0;cnt<arrElements.length;cnt++){
+                    showChild(arrElements[cnt].id);
+                }  
+				
 				if(!filterGroupCheckboxInputs.filter("[checked=true]").length){
 					jQuery.each(filterGroupCheckboxInputs, function(index, filterInput){
 						if(filterInput.value.toLowerCase() == 'all'){
@@ -233,6 +238,11 @@
 			for (var i=1; i<pArray.length; i++) {
 				pArray[i].checked = false;
 				jQuery('#'+pArray[i].id).parent().attr("class","");
+				//added for child filter
+                if(jQuery("#"+ pArray[i].id).attr("childFilter") && jQuery("#"+ pArray[i].id).attr("childFilter") != "" ){
+                    jQuery("#div_"+ jQuery("#"+ pArray[i].id).attr("childFilter")).hide();
+                    jQuery("#div_"+ jQuery("#"+ pArray[i].id).attr("childFilter")).find("input").removeAttr("checked").parent().attr("class", "");
+                }
 			}
 		} 
 						
@@ -241,6 +251,11 @@
 			if (vArray[0].value.toLowerCase() == 'all') {
 				vArray[0].checked = false; 
 				jQuery('#'+vArray[0].id).parent().attr("class","");
+				//added for child filter
+                if(jQuery("#"+ vArray[0].id).attr("childFilter") && jQuery("#"+ vArray[0].id).attr("childFilter") != "" ){
+                    jQuery("#div_"+ jQuery("#"+ vArray[0].id).attr("childFilter")).hide();
+                    jQuery("#div_"+ jQuery("#"+ vArray[0].id).attr("childFilter")).find("input").removeAttr("checked").parent().attr("class", "");
+                }
 			}
 			inputClick();
 		}
@@ -287,10 +302,10 @@
 
 		//this function will itirate thru all the checked inputs and retrieve corresponding attributes for pricing
 		function getCheckedValue (pArray) {
-			var vKeyName='', vKeyValue='', queryStr='', range='', queryHash;
+			var vKeyName='', vKeyValue='', queryStr='', range='', priceRange='', queryHash;
 			queryHash = getQueryString();
 			if(!!queryHash["prod"]){queryStr += ((queryStr=='') ? '' : '&') + "prod" + '=' + queryHash["prod"]}
-            var keyStr = '&priceRange=', priceRange = '';
+            var keyStr = '&priceRange=', priceRange = 'priceRange';
             
 			for (var i=0; i<pArray.length; i++) {
                 var pr = ''; 
@@ -302,11 +317,22 @@
 								var max = pArray[i].getAttribute('end');
 								if (min != null && max != null && min != '' && max != '') {
 									range = 'min=' + min + '&max=' + max;
+                                    
 									queryStr += ((queryStr=='') ? '' : '&') + range;
+                                   
+                                     if (vKeyName == 'rangePricing') {
+                                        priceRange += min + '-' + max + ',';
+                                        finalPriceRange = priceRange.slice(0,-1);
+                                        queryStr += ((queryStr=='') ? '' : '&') + 'priceRange' + '=' + finalPriceRange;
+                                     }
 								}
 							}
 							if (vKeyValue != '') {
-								queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
+                                if (vKeyName == 'rangePricing') {
+                                        queryStr += ((queryStr=='') ? '' : '&') + 'priceRange' + '=' + vKeyValue;
+                                    } else {
+                                    queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
+                                    };
 								vKeyValue = '';
 							} 
 						//}
@@ -315,21 +341,18 @@
 					vKeyName = pArray[i].name; 
 					vKeyValue += ((vKeyValue=='') ? '' : ',') + pArray[i].value;
                     
-                    if (vKeyName == 'rangePricing') {
-                        //range = 'min=' + min + '&max=' + max;
-                        var min = pArray[i].getAttribute('begin');
-                        var max = pArray[i].getAttribute('end');
-                        priceRange += min + '-' + max + ',';
-                        finalPriceRange = priceRange.slice(0,-1);
-                        pr = keyStr + finalPriceRange;  
-                    }
+                    
 				}
 				if (i == (pArray.length - 1)) {
 					if ((vKeyName != '') && (vKeyValue != '')) {
-						queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
+                     if (vKeyName == 'rangePricing') {
+                            queryStr += ((queryStr=='') ? '' : '&') + 'priceRange' + '=' + vKeyValue;
+                        } else {
+                        queryStr += ((queryStr=='') ? '' : '&') + vKeyName + '=' + vKeyValue;
+                        };
 					}
 				}
-                queryStr = queryStr + pr;
+                
 			}
 			
 			return queryStr;
@@ -410,11 +433,14 @@
 				} else if ((vArrayCheckbox[i].name != 'sortByProperties') && (vArrayCheckbox[i].name != 'showMoreListSize')){
 					vArrayCheckbox[i].checked = false; 
 				}
+				showChild(vArrayCheckbox[i].id);
 			}
 			for (var i=0; i<vArrayRadio.length; i++) {
 				var vDefault = vArrayRadio[i].getAttribute('default');
 				if (vDefault == 'true') {
 					vArrayRadio[i].checked = true;
+					 //added for childfilter
+                    showChild(vArrayRadio[i].id);
 				} 
 			}
 			inputClick();
@@ -631,3 +657,29 @@
 		jQuery("#content").delegate(".clearFilter", "click", ATT.listPage.clearFilter);
 		jQuery("#content").delegate(".quickViewLink", "click", ATT.listPage.showQuickView);
 	});	
+	
+	//js function to handle disply of filters
+
+    function showChild(objId){
+        var jQueryObj = jQuery("#"+objId);
+        jQueryObj.closest("ul").find("input").each(function(){
+            if(jQuery(this).attr("childFilter") && jQuery(this).attr("childFilter") != ""){
+                var divToShow = jQuery(this).attr("childFilter");
+                 if(jQuery("#"+divToShow).length){
+                      if(jQuery(this).is(':checked')) {  
+                           jQuery("#div_"+divToShow).show(); 
+                          // jQuery("#div_"+divToShow).insertAfter(jQueryObj.parents(".individualComponent:first").parent());
+                          jQuery("#div_"+divToShow).find("input").removeAttr("default");
+                          jQuery("#div_"+divToShow).insertAfter(jQueryObj.closest("form"));
+                        }
+                        else{                        
+                            jQuery("#div_"+divToShow).find("input").each(function(){
+                               jQuery(this).removeAttr("checked").parent().attr("class", "");
+                               showChild(this.id);
+                            })
+                            jQuery("#div_"+divToShow).hide();                                               
+                       }
+                 }                                   
+            } 
+        });
+    }

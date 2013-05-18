@@ -4034,32 +4034,34 @@ a.GALLERY_NEXT_MEDIA="galleryNextMedia";
 a.GALLERY_PREV_MEDIA="galleryPrevMedia";
 a.HASH_UPDATED="hashUpdated";
 a.CAMPAIGN_HERO_ITEM_READY="campaignHeroItemReady"
-}(window.mb=window.mb||{},jQuery));(function(a,b){a.generateCookies=function(m){var q=["chc","id","embed","dealerCode"];
+}(window.mb=window.mb||{},jQuery));(function(a,b){a.generateCookies=function(n){var r=["chc","id","embed","dealerCode"];
 var d=document.URL;
-if(d.indexOf("?")>0){var l=d.indexOf("?");
-var g=d.substring(l+1);
-g=g.split("&");
-var k;
-for(k=0;
-k<g.length;
-k++){var f=g[k];
-f=f.split("=");
-var e=f[0];
-var p=f[1];
-if(b.inArray(e,q)>=0){b.cookie(e,p,{path:"/"})
-}}}if(window.top===window.self){if(m==="true"){b.cookie("embed",null,{path:"/"});
-if(d.indexOf("embed=false")<0){var n=d.indexOf("?"),j=d.indexOf("#");
-if(n>0&&j<0){d+="&embed=false"
-}else{if(j>0&&n<0){var r=d.substring(0,j);
-var h=d.substring(j);
-d=r+"?embed=false"+h
-}else{if(j>0&&n>0){var o=d.substring(0,n);
-var c=d.substring(n);
-d=o+"&embed=false"+c
+if(d.indexOf("?")>0){var m=d.indexOf("?");
+var h=d.substring(m+1);
+h=h.split("&");
+var l;
+for(l=0;
+l<h.length;
+l++){var g=h[l];
+g=g.split("=");
+var e=g[0];
+var q=g[1];
+if(b.inArray(e,r)>=0){b.cookie(e,q,{path:"/"})
+}}}if(window.top===window.self){if(n==="true"){b.cookie("embed",null,{path:"/"});
+if(d.indexOf("embed=false")<0){var o=d.indexOf("?"),k=d.indexOf("#");
+if(o>0&&k<0){d+="&embed=false"
+}else{if(k>0&&o<0){var s=d.substring(0,k);
+var j=d.substring(k);
+d=s+"?embed=false"+j
+}else{if(k>0&&o>0){var p=d.substring(0,o);
+var c=d.substring(o);
+d=p+"&embed=false"+c
 }else{d+="?embed=false"
 }}}window.location.href=d
-}}}else{if(d.indexOf("facebook")===-1){if(m!=="true"){b.cookie("embed","true",{path:"/"})
-}}}};
+}}}else{if(d.indexOf("facebook")>-1){return
+}var f=b.cookie("embed");
+if(f==null||f=="false"){b("body").html("")
+}}};
 a.addToRecentlyViewedClassesFromUrl=function(){var e="class";
 var d="";
 var c=window.location.href;
@@ -5092,9 +5094,9 @@ for(var s in q){mb.logger.log("====>"+s+" : "+q[s])
 }if(q.model=="C250WZ"){q.model="C250W"
 }else{if(q.model=="C300WZ4"){q.model="C300W4"
 }else{if(q.model=="SL550R"){q.model="SL550"
-}}}e.ajax({url:f+"/json/paymentEstimator",dataType:"json",data:q,success:function(B){for(var C in B.Response){if(/.*\/schema\/page$/.test(B.Response[C])){var F=C.replace(/@xmlns:?/,"")+":"
+}}}e.ajax({url:f+"/json/paymentEstimator",dataType:"json",data:q,success:function(B){for(var C in B.Response){if(/.*\/schema\/page$/.test(B.Response[C])){var G=C.replace(/@xmlns:?/,"")+":"
 }if(/.*\/schema\/entity$/.test(B.Response[C])){var x=C.replace(/@xmlns:?/,"")+":"
-}}if(B.Response&&B.Response["value"]){if(B.Response["value"][F+"referenceData"]){var y=B.Response["value"][F+"referenceData"];
+}}if(B.Response&&B.Response["value"]){if(B.Response["value"][G+"referenceData"]){var y=B.Response["value"][G+"referenceData"];
 g.find("select.payment-type").empty();
 for(var C=0;
 C<y[x+"type"].length;
@@ -5115,27 +5117,27 @@ C++){g.find("select.payment-miles").append('<option value="'+y[x+"leaseMiles"][C
 e("#payment-estimator-footer").show();
 e(".payment-subheader-1").hide();
 e(".payment-subheader-2").show()
-}setTimeout(function(){if(B.Response["value"][F+"paymentEstimateForms"]){var K=B.Response["value"][F+"paymentEstimateForms"];
+}setTimeout(function(){if(B.Response["value"][G+"paymentEstimateForms"]){var L=B.Response["value"][G+"paymentEstimateForms"];
+for(var J=0;
+J<L.length;
+J++){var K=(L[J][x+"type"]).toLowerCase();
+if(K=="balloon"){K="balloonFinance"
+}g.find("select.payment-term").eq(J).empty();
 for(var I=0;
-I<K.length;
-I++){var J=(K[I][x+"type"]).toLowerCase();
-if(J=="balloon"){J="balloonFinance"
-}g.find("select.payment-term").eq(I).empty();
-for(var H=0;
-H<y[x+J+"Term"].length;
-H++){g.find("select.payment-term").eq(I).append('<option value="'+y[x+J+"Term"][H]+'">'+y[x+J+"Term"][H]+" Months</option>")
-}g.find("input[name=payment"+(I+1)+"]").val(K[I][x+"downPayment"]);
-g.find("select[name=term"+(I+1)+"] option[value="+K[I][x+"term"]+"]").attr("selected","selected");
-g.find("select[name=miles"+(I+1)+"] option[value="+K[I][x+"leaseMiles"]+"]").attr("selected","selected");
-g.find("#financed"+(I+1)).text(c.formatCurrency(parseInt(K[I][x+"msrp"],10)-parseInt(K[I][x+"downPayment"],10)));
-g.find("select[name=type"+(I+1)+"] option[value="+K[I][x+"type"]+"]").attr("selected","selected");
-if(K[I][x+"type"]=="Lease"){e("input#rate"+(I+1)).val("N/A").attr("disabled","disabled");
-e("select#miles"+(I+1)).removeAttr("disabled");
-e("select#miles"+(I+1)+" option:selected").text(e("select#miles"+(I+1)+" option:selected").val()+",000")
-}else{e("input#rate"+(I+1)).val("").removeAttr("disabled");
-e("select#miles"+(I+1)).attr("disabled","disabled");
-e("select#miles"+(I+1)+" option:selected").text("N/A")
-}if(K[I][x+"rate"]){g.find("input[name=rate"+(I+1)+"]").val(K[I][x+"rate"])
+I<y[x+K+"Term"].length;
+I++){g.find("select.payment-term").eq(J).append('<option value="'+y[x+K+"Term"][I]+'">'+y[x+K+"Term"][I]+" Months</option>")
+}g.find("input[name=payment"+(J+1)+"]").val(L[J][x+"downPayment"]);
+g.find("select[name=term"+(J+1)+"] option[value="+L[J][x+"term"]+"]").attr("selected","selected");
+g.find("select[name=miles"+(J+1)+"] option[value="+L[J][x+"leaseMiles"]+"]").attr("selected","selected");
+g.find("#financed"+(J+1)).text(c.formatCurrency(parseInt(L[J][x+"msrp"],10)-parseInt(L[J][x+"downPayment"],10)));
+g.find("select[name=type"+(J+1)+"] option[value="+L[J][x+"type"]+"]").attr("selected","selected");
+if(L[J][x+"type"]=="Lease"){e("input#rate"+(J+1)).val("N/A").attr("disabled","disabled");
+e("select#miles"+(J+1)).removeAttr("disabled");
+e("select#miles"+(J+1)+" option:selected").text(e("select#miles"+(J+1)+" option:selected").val()+",000")
+}else{e("input#rate"+(J+1)).val("").removeAttr("disabled");
+e("select#miles"+(J+1)).attr("disabled","disabled");
+e("select#miles"+(J+1)+" option:selected").text("N/A")
+}if(L[J][x+"rate"]){g.find("input[name=rate"+(J+1)+"]").val(L[J][x+"rate"])
 }}if(c.btnLabel!=""){e(".col2 .btn-gray-gradient.track-click ").hide();
 e("input#zip").attr("disabled","disabled")
 }if(c.zipIsValid){e("#payment-estimator-footer").show();
@@ -5144,21 +5146,22 @@ e(".payment-subheader-2").show()
 }e(".spinner").hide();
 e("#payment-estimator-form").css("opacity",1)
 }},500);
-if(B.Response["value"][F+"paymentEstimateResults"]){var A=B.Response["value"][F+"paymentEstimateResults"];
+if(B.Response["value"][G+"paymentEstimateResults"]){var A=B.Response["value"][G+"paymentEstimateResults"];
 for(var C=0;
 C<A.length;
 C++){g.find("#monthly"+(C+1)).text(c.formatCurrency(A[C][x+"monthlyPayment"]));
-if(g.find("#monthly"+(C+1)).text()==""&&c.btnLabel.indexOf("Calc")!=-1){var G=C+1;
+if(g.find("#monthly"+(C+1)).text()==""&&c.btnLabel.indexOf("Calc")!=-1){var H=C+1;
 e("#errorMsg2").addClass("error");
-e("#errorMsg2").html("Option "+G+" : The down payment plus the trade-in amount exceeds the allowed amount.<br>Please enter an amount not greater than 25% of MSRP.")
+e("#errorMsg2").html("Option "+H+" : The down payment plus the trade-in amount exceeds the allowed amount.<br>Please enter an amount not greater than 25% of MSRP.")
 }if(g.find("#monthly"+(C+1)).text()=="$0"){g.find("#monthly"+(C+1)).text("No Data Available")
 }else{g.find("#monthly"+(C+1)).text(c.formatCurrency(A[C][x+"monthlyPayment"]))
-}}}}e("#payment-estimator .apply-credit-track-link").attr("href","https://www.mbfs.com/mbfsr/en/apply/applyHome.do?RequestFrom=MBUSA&Veh_ModelCode="+q.model+"&Veh_ModelYear="+q.year+"&utm_campaign=mbusa_sites&utm_source=mbusa.com&utm_medium=referral&utm_content=payment_estimator_page_"+q.year+"_"+q.model);
+}}}}var F=e(".page-properties .pp-mbfinancialUrl").html();
+e("#payment-estimator .apply-credit-track-link").attr("href",F+"/mbfsr/en/apply/applyHome.do?RequestFrom=MBUSA&Veh_ModelCode="+q.model+"&Veh_ModelYear="+q.year+"&utm_campaign=mbusa_sites&utm_source=mbusa.com&utm_medium=referral&utm_content=payment_estimator_page_"+q.year+"_"+q.model);
 e(".apply-credit-track-link").click(function(){if(q.model=="C250W"){q.model="C250WZ"
 }else{if(q.model=="C300W4"){q.model="C300WZ4"
 }else{if(q.model=="SL550"){q.model="SL550R"
-}}}var H={type:"GA",trackType:"_trackEvent",category:"outbound-apply-for-credit",action:"Apply for Credit",label:"Apply for Credit Financing:"+q.model};
-mb.metrics.trackInteraction(H)
+}}}var I={type:"GA",trackType:"_trackEvent",category:"outbound-apply-for-credit",action:"Apply for Credit",label:"Apply for Credit Financing:"+q.model};
+mb.metrics.trackInteraction(I)
 })
 },error:function(x,z,y){e("#errorMsg2").addClass("error");
 e("#errorMsg2").html("No data available for this vehicle.  Please select a different vehicle.");

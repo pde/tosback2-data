@@ -33,7 +33,7 @@ var skaTools = {
 			for(var i=0; i < skaItems.length; i ++){
 				var thisDomain = skaTools.domains[skaItems[i][0]];
 				var thisContextRoot = skaItems[i][1];
-				if(skaTools.getContextRoot(window.location).toLowerCase() == thisContextRoot.toLowerCase()){
+				if(skaTools.getContextRoot(window.location).toLowerCase() != thisContextRoot.toLowerCase()){
 					skaTools.hitURL('https://' + thisDomain + '/' + thisContextRoot + '/keepsessionalive.jsp')
 				}
 			}

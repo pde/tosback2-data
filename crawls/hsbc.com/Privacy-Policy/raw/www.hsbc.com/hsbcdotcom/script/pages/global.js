@@ -253,14 +253,21 @@ $(document).ready(function () {
     function generalSearch(field) {
         field = field.replace("/", " ").replace("\\", " ").replace("<", " ").replace(">", " ").replace("&", " ");
         var location = "/utilities/search?search=" + encodeURIComponent(field) + "&ref=" + encodeURIComponent(window.location.pathname);
-        window.location = location;
+        //window.location = location;
+		$("#ClientWidth").val(docWidth);
+		$("#searchSection").val("global");
+		$("#Search").val(field);
+		$("#Form1").submit();
     }
 
     function newsroomSearch() {
         var searchText = $('.searchBar input').val();
         searchText = searchText.replace("/", " ").replace("\\", " ").replace("<", " ").replace(">", " ").replace("&", " ");
         var location = "/news-and-insight/search?search=" + encodeURIComponent(searchText);
-        window.location = location;
+        //window.location = location;
+		$("#ClientWidth").val(docWidth);
+		$("#Search").val($("#headerSearch").val());
+		$("#Form1").submit();
     }
 	
 	//external link check

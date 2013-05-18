@@ -3,7 +3,4100 @@
 /*********************************************************************************************************************/
 
 
-@import url("../../../common/include/styles/information.css");
+/*********************************************************************************************************************/
+/* Start: information-base.css                                                                                       */
+/*********************************************************************************************************************/
+
+
+/*********************************************************************************************************************/
+/* Start: global-part.css                                                                                            */
+/*********************************************************************************************************************/
+
+/*
+	Essential styles that themes can inherit.
+	In other words, works but doesn't look great.
+*/
+
+
+
+/****
+		GENERIC PIECES
+ ****/
+
+.dijitReset {
+	/* Use this style to null out padding, margin, border in your template elements
+		so that page specific styles don't break them.
+		- Use in all TABLE, TR and TD tags.	
+	*/
+	margin:0;
+	border:0;
+	padding:0;
+	line-height:normal;
+	font: inherit;
+	color: inherit;
+}
+
+.dijitInline {
+	/*  To inline block elements.
+		Similar to InlineBox below, but this has fewer side-effects in Moz.
+		Also, apparently works on a DIV as well as a FIELDSET.
+	*/
+	display:-moz-inline-box;		/* FF2 */
+	display:inline-block;			/* webkit and FF3 */
+	#zoom: 1; /* set hasLayout:true to mimic inline-block */
+	#display:inline; /* don't use .dj_ie since that increases the priority */
+	border:0;
+	padding:0;
+	vertical-align:middle;
+	#vertical-align: auto;	/* makes TextBox,Button line up w/native counterparts on IE6 */
+}
+
+.dijitHidden {
+	/* To hide unselected panes in StackContainer etc. */
+	display: none !important;
+}
+
+.dijitVisible {
+	/* To show selected pane in StackContainer etc. */
+	display: block !important;	/* override user's display:none setting via style setting or indirectly via class */
+	position: relative;			/* to support setting width/height, see #2033 */
+}
+
+
+.dj_ie INPUT.dijitTextBox,
+.dj_ie .dijitInputField INPUT {
+	font-size: 100%;
+}
+
+.dj_ie .dijitInputField INPUT { /* try to get rid of IE implicit margin around INPUT */
+	margin: -1px 0 !important;
+}
+.dj_iequirks .dijitInputField INPUT { /* try to get rid of IE implicit margin around INPUT */
+	margin-top: -3px !important;
+}
+
+.dijitInlineTable {
+	/* To inline tables with a given width set (otherwise, use dijitInline above)
+	 * Must also put style="-moz-inline-stack" on the node itself to workaround FF2 bugs
+	 */
+	display: -moz-inline-stack;	/* FF2 */
+	display:inline-table;
+	display:inline-block;		/* webkit and FF3 */
+	#zoom: 1; /* set hasLayout:true to mimic inline-block */
+	#display:inline; /* don't use .dj_ie since that increases the priority */
+	box-sizing: content-box; -moz-box-sizing: content-box;
+	border:0;
+	padding:0;
+}
+
+.dijitTeeny {
+	font-size:1px;
+	line-height:1px;
+}
+
+/*
+ * Popup items have a wrapper div (dijitPopup)
+ * with the real popup inside, and maybe an iframe too
+ */
+.dijitPopup {
+	position: absolute;
+	background-color: transparent;
+	margin: 0;
+	border: 0;
+	padding: 0;
+}
+.dijit_a11y .dijitPopup,
+.dijit_ally .dijitPopup div,
+.dijit_a11y .dijitPopup table,
+.dijit_a11y .dijitTooltipContainer {
+	background-color: white !important;
+}
+
+.dijitInputField {
+	overflow:hidden;
+	#zoom:1;
+}
+
+.dijitPositionOnly {
+	/* Null out all position-related properties */
+	padding: 0 !important;
+	border: 0 !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	height: auto !important;
+	width: auto !important;
+}
+
+.dijitNonPositionOnly {
+	/* Null position-related properties */
+	float: none !important;
+	position: static !important;
+	margin: 0 0 0 0 !important;
+	vertical-align: middle !important;
+}
+
+.dijitBackgroundIframe {
+	/*
+	 * iframe used for FF2 in high-contrast mode to prevent menu
+	 * being transparent
+	 */
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.dijitClickableRegion {
+	/* An InlineEditBox in view mode (click this to edit the text) */
+	background-color: #e2ebf2;
+	cursor: text;
+}
+
+
+.dijitDisplayNone {
+	/* hide something.  Use this as a class rather than element.style so another class can override */
+	display:none !important;
+}
+
+.dijitContainer {
+	/* for all layout containers */
+	overflow: hidden;	/* need on IE so something can be reduced in size, and so scrollbars aren't temporarily displayed when resizing */
+}
+
+/****
+		A11Y
+ ****/
+.dijit_a11y * {
+	background-image:none !important;
+}
+
+.dijit_a11y .dijitCalendarIncrementControl {
+	display: none;	/* don't display icon */
+}
+.dijit_a11y .dijitA11ySideArrow {
+	display: inline !important; /* display text instead */
+	cursor: pointer;
+}
+
+.dijit_a11y .dijitCalendarSelectedDate {
+	text-decoration:overline !important;
+}
+
+.dijit_a11y .dijit * {
+	background:white !important;
+	color:black !important;
+}
+.dijit_a11y .dijitButtonNode {
+	border-color: black!important;
+	border-style: outset!important;
+	border-width: medium!important;
+}
+
+.dijit_a11y .dijitButtonDisabled .dijitButtonNode,
+.dijit_a11y .dijitDropDownButtonDisabled .dijitButtonNode,
+.dijit_a11y .dijitComboButtonDisabled .dijitButtonNode,
+.dijit_a11y .dijitComboBoxDisabled .dijitInputField,
+.dijit_a11y .dijitComboBoxDisabled .dijitButtonNode,
+.dijit_a11y .dijitSpinnerDisabled .dijitButtonNode,
+.dijit_a11y .dijitSpinnerDisabled .dijitInputField {
+	border-style: outset!important;
+	border-width: medium!important;
+	border-color: #999 !important;
+	color:#999 !important;
+}
+
+.dj_ff2 .dijit_a11y .dijitComboButton .dijitButtonContentsFocused,
+.dj_ff2 .dijit_a11y .dijitComboButton .dijitDownArrowButtonFocused {
+	border: 1px dotted black !important;
+}
+
+/* button inner contents - labels, icons etc. */
+.dijitButtonNode * {
+	vertical-align: middle;
+}
+.dijit_a11y .dijitArrowButtonInner {
+	width: 1em;
+	display: none !important;
+}
+.dijitButtonNode .dijitArrowButtonInner {
+	background:no-repeat center;
+	width: 16px;
+}
+.dijitComboBox .dijitArrowButtonInner {
+	display: block;
+}
+
+/* In high contrast mode, display the check symbol */
+.dijit_a11y .dijitToggleButtonChecked .dijitToggleButtonIconChar {
+	display: inline !important;
+}
+
+
+/****
+		3-element borders:  ( dijitLeft + dijitStretch + dijitRight )
+ ****/
+	
+.dijitLeft {
+	/* Left part of a 3-element border */
+	background-position:left top;
+	background-repeat:no-repeat;
+}
+
+.dijitStretch {
+	/* Middle (stretchy) part of a 3-element border */
+	white-space:nowrap;			/* MOW: move somewhere else */
+	background-repeat:repeat-x;
+}
+
+.dijitRight {
+	/* Right part of a 3-element border */
+	#display:inline;				/* IE7 sizes to outer size w/o this */
+	background-position:right top;
+	background-repeat:no-repeat;
+}
+
+.dijitButton,
+.dijitDropDownButton,
+.dijitComboButton {
+	/* outside of button */
+	margin: 0.2em;
+}
+
+.dijitToolbar .dijitButton,
+.dijitToolbar .dijitDropDownButton,
+.dijitToolbar .dijitComboButton {
+	margin: 0;
+}
+
+.dj_ie8 .dijitToolbar button,
+.dj_webkit .dijitToolbar button {
+	/* FF and IE<8 adds implicit padding to buttons, so make other browsers follow suit,
+	 * to avoid a bunch of browse specific rules in theme files
+	 */
+	padding: 1px 2px;
+}
+
+.dj_ie .dijitToolbar .dijitComboBox{
+	/* make combobox buttons align porperly with other buttons in a toolbar */
+	vertical-align: middle;
+}
+
+.dj_ie .dijitComboButton {
+	/* hack to get inline-table to vertically align w/other buttons */
+	margin-bottom: -3px;
+}
+
+.dj_webkit .dijitToolbar .dijitDropDownButton {
+	padding-left: 0.3em;
+}
+.dj_gecko .dijitToolbar .dijitButtonNode::-moz-focus-inner {
+	padding:0;
+}
+
+.dijitButtonNode {
+	/* Node that is acting as a button -- may or may not be a BUTTON element */
+	border:1px solid gray;
+	margin:0;
+	line-height:normal;
+	vertical-align: middle;
+	#vertical-align: auto;
+	text-align:center;
+	white-space: nowrap;
+}
+
+.dijitButtonNode, .dijitButtonNode * {
+	cursor: pointer;
+} 
+
+/**** Disabled cursor *****/
+.dijitReadOnly *,
+.dijitDisabled *,
+.dijitReadOnly,
+.dijitDisabled,
+.dijitDisabledClickableRegion {	/* a region the user would be able to click on, but it's disabled */
+	cursor: not-allowed !important;
+}
+
+.dj_ie .dijitButtonNode {
+	/* ensure hasLayout */
+	zoom: 1;
+}
+
+.dj_ie .dijitButtonNode button { 
+	/*  
+		disgusting hack to get rid of spurious padding around button elements 
+		on IE. MSIE is truly the web's boat anchor. 
+	*/ 
+	overflow: visible;
+} 
+
+.dijitArrowButton {
+	/* Node that is acting as a arrow button -- drop down (spinner has its own treatment).  Also gets dijitButtonNode */
+	/* place AFTER dijitButtonNode so it overrides */
+	padding: 0 .4em;
+}
+DIV.dijitArrowButton {
+	float: right;
+}
+
+.dijitSpinner .dijitInputLayoutContainer .dijitArrowButton {
+	border-style: solid;
+	border-width: 0 0 0 1px !important;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	float: none;
+}
+.dijitSpinner .dijitInputLayoutContainer .dijitArrowButton {
+	position: absolute;
+	height: 50%;
+}
+.dijitSpinner .dijitInputLayoutContainer .dijitDownArrowButton {
+	top: auto;
+	bottom: 0;
+	border-top-width: 1px !important;
+}
+.dijitSpinner .dijitInputLayoutContainer .dijitUpArrowButton {
+	top: 0;
+	bottom: auto;
+}
+
+TABLE.dijitComboButton {
+	/* In ComboButton, borders are on each cell rather than on <table> itself */
+	border-collapse: collapse;
+	border:0;
+	padding:0;
+	margin:0;
+}
+.dijitToolbar .dijitComboButton {
+	/* because Toolbar only draws a border around the hovered thing */
+	border-collapse: separate;
+}
+
+.dj_ie BUTTON.dijitButtonNode {
+	overflow: visible; /* eliminates arbitrary left and right padding on buttons */
+}
+
+table .dijitButton .dijitButtonNode,
+table .dijitComboButton .dijitButtonNode {
+	#overflow:hidden; /* visible messes up if the button is inside a table on IE */
+}
+
+
+
+.dijitButtonNode IMG {
+	/* make text and images line up cleanly */
+	vertical-align:middle;
+	/*margin-bottom:.2em;*/
+}
+
+/******
+	TextBox related.
+	Everything that has an <input>
+*******/
+
+.dijitTextBox,
+.dijitComboBox,
+.dijitSpinner {
+	border: solid black 1px;
+	#overflow: hidden; /* #6027, #6067 */
+	width: 15em;	/* need to set default size on outer node since inner nodes say <input style="width:100%"> and <td width=100%>.  user can override */
+	vertical-align: middle;
+	#vertical-align: auto;	
+}
+
+.dijitTimeTextBox {
+	width: 8em;
+}
+
+/* rules for safari to deal with fuzzy blue focus border */
+.dijitTextBox input:focus,
+.dijitComboBox input:focus,
+.dijitSpinner input:focus {
+	outline: none;	/* blue fuzzy line looks wrong on combobox or something w/validation icon showing */
+}
+.dijitTextBoxFocused,
+.dijitComboBoxFocused,
+.dijitSpinnerFocused, .dijitSpinnerUpArrowActive, .dijitSpinnerDownArrowActive,
+.dijitTextAreaFocused {
+	/* should we display focus like we do on other browsers, or use the safari standard focus indicator?? */
+	outline: auto 5px -webkit-focus-ring-color;
+}
+.dijitTextAreaFocused div {
+	/* prevent dotted border on FF3 */
+	outline: none !important;
+}
+
+.dijitTextBox INPUT,
+.dijitComboBox INPUT,
+.dijitSpinner INPUT {
+	border-left: solid black 1px;	/* TODO: for RTL mode should be border-right */
+	display:inline;
+	position:static !important;
+	border:0 !important;	
+	margin:0 !important;
+	vertical-align:top !important;
+	background-color:transparent !important;
+	background-image:none !important;
+	width:100% !important;
+}
+
+/* Display an "X" for invalid input. Themes will override these rules to display an icon instead.
+*/
+.dijitValidationIcon {
+	visibility: hidden;
+	display: block;
+	padding: 0 2px;
+	float: right;
+	height: auto;
+}
+.dijitValidationIconText {
+	visibility: hidden;
+	display: none;
+	float:right;
+	font-family: sans-serif;
+	font-style:italic;
+	font-size: 0.75em;
+	padding-right: 0.15em;
+	line-height: 160%;
+}
+.dijit_a11y .dijitValidationIcon { display: none !important; }
+.dijit_a11y .dijitValidationIconText { display: block !important; }
+
+.dijitError .dijitValidationIcon,
+.dijitError .dijitValidationIconText {
+	visibility: visible;
+}
+
+.dijitTextBox .dijitArrowButton {
+	/* this is for a combo box with no arrow displayed; we set baseClass=TextBox */
+	display:none;
+}
+
+/****
+		dijit.form.CheckBox
+ 	 &
+  		dijit.form.RadioButton
+ ****/
+
+.dijitCheckBox,
+.dijitRadio,
+.dijitCheckBoxInput {
+	padding: 0;
+	border: 0;
+	width: 16px;
+	height: 16px;
+	background-position:center center;
+	background-repeat:no-repeat;
+	overflow: hidden;
+}
+
+.dijitCheckBox INPUT,
+.dijitRadio INPUT {
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+.dijitCheckBoxInput {
+	/* place the actual input on top, but all-but-invisible */
+	opacity: 0.01;
+}
+
+.dj_ie .dijitCheckBoxInput {
+	filter: alpha(opacity=0);
+}
+
+.dijit_a11y .dijitCheckBox,
+.dijit_a11y .dijitRadio {
+	width: auto;
+	height: auto;
+}
+.dijit_a11y .dijitCheckBoxInput {
+	opacity: 1;
+	filter: none;
+	width: auto;
+	height: auto;
+}
+
+
+/****
+		dijit.ProgressBar
+ ****/
+
+.dijitProgressBarEmpty{
+	/* outer container and background of the bar that's not finished yet*/
+	position:relative;overflow:hidden;
+	border:1px solid black; 	/* a11y: border necessary for high-contrast mode */
+	z-index:0;			/* establish a stacking context for this progress bar */
+}
+
+.dijitProgressBarFull {
+	/* outer container for background of bar that is finished */
+	position:absolute;
+	overflow:hidden;
+	z-index:-1;
+	top:0;
+	width:100%;
+}
+.dj_ie6 .dijitProgressBarFull {
+	height:1.6em;
+}
+
+.dijitProgressBarTile {
+	/* inner container for finished portion */
+	position:absolute;
+	overflow:hidden;
+	top:0;
+	left:0;
+	bottom:0;
+	right:0;
+	margin:0;
+	padding:0;
+	width:auto;
+	height:auto;
+	background-color:#aaa;
+	background-attachment: fixed;
+}
+
+.dijit_a11y .dijitProgressBarTile{
+	/* a11y:  The border provides visibility in high-contrast mode */
+	border-width:4px;
+	border-style:solid;
+	background-color:transparent !important;
+}
+
+.dj_ie6 .dijitProgressBarTile {
+	/* width:auto works in IE6 with position:static but not position:absolute */
+	position:static;
+	/* height:auto or 100% does not work in IE6 */
+	height:1.6em;
+}
+
+.dijitProgressBarIndeterminate .dijitProgressBarLabel {
+	visibility:hidden;
+}
+
+.dijitProgressBarIndeterminate .dijitProgressBarTile {
+	/* animated gif for 'indeterminate' mode */
+}
+
+.dijitProgressBarIndeterminateHighContrastImage {
+	display:none;
+}
+
+.dijit_a11y .dijitProgressBarIndeterminate .dijitProgressBarIndeterminateHighContrastImage {
+	display:block;
+	position:absolute;
+	top:0;
+	bottom:0;
+	margin:0;
+	padding:0;
+	width:100%;
+	height:auto;
+}
+
+.dijitProgressBarLabel {
+	display:block;
+	position:static;
+	width:100%;
+	text-align:center;
+	background-color:transparent !important;
+}
+
+/****
+		dijit.Tooltip
+ ****/
+
+.dijitTooltip {
+	position: absolute;
+	z-index: 2000;
+	display: block;
+	/* make visible but off screen */
+	left: 50%;
+	top: -10000px;
+	overflow: visible;
+}
+
+.dijitTooltipContainer {
+	border: solid black 2px;
+	background: #b8b5b5;
+	color: black;
+	font-size: small;
+}
+
+.dijitTooltipFocusNode {
+	padding: 2px 2px 2px 2px;
+}
+
+.dijitTooltipConnector {
+	position: absolute;
+}
+
+.dijitTooltipData {
+	display:none;
+}
+/* MOW: using actual images at this time
+/* draw an arrow with CSS only * /
+.dijitTooltipConnector {
+	/* the border on the triangle * /
+	font-size: 0; line-height: 0%; width: 0;
+	border-top: none;
+	border-bottom: 14px solid black;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	top: -14px;
+	left: 3px;
+	z-index: 2;
+}
+
+.dijitTooltipConnector div {
+	/* the background of the triangle * /
+	font-size: 0; line-height: 0%; width: 0;
+	position: absolute;
+	border-bottom: 10px solid #b8b5b5;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	top: 6px;
+	left: -5px;
+	z-index: 3;
+}
+
+*/
+
+
+
+/* Layout widgets. This is essential CSS to make layout work (it isn't "styling" CSS)
+   make sure that the position:absolute in dijitAlign* overrides other classes */
+
+.dijitLayoutContainer{
+	position: relative;
+	display: block;
+	overflow: hidden;
+}
+
+body .dijitAlignTop,
+body .dijitAlignBottom,
+body .dijitAlignLeft,
+body .dijitAlignRight {
+	position: absolute;
+	overflow: hidden;
+}
+
+body .dijitAlignClient { position: absolute; }
+
+/*
+ * BorderContaienr
+ *
+ * .dijitBorderContainer is a stylized layout where panes have border and margin.
+ * .dijitBorderContainerNoGutter is a raw layout.
+ */
+.dijitBorderContainer, .dijitBorderContainerNoGutter {
+	position:relative;
+	overflow: hidden;
+}
+
+.dijitBorderContainerPane,
+.dijitBorderContainerNoGutterPane {
+	position: absolute !important;	/* !important to override position:relative in dijitTabContainer etc. */
+	z-index: 2;		/* above the splitters so that off-by-one browser errors don't cover up border of pane */
+}
+
+.dijitBorderContainer > .dijitTextArea {
+	/* On Safari, for SimpleTextArea inside a BorderContainer,
+		don't want to display the grip to resize */
+	resize: none;
+}
+
+.dijitGutter {
+	/* gutter is just a place holder for empty space between panes in BorderContainer */
+	position: absolute;
+	font-size: 1px;		/* needed by IE6 even though div is empty, otherwise goes to 15px */
+}
+
+/* SplitContainer
+
+	'V' == container that splits vertically (up/down)
+	'H' = horizontal (left/right)
+*/
+
+.dijitSplitter {
+	position: absolute;
+	overflow: hidden;
+	z-index: 10;		/* above the panes so that splitter focus is visible on FF, see #7583*/
+	background-color: #fff;
+	border-color: gray;
+	border-style: solid;
+	border-width: 0;
+}
+.dj_ie .dijitSplitter {
+	z-index: 1;	/* behind the panes so that pane borders aren't obscured see test_Gui.html/[14392] */
+}
+
+.dijitSplitterActive {
+	z-index: 11 !important;
+}
+
+.dijitSplitterCover{
+	position:absolute;
+	z-index:-1;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+}
+
+.dijitSplitterCoverActive{
+	z-index:3 !important;
+}
+
+/* #6945: stop mouse events */
+.dj_ie .dijitSplitterCover{
+	background: white;
+	filter: alpha(opacity=0);
+}
+
+.dijitSplitterH {
+	height: 7px;
+	border-top:1px;
+	border-bottom:1px;
+	cursor: ns-resize;
+}
+.dijitSplitterV {
+	width: 7px;
+	border-left:1px;
+	border-right:1px;
+	cursor: ew-resize;
+}
+.dijitSplitContainer{
+	position: relative;
+	overflow: hidden;
+	display: block;
+}
+
+.dijitSplitPane{
+	position: absolute;
+}
+
+.dijitSplitContainerSizerH,
+.dijitSplitContainerSizerV {
+	position:absolute;
+	font-size: 1px;
+	cursor: move;
+	cursor: w-resize;
+	background-color: ThreeDFace;
+	border: 1px solid;
+	border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
+	margin: 0;
+}
+
+.dijitSplitContainerSizerH .thumb, .dijitSplitterV .dijitSplitterThumb {
+	overflow:hidden;
+	position:absolute;
+	top:49%;
+}
+
+.dijitSplitContainerSizerV .thumb, .dijitSplitterH .dijitSplitterThumb {
+	position:absolute;
+	left:49%;
+}
+
+.dijitSplitterShadow,
+.dijitSplitContainerVirtualSizerH,
+.dijitSplitContainerVirtualSizerV {
+	font-size: 1px;
+	background-color: ThreeDShadow;
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	filter: Alpha(Opacity=50);
+	margin: 0;
+}
+
+.dj_ie .dijitSplitterV, .dijitSplitContainerVirtualSizerH {
+	cursor: w-resize;
+}
+.dj_ie .dijitSplitterH, .dijitSplitContainerSizerV, .dijitSplitContainerVirtualSizerV {
+	cursor: n-resize;
+}
+
+.dijit_a11y .dijitSplitterH {
+	border-top:1px solid #d3d3d3 !important;
+	border-bottom:1px solid #d3d3d3 !important;
+}
+.dijit_a11y .dijitSplitterV {
+	border-left:1px solid #d3d3d3 !important;
+	border-right:1px solid #d3d3d3 !important;
+}
+
+/* ContentPane */
+
+.dijitContentPane {
+	display: block;
+	overflow: auto;	/* if we don't have this (or overflow:hidden), then Widget.resizeTo() doesn't make sense for ContentPane */
+}
+/* TitlePane */
+.dijitTitlePane {
+	display: block;
+	overflow: hidden;
+}
+
+/* Color Palette */
+
+.dijitColorPalette {
+	border:1px solid #999;
+	background:#fff;
+	-moz-border-radius:3pt;
+}
+
+img.dijitColorPaletteUnder {
+	border-style:none;
+	position:absolute;
+	left:0;
+	top:0;
+}
+.dijitColorPaletteInner {
+	position: relative;
+	overflow:hidden;
+	outline:0;
+}
+.dijitPaletteCell {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	overflow: hidden;
+	z-index: 10;
+	outline-width: 0;
+}
+.dijitPaletteImg {
+	width: 16px; /*This is the width of one color in the provided palettes. */
+	height: 14px; /* Height of one color in the provided palettes. */
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	overflow: hidden;
+	cursor: default;
+	border:1px solid #999;
+	/* -moz-border-radius:2pt; */
+}
+
+.dijitPaletteCellHighlight img {
+	width: 14px; /*This is the width of one color in the provided palettes. */
+	height: 12px; /* Height of one color in the provided palettes. */
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	overflow: hidden;
+	cursor: default;
+	border:2px solid #000;
+	outline:1px solid #dedede;
+	/* -moz-border-radius:0; */	
+}
+
+.dijit_a11y .dijitPaletteCell {
+	background-color:transparent !important;
+}
+.dijit_a11y .dijitPaletteImg {
+	background-color:transparent !important;
+}
+
+.dijitAccordionContainer {
+	border:1px solid #b7b7b7;
+	border-top:0 !important;
+}
+
+.dijitAccordionTitle {
+	cursor: pointer;
+}
+
+/* images off, high-contrast mode styles */
+.dijitAccordionTitle .arrowTextUp,
+.dijitAccordionTitle .arrowTextDown {
+	display: none;
+	font-size: 0.65em;
+	font-weight: normal !important;
+}
+
+.dijit_a11y .dijitAccordionTitle .arrowTextUp {
+	display: inline;
+}
+.dijit_a11y .dijitAccordionTitle-selected .arrowTextDown {
+	display: inline;
+}
+
+.dijit_a11y .dijitAccordionTitle-selected .arrowTextUp {
+	display: none;
+}
+
+/* Calendar */
+
+.dijitCalendarContainer thead tr th, .dijitCalendarContainer thead tr td, .dijitCalendarContainer tbody tr td, .dijitCalendarContainer tfoot tr td {
+	padding: 0;
+}
+
+.dijitCalendarNextYear {
+	margin:0 0 0 0.55em;
+}
+
+.dijitCalendarPreviousYear {
+	margin:0 0.55em 0 0;
+}
+
+.dijitCalendarIncrementControl {
+	cursor:pointer;
+	vertical-align: middle;
+}
+
+.dijitCalendarDisabledDate {
+	color:gray !important;
+}
+
+.dijitCalendarBodyContainer tbody tr td {
+	cursor:pointer;
+}
+
+.dijitCalendarPreviousMonthDisabled,
+.dijitCalendarCurrentMonthDisabled,
+.dijitCalendarNextMonthDisabled {
+	cursor:default !important
+}
+
+.dijitCalendarDateTemplate,
+.dijitCalendarSelectedYear,
+.dijitCalendarNextYear,
+.dijitCalendarPreviousYear {
+	cursor:pointer;
+}
+
+.dijitCalendarMonthLabelSpacer {
+	/* don't display it, but make it affect the width */
+  	position: relative;
+  	height: 1px;
+  	overflow: hidden;
+  	visibility: hidden;
+}
+
+
+/* Menu */
+
+.dijitMenu {
+	border:1px solid black;
+	background-color:white;
+}
+.dijitMenuTable {
+	margin:1px 0;
+	border-collapse:collapse;
+	border-width:0;
+	background-color:white;
+}
+
+/* workaround for webkit bug #8427, remove this when it is fixed upstream */
+.dj_webkit .dijitMenuTable td[colspan="2"]{
+	border-right:hidden;
+}
+
+.dijitMenuItem{
+	text-align: left;
+	white-space: nowrap;
+	padding:.1em .2em;
+	cursor:pointer;
+}
+
+.dijitMenuPassive .dijitMenuItemHover,
+.dijitMenuItemSelected {
+	/*
+	 * dijitMenuItemHover refers to actual mouse over
+	 * dijitMenuItemSelected is used after a menu has been "activated" by
+	 * clicking it, tabbing into it, or being opened from a parent menu,
+	 * and denotes that the menu item has focus or that focus is on a child
+	 * menu
+	 */
+	background-color:black;
+	color:white;
+}
+
+.dijitMenuItemIcon, .dijitMenuExpand {
+	background-repeat: no-repeat;
+}
+
+.dijitMenuItemDisabled * {
+	/* for a disabled menu item, just set it to mostly transparent */
+	opacity:0.3;
+	cursor:default;
+}
+.dj_ie .dijit_a11y .dijitMenuItemDisabled td,
+.dj_ie .dijitMenuItemDisabled *,
+.dj_ie .dijitMenuItemDisabled td {
+	color:gray !important;
+	filter: alpha(opacity=35);
+}
+
+.dijitMenuItemLabel {
+	position: relative;
+	vertical-align: middle;
+}
+
+.dijit_a11y .dijitMenuItemSelected .dijitMenuItemLabel {
+	border-width: 1px;
+	border-style: solid;
+}
+.dijit_a11y .dijitMenuItemSelected {
+	border: 1px #fff dotted !important;
+}
+
+.dijitMenuExpandA11y {
+	display: none;
+}
+.dijit_a11y .dijitMenuExpandA11y {
+	display: inline;
+}
+
+.dijitMenuSeparator td {
+	border: 0;
+	padding: 0;
+}
+
+/* separator can be two pixels -- set border of either one to 0 to have only one */
+.dijitMenuSeparatorTop {
+	height: 50%;
+	margin: 0;
+	margin-top:3px;
+	font-size: 1px;
+}
+
+.dijitMenuSeparatorBottom {
+	height: 50%;
+	margin: 0;
+	margin-bottom:3px;
+	font-size: 1px;
+}
+
+/* the checked menu item */
+.dijitCheckedMenuItemIconChar {
+	vertical-align: middle;
+	visibility:hidden;
+}
+.dijitCheckedMenuItemChecked .dijitCheckedMenuItemIconChar {
+	visibility: visible;
+}
+.dijit_a11y .dijitCheckedMenuItemIconChar {
+	display:inline !important;
+}
+.dijit_a11y .dijitCheckedMenuItemIcon {
+	display: none;
+}
+
+
+/* Stack */
+
+.dijitStackController .dijitToggleButtonChecked * {
+	cursor: default;	/* because pressing it has no effect */
+}
+
+/* Tab */
+
+.dijitTabContainerBottom-tabs,
+.dijitTabContainerTop-tabs,
+.dijitTabContainerLeft-tabs,
+.dijitTabContainerRight-tabs {
+	z-index:10;
+	overflow: visible !important;  /* so tabs can cover up border adjacent to container */
+}
+
+.dijitTabContainerBottom-container,
+.dijitTabContainerTop-container,
+.dijitTabContainerLeft-container,
+.dijitTabContainerRight-container {
+	z-index:0;
+	overflow: hidden;
+	border: 1px solid black;
+}
+
+.dijitTabContainerTop-tabs {
+	border-bottom: 1px solid black;
+}
+.dijitTabContainerTop-container {
+	border-top: 0px;
+}
+
+.dijitTabContainerLeft-tabs {
+	border-right: 1px solid black;
+}
+.dijitTabContainerLeft-container {
+	border-left: 0px;
+}
+
+.dijitTabContainerBottom-tabs {
+	border-top: 1px solid black;
+}
+.dijitTabContainerBottom-container {
+	border-bottom: 0px;
+}
+
+.dijitTabContainerRight-tabs {
+	border-left: 1px solid black
+}
+.dijitTabContainerRight-container {
+	border-right: 0px;
+}
+
+
+.dijitTab {
+	position:relative;
+	cursor:pointer;
+	white-space:nowrap;
+	z-index:3;
+}
+.dijitTabChecked {
+	cursor: default;	/* because clicking will have no effect */
+}
+
+.dijitTabContainerTop-tabs .dijitTab {
+	top: 1px;	/* to overlap border on .dijitTabContainerTop-tabs */
+}
+.dijitTabContainerBottom-tabs .dijitTab {
+	top: -1px;	/* to overlap border on .dijitTabContainerBottom-tabs */
+}
+.dijitTabContainerLeft-tabs .dijitTab {
+	left: 1px;	/* to overlap border on .dijitTabContainerLeft-tabs */
+}
+.dijitTabContainerRight-tabs .dijitTab {
+	left: -1px;	/* to overlap border on .dijitTabContainerRight-tabs */
+}
+
+
+.dijitTabContainerTop-tabs .dijitTab,
+.dijitTabContainerBottom-tabs .dijitTab {
+	/* Inline-block */
+	display:-moz-inline-box;		/* FF2 */
+	display:inline-block;			/* webkit and FF3 */
+	#zoom: 1; /* set hasLayout:true to mimic inline-block */
+	#display:inline; /* don't use .dj_ie since that increases the priority */
+}
+
+.dijitTabInnerDiv {
+	position:relative;
+}
+
+/* images off, high-contrast mode styles */
+.dijitTab .closeText {
+	display:none;
+}
+
+.dijit_a11y .closeText {
+	display:inline;
+	margin: 0px 6px;
+}
+
+.dijit_a11y .dijitTab .closeImage {
+	display:none;
+}
+
+.dijit_a11y .closeButton-hover .closeText {
+	border:thin solid;
+}
+.dijit_a11y .dijitTabChecked {
+	border-style:dashed !important;
+}
+
+.dijit_a11y .dijitTabInnerDiv {
+	border-left:none !important;
+ }
+
+.dijitTabPane,
+.dijitStackContainer-child,
+.dijitAccordionContainer-child {
+	/* children of TabContainer, StackContainer, and AccordionContainer shouldn't have borders
+	 * b/c a border is already there from the TabContainer/StackContainer/AccordionContainer itself.
+	 */
+    border: none !important;
+}
+
+.dijitInlineEditor {
+	/* span around an inline-editable value when in edit mode */
+	position:relative;
+	vertical-align:bottom;
+}
+.dj_ie .dijitInlineEditor {
+	vertical-align:middle;
+}
+
+.dijitInlineValue {
+	/* span around an inline-editable value when NOT in edit mode */
+}
+
+.dijitInlineEditor .dijitButtonContainer {
+	/* div around the buttons -- makes them float below the field */
+	position:absolute;
+	right:0;
+	overflow:visible;
+}
+
+.dijitInlineEditor .saveButton,
+.dijitInlineEditor .cancelButton {
+}
+
+/* Tree */
+
+.dijitTreeRow, .dijitTreeContent {
+	white-space: nowrap;
+}
+
+.dijitTreeRow img {
+	/* make the expando and folder icons line up with the label */
+	vertical-align: middle;
+}
+
+.dijitTreeContent {
+    cursor: default;
+}
+
+.dijitExpandoText {
+	display: none;
+}
+
+.dijit_a11y .dijitExpandoText {
+	display: inline;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-family: monospace;
+	border-style: solid;
+	border-width: thin;
+	cursor: pointer;
+}
+
+.dijitTreeLabel {
+	margin: 0px 4px;
+}
+
+/* Dialog */
+
+.dijitDialog {
+	position: absolute;
+	z-index: 999;
+	padding: 1px;
+     overflow: hidden;       /* override overflow: auto; from ContentPane to make dragging smoother */
+}
+
+.dj_ff2 .dijitDialog {
+     overflow: auto;          /* avoid disappearing cursor problem, see #7408 */
+}
+
+.dijitDialogFixed div.dijitDialogTitleBar {
+	cursor:default; 
+}
+
+.dijitDialogUnderlayWrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 998;
+	display: none;
+	background: transparent !important;
+}
+
+.dijitDialogUnderlay {
+	background: #eee;
+	opacity: 0.5;
+}
+
+.dj_ie .dijitDialogUnderlay {
+	filter: alpha(opacity=50);
+}
+
+/* images off, high-contrast mode styles */
+.dijit_a11y .dijitInputLayoutContainer,
+.dijit_a11y .dijitDialog {
+	opacity: 1 !important;
+	background-color: white !important;
+}
+
+.dijitDialog .closeText {
+	display:none;
+	/* for the onhover border in high contrast on IE: */
+	position:absolute;
+}
+
+.dijit_a11y .dijitDialog .closeText {
+	display:inline;
+}
+
+.dijitSliderMoveable {
+	z-index:99;
+	position:absolute !important;
+	display:block;
+	vertical-align:middle;
+}
+
+.dijitSliderMoveableH {
+	right:0;
+}
+
+.dijit_a11y div.dijitSliderImageHandle,
+.dijitSliderImageHandle {
+	margin:0;
+	padding:0;
+	position:absolute !important;
+	border:8px solid gray;
+	width:0;
+	height:0;
+}
+.dijit_a11y .dijitSliderFocused .dijitSliderImageHandle {
+	border:4px solid #000;
+	height:8px;
+	width:8px;
+}
+
+.dijitSliderImageHandleV {
+	top:-8px;
+	left:-6px;
+}
+
+.dijitSliderImageHandleH {
+	left:-8px;
+	top:-5px;
+	vertical-align:top;
+}
+
+.dijitSliderBar {
+	border-style:solid;
+	border-color:black;
+}
+
+.dijitSliderBarContainerV {
+	position:relative;
+	height:100%;
+	z-index:1;
+}
+
+.dijitSliderBarContainerH {
+	position:relative;
+	z-index:1;
+}
+
+.dijitSliderBarH {
+	height:4px;
+	border-width:1px 0;
+}
+
+.dijitSliderBarV {
+	width:4px;
+	border-width:0 1px;
+}
+
+.dijitSliderProgressBar {
+	background-color:red;
+	z-index:1;
+}
+
+.dijitSliderProgressBarV {
+	position:static !important;
+	height:0%;
+	vertical-align:top;
+	text-align:left;
+}
+
+.dijitSliderProgressBarH {
+	position:absolute !important;
+	width:0%;
+	vertical-align:middle;
+	overflow:visible;
+}
+
+.dijitSliderRemainingBar {
+	overflow:hidden;
+	background-color:transparent;
+	z-index:1;
+}
+
+.dijitSliderRemainingBarV {
+	height:100%;
+	text-align:left;
+}
+
+.dijitSliderRemainingBarH {
+	width:100% !important;
+}
+
+/* the slider bumper is the space consumed by the slider handle when it hangs over an edge */
+.dijitSliderBumper {
+	overflow:hidden;
+	z-index:1;
+}
+
+.dijitSliderBumperV {
+	width:4px;
+	height:8px;
+	border-width:0 1px;
+}
+
+.dijitSliderBumperH {
+	width:8px;
+	height:4px;
+	border-width:1px 0;
+}
+
+.dijitSliderBottomBumper,
+.dijitSliderLeftBumper {
+	background-color:red;
+}
+
+.dijitSliderTopBumper,
+.dijitSliderRightBumper {
+	background-color:transparent;
+}
+
+.dijitSliderDecorationH {
+	text-align:center;
+}
+
+.dijitSlider .dijitSliderButton {
+	font-family:monospace;
+	margin:0;
+	padding:0;
+	display:block;
+}
+
+.dijit_a11y .dijitSliderButtonInner {
+	visibility:visible !important;
+}
+
+.dijitSliderButtonContainer {
+	text-align:center;
+	height:0;
+}
+
+.dijitSlider .dijitButtonNode {
+	padding:0;
+	display:block;
+}
+
+.dijitRuleContainer {
+	position:relative;
+	overflow:visible;
+}
+
+.dijitRuleContainerV {
+	height:100%;
+	line-height:0;
+	float:left;
+	text-align:left;
+}
+
+.dj_opera .dijitRuleContainerV {
+	line-height:2%;
+}
+
+.dj_ie .dijitRuleContainerV {
+	line-height:normal;
+}
+
+.dj_gecko .dijitRuleContainerV {
+	margin:0 0 1px 0; /* mozilla bug workaround for float:left,height:100% block elements */
+}
+
+.dijitRuleMark {
+	position:absolute;
+	border:1px solid black;
+	line-height:0;
+	height:100%;
+}
+
+.dijitRuleMarkH {
+	width:0;
+	border-top-width:0 !important;
+	border-bottom-width:0 !important;
+	border-left-width:0 !important;
+}
+
+.dijitRuleLabelContainer {
+	position:absolute;
+}
+
+.dijitRuleLabelContainerH {
+	text-align:center;
+	display:inline-block;
+}
+
+.dijitRuleLabelH {
+	position:relative;
+	left:-50%;
+}
+
+.dijitRuleMarkV {
+	height:0;
+	border-right-width:0 !important;
+	border-bottom-width:0 !important;
+	border-left-width:0 !important;
+	width:100%;
+	left:0;
+}
+
+.dj_ie .dijitRuleLabelContainerV {
+	margin-top:-.55em;
+}
+
+/* Toolbar A11y */
+.dijit_a11y .dijitButtonContents .dijitButtonText {
+	display: inline !important;
+}
+
+.dijitTextArea {
+	width:100%;
+	overflow-y: auto;	/* w/out this IE's SimpleTextArea goes to overflow: scroll */
+}
+.dijitTextArea[cols] {
+	width:auto; /* SimpleTextArea cols */
+}
+.dj_ie .dijitTextAreaCols {
+	width:auto;
+}
+.dijitTextArea > DIV {
+	text-decoration:none;
+	overflow:auto;
+	min-height: 1.40em;
+}
+
+.dj_ie .dijitTextArea p {
+	margin-top:0;
+	margin-bottom:0;
+	line-height: normal !important;
+}
+
+.dijitToolbarSeparator {
+	height: 18px;
+	width: 5px;
+	padding: 0 1px;
+	margin: 0;
+}
+
+/* Editor */
+.dijitIEFixedToolbar {
+	position:absolute;
+	/* top:0; */
+	top: expression(eval((document.documentElement||document.body).scrollTop));
+}
+
+.RichTextEditable {
+	display: block;	/* prevents glitch on FF with InlineEditBox, see #8404 */
+}
+
+/* TimePicker */
+
+.dijitTimePickerItemInner {
+	text-align:center;
+	border:0;
+	padding:2px 8px 2px 8px;
+}
+
+.dijitTimePickerTick,
+.dijitTimePickerMarker {
+	border-bottom:1px solid gray;
+}
+
+.dijitTimePicker .dijitDownArrowButton {
+	border-top: none !important;
+}
+
+.dijitTimePickerTick {
+	color:#CCC;
+}
+
+.dijitTimePickerMarker {
+	color:black;
+	background-color:#CCC;
+}
+
+.dijitTimePickerItemSelected {
+	font-weight:bold;
+	color:#333;
+	background-color:#b7cdee;
+}
+
+.dijitTimePickerItemHover {
+	background-color:gray;
+	color:white;
+	cursor:pointer;
+}
+
+.dijit_a11y .dijitTimePickerItem {
+	border-bottom:1px solid #333;	
+}
+
+
+/* Disable the high contrast character */
+.dijitToggleButtonIconChar {
+	display:none !important;
+}
+.dijit_a11y .dijitToggleButtonIconChar {
+	display:inline !important;
+}
+
+.dijit_a11y .dijitToggleButtonIconChar {
+	visibility:hidden;
+}
+.dijit_a11y .dijitToggleButtonChecked .dijitToggleButtonIconChar {
+	visibility:visible !important;
+}
+
+.dijitArrowButtonChar {
+	display:none !important;
+}
+.dijit_a11y .dijitArrowButtonChar {
+	display:inline !important;
+}
+.dijitInputLayoutContainer {
+	position: relative;
+	overflow: hidden;
+}
+.dijitSpinnerButtonContainer {
+	float: right;
+	width: 18px;
+	position: relative;
+	overflow: hidden;
+}
+.dijitSpinner .dijitInputLayoutContainer .dijitArrowButton {
+	height: 50%;
+	width: 16px;
+	overflow: hidden;
+}
+.dijitSpinner .dijitInputLayoutContainer .dijitArrowButtonInner {
+	overflow: hidden;
+	line-height: 50%;
+}
+.dijit_a11y .dijitSpinner .dijitInputLayoutContainer .dijitArrowButton {
+	width: 100%;
+}
+.dijit_a11y .dijitSpinner .dijitArrowButton .dijitArrowButtonChar {
+	font-size: 0.4em;
+	vertical-align: top;
+}
+.dijit_a11y .dijitSpinnerButtonContainer {
+	width: 0.5em;
+	margin-left: 2px;
+	overflow: visible;
+}
+.dijit_a11y .dijitSpinnerButtonContainer .dijitButtonNode {
+	border-width: 1px 0px 0px 1px;
+	border-style: solid !important;
+}
+
+/*********************************************************************************************************************/
+/* Start: bec-dijit-part.css                                                                                         */
+/*********************************************************************************************************************/
+
+
+.dijitInputField                         { padding: 2px 3px; }
+.dijitInputField .dijitInputField        { padding: 0; }
+.dijitInputField .dijitPlaceHolder       { left: 3px; top: 2px; }
+.ie_7 .dijitInputField .dijitPlaceHolder { left: 3px; top: 3px; }
+
+.dijitValidationIcon { padding: 2px 0; width: 2px; height: 16px;
+                       border: solid #d46464 0; border-left-width: 1px;
+                       background-color: #d46363; background-image: url(../../../common/images/dijit/form/error.png); background-position: top center; }
+.ie_7 .dijitValidationIcon { padding: 3px 0 }
+
+
+/* dijit TextBox *****************************************************************************************************/
+
+.dijitTextBox,
+.dijitTextBox .dijitButtonNode { border-color: #3c3c3c; }
+.dijitTextBox                  { background-color: #fff; }
+.dijitTextBox .dijitInputInner { padding: 1px 2px 1px 0; }
+
+.dijitTextBoxError                 { background-color: #F8d2d4 !important; border-color: #C00 !important; }
+.dijitTextBox .dijitValidationIcon { display: none; }
+
+.dijitTextBoxDisabled,
+.dijitTextBoxDisabled .dijitButtonNode { border-color: #d3d3d3; }
+.dijitTextBoxDisabled                  { background-color: #efefef; background-image: none; color: #818181; }
+
+
+/* dijit TextArea ****************************************************************************************************/
+
+.dijitTextArea          { border: 1px solid #3c3c3c; }
+.dijitTextAreaDisabled  { background-color: #efefef; cursor: not-allowed !important; }
+
+
+/* dijit Combo Box ***************************************************************************************************/
+
+.dijitComboBox .dijitButtonNode       { padding: 2px 1px; border-top: none; border-right: none; border-bottom: none;
+                                        background-color: #eee; background-image: url(../../../common/images/dijit/form/formHighlight.png); background-repeat: repeat-x; }
+.dijitComboBox .dijitArrowButtonInner { margin: 0; width: 16px; height: 16px; background-image: url(../../../common/images/dijit/form/commonFormArrows.png); background-position:-36px 53%; background-repeat: no-repeat; }
+.ie_7 .dijitComboBox .dijitButtonNode { padding: 3px 1px; }
+
+.dijitComboBoxHover .dijitButtonNode       { background-color:#ddd; }
+.dijitComboBoxHover .dijitArrowButtonInner { background-position:-70px 53%; }
+
+      .dijitComboBoxFocused .dijitButtonNode       { padding: 2px 1px; background-color:#ccc; background-position:0px -177px; }
+      .dijitComboBoxFocused .dijitArrowButtonInner { background-position:-70px 53%; border: 0 none; }
+.ie_7 .dijitComboBoxFocused .dijitButtonNode       { padding: 3px 1px; }
+
+.dijitComboBoxError                 { background-color: #F8d2d4 !important; border-color: #C00 !important; }
+.dijitComboBox .dijitValidationIcon { display: none; }
+
+div.dijitComboBoxDisabled .dijitArrowButtonInner { background-position:0px 50%; background-color:#f1f1f1; }
+
+
+/* dijit CheckBox ****************************************************************************************************/
+
+.dijitCheckBoxError { background-color: #F8d2d4 !important; border-color: #C00 !important; }
+
+
+/* Buttons ***********************************************************************************************************/
+
+.dj_ff3 .dijitInputField input[type="hidden"] {
+  display: none;
+  height: 0;
+  width: 0;
+}
+.dj_ie6 .dijitTextBox,
+.dj_ie6 .dijitComboBox .dijitButtonNode {
+  background-image: none;
+}
+.dj_quirks .dijitComboBox .dijitArrowButtonInner {
+  border: 0;
+}
+.dj_quirks .dijitComboBox .dijitArrowButtonContainer {
+  padding: 1px;
+}
+.dijitButton {
+  margin: inherit;
+}
+.dijitButtonNode { -webkit-transition-property: background-color; -webkit-transition-duration: .3s; }
+.dijitButton .dijitButtonNode,
+.dijitDropDownButton .dijitButtonNode,
+.dijitComboButton .dijitButtonNode,
+.dijitToggleButton .dijitButtonNode { 
+  border: 1px solid #769dc0;
+  padding:2px 4px 4px 4px;
+  background-image: url(../../../common/images/dijit/form/button.png);
+  background-position: center top;
+  background-repeat: repeat-x;
+  background-color: #e4f2ff;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  box-shadow:0px 1px 1px rgba(0,0,0,0.15);
+  -webkit-box-shadow:0px 1px 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);  
+}
+.dijitComboButton .dijitArrowButton {
+  border-left-width: 0;
+  padding: 4px 2px 4px 2px; 
+}
+.dijitArrowButtonInner {
+  width: 15px;
+  height: 15px;
+  margin: 0 auto;
+  background-image:url(../../../common/images/dijit/form/buttonArrows.png);
+  background-repeat:no-repeat;
+  background-position:-51px 53%;
+}
+.dijitLeftArrowButton .dijitArrowButtonInner {
+  background-position: -77px 53%;
+}
+.dijitRightArrowButton .dijitArrowButtonInner {
+  background-position: -26px 53%;
+}
+.dijitUpArrowButton .dijitArrowButtonInner {
+  background-position: 0 53%;
+}
+.dijitDisabled .dijitArrowButtonInner {
+  background-position: -151px 53%;
+}
+.dijitDisabled .dijitLeftArrowButton .dijitArrowButtonInner {
+  background-position: -177px 53%;
+}
+.dijitDisabled .dijitRightArrowButton .dijitArrowButtonInner {
+  background-position: -126px 53%;
+}
+.dijitDisabled .dijitUpArrowButton .dijitArrowButtonInner {
+  background-position: -100px 53%;
+}
+.dijitButtonText {
+  padding: 0 0.3em;
+  text-align: center;
+}
+.dijitDisabled .dijitButtonText {
+  color: #7F7F7F;
+}
+.dijitButtonHover .dijitButtonNode,
+.dijitDropDownButtonHover .dijitButtonNode,
+.dijitComboButton .dijitButtonNodeHover, 
+.dijitComboButton .dijitDownArrowButtonHover,
+.dijitToggleButtonHover .dijitButtonNode {
+  background-color: #afd9ff;
+  color: #000;
+  -webkit-transition-duration: .2s;
+}
+.dijitButtonActive .dijitButtonNode, 
+.dijitDropDownButtonActive .dijitButtonNode,
+.dijitComboButtonActive .dijitButtonNode,
+.dijitToggleButtonActive .dijitButtonNode {
+  background-color: #99cfff;
+  -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
+     -moz-box-shadow: 0 0 0 rgba(0,0,0,0);
+          box-shadow: 0 0 0 rgba(0,0,0,0);
+  -webkit-transition-duration: .1s;
+}
+.dijitButtonDisabled,
+.dijitDropDownButtonDisabled,
+.dijitComboButtonDisabled,
+.dijitToggleButtonDisabled {
+  background-image: none;
+  outline: none;
+}
+.dijitButtonDisabled .dijitButtonNode,
+.dijitDropDownButtonDisabled .dijitButtonNode,
+.dijitComboButtonDisabled .dijitButtonNode,
+.dijitToggleButtonDisabled .dijitButtonNode { 
+  background-position:0px -149px;
+  background-color: #e3e3e3;
+  border: solid 1px #c9c9c9;
+  color: #696969;
+  -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
+     -moz-box-shadow: 0 0 0 rgba(0,0,0,0);
+          box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.dijitComboButtonDisabled .dijitArrowButton{ 
+  border-left-width: 0px;
+}
+table.dijitComboButton {
+  border-collapse: separate;  
+}
+.dj_ie6 .dijitButtonNode {
+  background-image: none;
+}
+.dijitComboButton .dijitStretch {
+  -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 4px;
+}
+.dijitComboButton .dijitArrowButton {
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -webkit-border-bottom-left-radius: 0;
+}
+.dijitToggleButton .dijitCheckBoxIcon {
+  /* background-image: url(/wcsstore/dojo131/dijit/themes/images/checkmarkNoBorder.png); */
+}
+.dj_ie6 .dijitToggleButton .dijitCheckBoxIcon {
+  /* background-image: url(/wcsstore/dojo131/dijit/themes/images/checkmarkNoBorder.gif); */
+}
+.dijitCheckBox,
+.dijitCheckBoxIcon      {
+  background-image: url(../../../common/images/dijit/form/checkboxRadioButtonStates.png); 
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 16px;
+  margin: 0 2px 0 0;
+  padding: 0;
+}
+.dj_ie6 .dijitCheckBox,
+.dj_ie6 .dijitCheckBoxIcon      {
+  background-image: url(../../../common/images/dijit/form/checkboxAndRadioButtons_IE6.png); 
+}
+
+.dijitCheckBoxError,
+.adTCConfirmChkBx .dijitCheckBoxError,
+.dijitCheckBoxError .dijitCheckBoxInput{ background-color: #F8d2d4 !important; border: 1px solid #D46464 !important; }
+
+
+.dijitCheckBox,
+.dijitToggleButton .dijitCheckBoxIcon {
+  
+  background-position: -15px;
+}
+.dijitCheckBoxChecked,
+.dijitToggleButtonChecked .dijitCheckBoxIcon {
+  
+  background-position: -0px;
+}
+.dijitCheckBoxDisabled {
+  
+  background-position: -75px;
+}
+.dijitCheckBoxCheckedDisabled {
+  
+  background-position: -60px;
+}
+.dijitCheckBoxHover {
+  
+  background-position: -45px;
+}
+.dijitCheckBoxCheckedHover {
+  
+  background-position: -30px;
+}
+.dijitToggleButton .dijitRadio,
+.dijitToggleButton .dijitRadioIcon {
+  background-image: url(../../../common/images/dijit/form/checkboxRadioButtonStates.png);
+}
+.dj_ie6 .dijitToggleButton .dijitRadio,
+.dj_ie6 .dijitToggleButton .dijitRadioIcon {
+  background-image: url(../../../common/images/dijit/form/checkboxAndRadioButtons_IE6.png);
+}
+.dijitRadio,
+.dijitRadioIcon {   
+  background-image: url(../../../common/images/dijit/form/checkboxRadioButtonStates.png); 
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  margin: 0 2px 0 0;
+  padding: 0;
+}
+.dj_ie6 .dijitRadio,
+.dj_ie6 .dijitRadioIcon {   
+  background-image: url(../../../common/images/dijit/form/checkboxAndRadioButtons_IE6.png); 
+}
+.dijitRadio{
+  
+  background-position: -105px;
+}
+
+.dijitRadioError {
+	background-color: #F8d2d4 !important; border-color: #C00 !important;
+}
+
+.dijitToggleButton .dijitRadioIcon {
+  
+  background-position: -107px;
+}
+.dijitRadioDisabled {
+  
+  background-position: -165px;
+}
+.dijitRadioHover {
+  
+  background-position: -135px;
+}
+.dijitRadioChecked{
+  background-position: -90px;
+}
+.dijitToggleButtonChecked .dijitRadioIcon {
+  background-position: -92px;
+}
+.dijitRadioCheckedHover{
+  background-position: -120px;
+}
+.dijitRadioCheckedDisabled {
+  
+  background-position: -150px;
+}     
+
+/* dijit Tooltop *****************************************************************************************************/
+
+.dijitTooltip,
+.dijitTooltipDialog { background: transparent; }
+
+.dijitTooltip { position: absolute; z-index: 9999; display: block; left: 50%; top: -10000px; overflow: visible; }
+
+            .dijitTooltipContainer { padding: 6px 8px; border: 1px solid #769DC0; font-size: 1em; color: black;
+                                     background-color: #fff; background-image: url(../../../../wcsstore/dojo131/dijit/themes/images/tooltip.png);
+                                     background-repeat: repeat-x; background-position: -575px 100%;
+                                     border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+                                     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.25); -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.25); } 
+.dj_ie6     .dijitTooltipContainer { background-image: none; }
+.dijit_a11y .dijitTooltipContainer { background-color: #fff; }
+
+        .dijitTooltipLeft  { padding-right: 14px; }
+.dj_ie6 .dijitTooltipLeft  { padding-left: 15px; }
+        .dijitTooltipRight { padding-left: 14px; }
+        .dijitTooltipBelow { padding-top: 13px; padding-left: 3px; padding-right: 3px; }
+        .dijitTooltipAbove { padding-bottom: 13px; padding-left: 3px; padding-right: 3px; }
+
+                             .dijitTooltipConnector { z-index: 2; position: absolute; width: 16px; height: 14px; border: none;
+                                                      background-image: url(../../../../wcsstore/dojo131/dijit/themes/images/tooltip.png); background-repeat: no-repeat; }
+        .dijit_a11y          .dijitTooltipConnector { display: none; }
+        .dijitTooltipLeft    .dijitTooltipConnector { right: 0; bottom: 3px; background-position:0px 0%; }
+        .dijitTooltipRight   .dijitTooltipConnector { left:  0; bottom: 3px; background-position:-48px 0%; }
+        .dijitTooltipABRight .dijitTooltipConnector { left: auto !important; right: 3px; }
+        .dijitTooltipBelow   .dijitTooltipConnector { left: 3px; top:    0; background-position: -31px 0%; }
+        .dijitTooltipAbove   .dijitTooltipConnector { left: 3px; bottom: 0; background-position: -15px 0%; }
+.dj_ie6                      .dijitTooltipConnector { background-image: url(http://www.harryanddavid.com/content/Hand/include/styles/images/tooltip8bit.png); }
+.dj_ie6 .dijitTooltipAbove   .dijitTooltipConnector,
+.dj_ie7 .dijitTooltipAbove   .dijitTooltipConnector { bottom: -1px; }
+
+.dijitTooltipFocusNode   { padding: 2px 2px 2px 2px; }
+.dijitTooltipData        { display: none; }
+.dijitTooltipDialogPopup { box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
+
+#narrowByPrice.dijitTooltipBelow,
+#narrowByComponent.dijitTooltipBelow{padding:0;}
+
+
+
+/* Item Chooser Widget ***********************************************************************************************/
+
+.dijitItemChooser { margin: 5px 0; outline: none; }
+
+.dijitItemChooser .heading,
+.dijitItemChooser .caption  { color: #758b0f; font-weight: bold; text-align: left; }
+.dijitItemChooser .heading  { cursor: default; }
+.dijitItemChooser .caption  { margin: 10px 0 0 10px; }
+.dijitItemChooser .openList { margin: 10px 0 0 0; border: none; font-size: 11px; text-align: left;}
+
+
+.dijitItemChooser .optionPreview { float: left; width: 205px; height: 260px; border-right: #758b0f 1px solid; border-top : #758b0f 1px solid; border-bottom : #758b0f 1px solid; text-align: center; overflow: hidden; }
+.dijitItemChooser .previewText   { margin: 15px 0; }
+
+
+.dijitItemChooser .options.scroll                  { position: relative; float: left; width: 290px; height: 260px; overflow-y: auto; overflow-x: hidden; border-right : #758b0f 1px solid; border-top : #758b0f 1px solid; border-bottom : #758b0f 1px solid;}
+.dijitItemChooser .optionList .monthSelectionLabel { display: inline; padding-right: 5px; color: #000; font-weight: normal; }
+.dijitItemChooser .optionList .openList            {  }
+.dijitItemChooser .dijitMenuItem                   { white-space : normal; padding: 2px 0 2px 10px; }
+.dijitItemChooser .dijitMenuItem .selectionList    { cursor: default; }
+.dijitItemChooser .dijitMenuItemSelected           { color: #000; background: #dee4c7; }
+
+
+.dijitItemChooser .selectionList            { float: right; width: 383px; border-bottom : #758b0f 1px solid; border-top : #758b0f 1px solid; overflow: hidden; height: 260px;}
+.dijitItemChooser .selectionList .caption p { margin: 10px 0 0 0; }
+.dijitItemChooser .selectionList .openList  { margin: 0 0 0 10px; width: 370px; overflow: hidden;}
+.dijitItemChooser .selectionList .scroll    { position: relative; float: right; width: 383px; overflow-y: auto; overflow-x: hidden; height: 210px;}
+.dijitItemChooser .selectionList .option    { padding: 5px 0; width: 350px; border-bottom: 1px dotted #000; text-align: left; }
+
+#addonItemChooser .selectionLabelCounter { display: none; }
+/*#addonItemChooser .selectionList .total  { display: none; }*/
+
+.dijitItemChooser .selectionHeadings       { margin: 10px 0 0 0; width: 320px; text-align: left; }
+.dijitItemChooser .selectionHeadings .qty  { float: left; width: 50px; }
+.dijitItemChooser .selectionHeadings .item { width: 210px; }
+
+.dijitItemChooser .initialSelectionMsg { margin: 10px 0 0 0; }
+
+.dijitItemChooser .option .box,
+.dijitItemChooser .option .OptionDelete,
+.dijitItemChooser .option .quantity      { float: left; }
+.dijitItemChooser .option .box           { padding: 0 10px; width: 235px; }
+.dijitItemChooser .option .OptionDelete  { width: 50px; cursor: pointer; color: red; text-decoration: underline; }
+
+
+/* CYO Popup *********************************************************************************************************/
+
+#selectCyoItems #saveSelection          { text-align: right; }
+
+#saveAddons 							{ text-align: right; }
+
+
+/* Arrow Buttons *****************************************************************************************************/
+
+.dijitUpArrowButton,
+.dijitDownArrowButton,
+.dijitUpArrowButtonHover,
+.dijitUpArrowButtonHover { background-image: url("../../../common/images/sprites/global.png"); }
+
+.ie_6 .dijitUpArrowButton,
+.ie_6 .dijitDownArrowButton,
+.ie_6 .dijitUpArrowButtonHover,
+.ie_6 .dijitUpArrowButtonHover { background-image: url("../../../common/images/sprites/global.gif"); }
+
+         .dijitDownArrowButton { background-position: -220px -23px; }
+         .dijitUpArrowButton   { background-position: -220px -13px; }
+.firefox .dijitDownArrowButton { background-position: -220px -23px; }
+.firefox .dijitUpArrowButton   { background-position: -220px -14px; }
+
+         .dijitUpArrowButtonHover   { background-position: -241px -13px; }
+         .dijitDownArrowButtonHover { background-position: -241px -23px; }
+.firefox .dijitUpArrowButtonHover   { background-position: -241px -14px; }
+.firefox .dijitDownArrowButtonHover { background-position: -241px -23px; }
+
+
+/* Spinner ***********************************************************************************************************/
+
+.dijitSpinnerButtonContainer { height: 16px; }
+.dijitSpinner                {  width: 40px; }
+.dijitSpinner input          { text-align: center; }
+
+#widget_bandComponentListPopup_dropdown.dijitPopup { z-index: 3000 !important; }
+
+
+/* Date Time Field ***************************************************************************************************/
+
+.dijitDateTextBox *                      { cursor: pointer; } 
+.dijitDateTextBox .dijitValidationIcon,
+.dijitDateTextBox .dijitInputField input { padding: 3px 0; }
+.dijitDateTextBox .dijitValidationIcon   { margin-left: 3px; width: 6px; background-position: -1px 0; }
+.dijitDateTextBox .dijitInputField input { padding-left: 3px; background-position: right center; }
+
+
+/* Functional Dialog Heading *****************************************************************************************/
+
+#selectCyoItems .dialog .content { text-align: right; }
+
+.dialog .content .add_item       { padding-top: 5px; padding-bottom: 5px; text-align : right; width: 800px; }
+.dialog .content #heading        {              width: 850px; text-align: left; }
+.dialog .content #heading .name  { float: left; width: 490px; text-align: left; font-size: 16px; font-weight: bold; color: #758b0f; }
+.dialog .content #heading .error {                            text-align: left; font-size: 11px; }
+
+.firefox .dialog .content .add_item       { width: 845px;}
+.firefox .dialog .content #heading        { width: 870px; }
+.firefox .dialog .content #heading .name  { margin-left: 20px; margin-right: 10px; width: 470px; }
+.firefox .dialog .content #heading .error { margin-left: 20px; width: 360px; }
+
+
+/* Slider ************************************************************************************************************/
+
+.dijitSlider .dijitSliderIncrementIconV,
+.dijitSlider .dijitSliderDecrementIconV  { background-image: url("../../images/sprites/controls.png"); font-size: 0; overflow: hidden; }
+.dijitSlider .dijitSliderIncrementIconV,
+.dijitSlider .dijitSliderBumperV,
+.dijitSlider .dijitSliderBarV,
+.dijitSlider .dijitSliderMoveable,
+.dijitSlider .dijitSliderImageHandleV    { width: 8px; }
+.dijitSlider .dijitSliderMoveable,
+.dijitSlider .dijitSliderImageHandleV    { height: 24px; }
+.dijitSlider .dijitSliderIncrementIconV  { background-position: 0 0; height: 8px; }
+.dijitSlider .dijitSliderDecrementIconV  { background-position: 0 -9px; height: 8px; }
+.dijitSlider .dijitSliderBumperV         { height: 12px; border: none; background-color: #D0D0D0; }
+.dijitSlider .dijitSliderBarV            { border: none; background-color: #D0D0D0; }
+.dijitSlider .dijitSliderImageHandleV    { left: 0; top: -12px; height: 24px; border: none; background-color: #809101; cursor: pointer; }
+
+
+/* Dialog Loading ****************************************************************************************************/
+
+.dijitContentPaneLoading { display: block; text-align: center; }
+
+
+/* Title Pane ********************************************************************************************************/
+
+.dijitTitlePaneTitle       { padding: 3px 4px; border: 1px solid #bfbfbf; background-color: #ccc; background-image: url("../../../../wcsstore/dojo131/dijit/themes/tundra/images/titleBar.png"); background-repeat: repeat-x; background-position: bottom left; }
+.dijitTitlePaneTitle-hover { background-color: #f8fafd; background-image: url("../../../../wcsstore/dojo131/dijit/themes/tundra/images/accordionItemHover.gif"); background-position: bottom; background-repeat: repeat-x; }
+.dijitTitlePaneTitle *     { vertical-align: middle; }
+
+                    .dijitTitlePane              .dijitArrowNode { width: 7px; height: 7px; background-image: url('../../../../wcsstore/dojo131/dijit/themes/tundra/images/spriteArrows.png'); background-repeat: no-repeat; cursor: pointer; }
+.dj_ie6             .dijitTitlePane              .dijitArrowNode { background-image: url('../../../../wcsstore/dojo131/dijit/themes/tundra/images/spriteArrows.gif'); }
+                    .dijitTitlePane .dijitOpen   .dijitArrowNode { background-position: 0 0; }
+                    .dijitTitlePane .dijitClosed .dijitArrowNode { background-position: -14px 0; }
+        .dijit_a11y .dijitTitlePane              .dijitArrowNode { display: none; }
+        
+            .dijitTitlePane .dijitArrowNodeInner { display: none; }
+.dijit_a11y .dijitTitlePane .dijitArrowNodeInner { display: inline; padding-bottom: .2em; font-family: monospace; cursor: pointer; }
+
+.dijitTitlePaneContentOuter { background: #ffffff; border: 1px solid #bfbfbf; border-top: 1px solid #ccc; /* w/out this, an <h1> on the top line causes a gap between the .content and .label */ }
+.dijitTitlePaneContentInner { padding: 10px; }
+
+/* force hasLayout to ensure borders etc, show up */
+.dj_ie6 .dijitTitlePaneContentOuter,
+.dj_ie6 .dijitTitlePane .dijitTitlePaneTitle { zoom: 1; }
+
+.dijitTitlePaneTextNode { margin-left: 4px; margin-right: 4px; }
+
+
+/* Dijit Tab *********************************************************************************************************/
+.dijitTab                { cursor: default; }
+.dijitTab .tabOpenAction { cursor: pointer; }
+
+/* Dijit Text Box */
+      .dijitInputContainer { float: none !important; position: relative; vertical-align: middle; overflow: hidden; }
+.ie_6 .dijitInputContainer { display: inline; zoom: 1; }
+      .dijitPlaceHolder    { position: absolute; top: 0; left: 0; font-style: italic; color: #AAAAAA; }
+.ie_6 .dijitPlaceHolder    { filter: ""; }
+      .dijitTextAreaError  { border-color: #C00 !important; }
+
+/*********************************************************************************************************************/
+/*  End : bec-dijit-part.css                                                                                         */
+/*********************************************************************************************************************/
+
+/*********************************************************************************************************************/
+/* Start: backgrounds-part.css                                                                                       */
+/*********************************************************************************************************************/
+
+.background-dot-horizontal,
+.background-dot-vertical,
+.background-line-horizontal { font-size: 0; }
+
+.background-dot-horizontal  { height: 4px; background-image: url("../../../common/images/backgrounds/dot.png");  background-repeat: repeat-x; }
+.background-dot-vertical    { width:  4px; background-image: url("../../../common/images/backgrounds/dot.png");  background-repeat: repeat-y; }
+.background-line-horizontal { height: 4px; background-image: url("../../../common/images/backgrounds/line.gif"); background-repeat: repeat-x; }
+
+/*********************************************************************************************************************/
+/*  End : backgrounds-part.css                                                                                       */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: sprites-part.css                                                                                           */
+/*********************************************************************************************************************/
+
+
+   a.sprite,
+span.sprite  { display: inline-block; }
+
+
+   a.sprite-search-box,
+span.sprite-search-box,
+   a.sprite-close-black-small,
+span.sprite-close-black-small,
+   a.sprite-close-black-medium,
+span.sprite-close-black-medium,
+   a.sprite-close-black-large,
+span.sprite-close-black-large,
+   a.sprite-close-white-small,
+span.sprite-close-white-small,
+   a.sprite-close-white-medium,
+span.sprite-close-white-medium,
+   a.sprite-close-white-large,
+span.sprite-close-white-large,
+   a.sprite-icon-phone,
+span.sprite-icon-phone,
+   a.sprite-controls-normal-arrow-up,
+span.sprite-controls-normal-arrow-up,
+   a.sprite-controls-normal-arrow-down,
+span.sprite-controls-normal-arrow-down,
+   a.sprite-controls-rollover-arrow-up,
+span.sprite-controls-rollover-arrow-up,
+   a.sprite-controls-rollover-arrow-down,
+span.sprite-controls-rollover-arrow-down,
+   a.sprite-product-new,
+   a.sprite-social-facebook-story-wide,
+span.sprite-social-facebook-story-wide,
+   a.sprite-social-twitter-story-wide,
+span.sprite-social-twitter-story-wide,
+   a.sprite-star-metal,
+span.sprite-star-metal,
+   a.sprite-stripes-left-short,
+span.sprite-stripes-left-short,
+   a.sprite-stripes-right-short,
+span.sprite-stripes-right-short,
+   a.sprite-stripes-left,
+span.sprite-stripes-left,
+   a.sprite-stripes-right,
+span.sprite-stripes-right,
+   a.sprite-stripes-horizontal,
+span.sprite-stripes-horizontal,
+   a.sprite-wood-foo,
+span.sprite-wood-foo,
+   a.sprite-product-new,
+span.sprite-product-new,
+   a.sprite-brand-moose-munch,
+span.sprite-brand-moose-munch,
+   a.sprite-brand-harry-and-david,
+span.sprite-brand-harry-and-david,
+   a.sprite-brand-wolfermans,
+span.sprite-brand-wolfermans,
+   a.sprite-brand-cushmans,
+span.sprite-brand-cushmans,
+   a.sprite-brand-food-and-wine-small,
+span.sprite-brand-food-and-wine-small,
+   a.sprite-brand-fruit-of-the-month-small,
+span.sprite-brand-fruit-of-the-month-small,
+   a.sprite-brand-moose-munch-small,
+span.sprite-brand-moose-munch-small,
+   a.sprite-brand-harry-and-david-small,
+span.sprite-brand-harry-and-david-small,
+   a.sprite-brand-wolfermans-small,
+span.sprite-brand-wolfermans-small,
+   a.sprite-brand-cushmans-small,
+span.sprite-brand-cushmans-small,
+   a.sprite-cart-empty,
+span.sprite-cart-empty,
+   a.sprite-cart-full,
+span.sprite-cart-full,
+   a.sprite-icon-silk-screen,
+span.sprite-icon-silk-screen,
+   a.sprite-icon-ribbon,
+span.sprite-icon-ribbon,
+   a.sprite-icon-tag,
+span.sprite-icon-tag,
+   a.sprite-icon-corner,
+span.sprite-icon-corner,
+   a.sprite-icon-customize,
+span.sprite-icon-customize,
+   a.sprite-icon-personalize,
+span.sprite-icon-personalize,
+   a.sprite-icon-auto-delivery,
+span.sprite-icon-auto-delivery,
+   a.sprite-icon-CYO,
+span.sprite-icon-CYO,
+   a.sprite-icon-stores,
+span.sprite-icon-stores,
+   a.sprite-icon-hand,
+span.sprite-icon-hand,
+   a.sprite-icon-envelope,
+span.sprite-icon-envelope,
+   a.sprite-icon-phone-left,
+span.sprite-icon-phone-left,
+   a.sprite-icon-phone-right,
+span.sprite-icon-phone-right,
+   a.sprite-magnifying-glass-purple,
+span.sprite-magnifying-glass-purple,
+   a.sprite-pear-green,
+span.sprite-pear-green,
+   a.sprite-snowflake-full,
+span.sprite-snowflake-full,
+   a.sprite-snowflake-fan,
+span.sprite-snowflake-fan,
+   a.sprite-social-facebook,
+span.sprite-social-facebook,
+   a.sprite-social-twitter,
+span.sprite-social-twitter,
+   a.sprite-leaves-red,
+span.sprite-leaves-red,
+   a.sprite-leaves-gold,
+span.sprite-leaves-gold,
+   a.sprite-star-yellow,
+span.sprite-star-yellow,
+   a.sprite-star-yellow-left,
+span.sprite-star-yellow-left,
+   a.sprite-star-yellow-right,
+span.sprite-star-yellow-right,
+   a.sprite-verisign-normal,
+span.sprite-verisign-normal            { display: inline-block; }
+
+.sprite-search-box,
+.sprite-close-black-small,
+.sprite-close-black-medium,
+.sprite-close-black-large,
+.sprite-close-white-small,
+.sprite-close-white-medium,
+.sprite-close-white-large,
+.sprite-icon-phone,
+.sprite-controls-normal-arrow-up,
+.sprite-controls-normal-arrow-down,
+.sprite-controls-rollover-arrow-up,
+.sprite-controls-rollover-arrow-down,
+.sprite-social-facebook-story-wide,
+.sprite-social-twitter-story-wide,
+.sprite-star-metal,
+.sprite-stripes-left-short,
+.sprite-stripes-right-short,
+.sprite-stripes-left,
+.sprite-stripes-right,
+.sprite-stripes-horizontal,
+.sprite-wood-foo,
+.sprite-product-new,
+.sprite-brand-moose-munch,
+.sprite-brand-harry-and-david,
+.sprite-brand-wolfermans,
+.sprite-brand-cushmans,
+.sprite-brand-food-and-wine-small,
+.sprite-brand-fruit-of-the-month-small,
+.sprite-brand-moose-munch-small,
+.sprite-brand-harry-and-david-small,
+.sprite-brand-wolfermans-small,
+.sprite-brand-cushmans-small,
+.sprite-cart-empty,
+.sprite-cart-full,
+.sprite-icon-silk-screen,
+.sprite-icon-ribbon,
+.sprite-icon-tag,
+.sprite-icon-corner,
+.sprite-icon-customize,
+.sprite-icon-personalize,
+.sprite-icon-auto-delivery,
+.sprite-icon-CYO,
+.sprite-icon-stores,
+.sprite-icon-hand,
+.sprite-icon-envelope,
+.sprite-icon-phone-left,
+.sprite-icon-phone-right,
+.sprite-magnifying-glass-purple,
+.sprite-pear-green,
+.sprite-snowflake-full,
+.sprite-snowflake-fan,
+.sprite-social-facebook,
+.sprite-social-twitter,
+.sprite-leaves-red,
+.sprite-leaves-gold,
+.sprite-star-yellow,
+.sprite-star-yellow-left,
+.sprite-star-yellow-right,
+.sprite-verisign-normal                { background-image: url("../../../common/images/sprites/global.png"); font-size: 0; overflow: hidden; }
+
+.sprite-search-box                     { background-position:  -62px  -11px; width: 155px; height:  23px; }
+.sprite-close-black-small              { background-position: -132px -112px; width:   7px; height:   7px; }
+.sprite-close-black-medium             { background-position: -119px -111px; width:   9px; height:   9px; }
+.sprite-close-black-large              { background-position: -102px -109px; width:  13px; height:  13px; }
+.sprite-close-white-small              { background-position: -169px -112px; width:   7px; height:   7px; }
+.sprite-close-white-medium             { background-position: -156px -111px; width:   9px; height:   9px; }
+.sprite-close-white-large              { background-position: -139px -109px; width:  13px; height:  13px; }
+.sprite-icon-phone                     { background-position:  -62px -109px; width:  22px; height:  19px; }
+.sprite-controls-normal-arrow-up       { background-position: -218px  -12px; width:  20px; height:  10px; }
+.sprite-controls-normal-arrow-down     { background-position: -218px  -23px; width:  20px; height:  10px; }
+.sprite-controls-rollover-arrow-up     { background-position: -239px  -12px; width:  20px; height:  10px; }
+.sprite-controls-rollover-arrow-down   { background-position: -239px  -23px; width:  20px; height:  10px; }
+.sprite-social-facebook-story-wide     { background-position:    0px -449px; width: 499px; height:  32px; }
+.sprite-social-twitter-story-wide      { background-position:    0px -482px; width: 499px; height:  32px; }
+.sprite-star-metal                     { background-position:  -85px -109px; width:  16px; height:  17px; }
+.sprite-stripes-left-short             { background-position:  -22px  -11px; width:  10px; height: 301px; }
+.sprite-stripes-right-short            { background-position:  -33px  -11px; width:  10px; height: 301px; }
+.sprite-stripes-left                   { background-position:    0px  -11px; width:  10px; height: 409px; }
+.sprite-stripes-right                  { background-position:  -11px  -11px; width:  10px; height: 409px; }
+.sprite-stripes-horizontal             { background-position:    0px -442px; width: 445px; height:   6px; }
+.sprite-wood-foo                       { background-position:    0px    0px; width: 500px; height:  10px; }
+.sprite-product-new                    { background-position:  -47px -129px; width:  50px; height:  36px; display: none; }
+.sprite-brand-moose-munch              { background-position:  -62px -200px; width: 159px; height:  76px; }
+.sprite-brand-harry-and-david          { background-position:  -62px -384px; width: 250px; height:  57px; }
+.sprite-brand-wolfermans               { background-position:  -62px -277px; width: 198px; height:  57px; }
+.sprite-brand-cushmans                 { background-position:  -62px -335px; width: 192px; height:  48px; }
+.sprite-brand-food-and-wine-small      { background-position: -333px  -11px; width: 167px; height:  63px; }
+.sprite-brand-fruit-of-the-month-small { background-position: -300px  -75px; width: 200px; height:  42px; }
+.sprite-brand-moose-munch-small        { background-position: -389px -118px; width: 111px; height:  53px; }
+.sprite-brand-harry-and-david-small    { background-position: -339px -249px; width: 161px; height:  38px; }
+.sprite-brand-wolfermans-small         { background-position: -351px -172px; width: 149px; height:  41px; }
+.sprite-brand-cushmans-small           { background-position: -366px -214px; width: 134px; height:  33px; }
+.sprite-cart-empty                     { background-position:  -62px  -76px; width:  26px; height:  32px; }
+.sprite-cart-full                      { background-position:  -89px  -76px; width:  26px; height:  32px; }
+.sprite-icon-silk-screen               { background-position: -236px -129px; width:  45px; height:  45px; }
+.sprite-icon-ribbon                    { background-position: -190px -129px; width:  45px; height:  45px; }
+.sprite-icon-tag                       { background-position: -144px -129px; width:  45px; height:  45px; }
+.sprite-icon-corner                    { background-position:  -98px -129px; width:  45px; height:  45px; }
+.sprite-icon-customize                 { background-position: -185px  -35px; width:  16px; height:  16px; }
+.sprite-icon-personalize               { background-position: -168px  -35px; width:  16px; height:  16px; }
+.sprite-icon-auto-delivery             { background-position: -151px  -35px; width:  16px; height:  16px; }
+.sprite-icon-CYO                       { background-position: -134px  -35px; width:  16px; height:  16px; }
+.sprite-icon-stores                    { background-position: -116px  -35px; width:  16px; height:  16px; }
+.sprite-icon-hand                      { background-position:  -89px  -35px; width:  26px; height:  13px; }
+.sprite-icon-envelope                  { background-position:  -62px  -35px; width:  26px; height:  13px; }
+.sprite-icon-phone-left                { background-position: -144px  -77px; width:  24px; height:  29px; }
+.sprite-icon-phone-right               { background-position: -168px  -77px; width:  24px; height:  29px; }
+.sprite-magnifying-glass-purple        { background-position: -116px  -76px; width:  26px; height:  32px; }
+.sprite-pear-green                     { background-position:  -61px  -49px; width:  26px; height:  26px; }
+.sprite-snowflake-full                 { background-position: -216px  -51px; width:  27px; height:  24px; }
+.sprite-snowflake-fan                  { background-position: -244px  -51px; width:  22px; height:  24px; }
+.sprite-social-facebook                { background-position:  -62px -175px; width:  24px; height:  24px; }
+.sprite-social-twitter                 { background-position:  -87px -175px; width:  24px; height:  24px; }
+.sprite-leaves-red                     { background-position: -166px  -51px; width:  24px; height:  24px; }
+.sprite-leaves-gold                    { background-position: -191px  -51px; width:  24px; height:  24px; }
+.sprite-star-yellow                    { background-position:  -89px  -49px; width:  26px; height:  26px; }
+.sprite-star-yellow-left               { background-position: -116px  -51px; width:  24px; height:  24px; }
+.sprite-star-yellow-right              { background-position: -141px  -51px; width:  24px; height:  24px; }
+.sprite-verisign-normal                { background-position: -399px -288px; width: 101px; height:  56px; }
+
+.ie_6 .sprite-search-box,
+.ie_6 .sprite-close-black-small,
+.ie_6 .sprite-close-black-medium,
+.ie_6 .sprite-close-black-large,
+.ie_6 .sprite-close-white-small,
+.ie_6 .sprite-close-white-medium,
+.ie_6 .sprite-close-white-large,
+.ie_6 .sprite-icon-phone,
+.ie_6 .sprite-controls-normal-arrow-up,
+.ie_6 .sprite-controls-normal-arrow-down,
+.ie_6 .sprite-controls-rollover-arrow-up,
+.ie_6 .sprite-controls-rollover-arrow-down,
+.ie_6 .sprite-social-facebook-story-wide,
+.ie_6 .sprite-social-twitter-story-wide,
+.ie_6 .sprite-star-metal,
+.ie_6 .sprite-stripes-left-short,
+.ie_6 .sprite-stripes-right-short,
+.ie_6 .sprite-stripes-left,
+.ie_6 .sprite-stripes-right,
+.ie_6 .sprite-stripes-horizontal,
+.ie_6 .sprite-wood-foo,
+.ie_6 .sprite-product-new,
+.ie_6 .sprite-brand-moose-munch,
+.ie_6 .sprite-brand-harry-and-david,
+.ie_6 .sprite-brand-wolfermans,
+.ie_6 .sprite-brand-cushmans,
+.ie_6 .sprite-brand-food-and-wine-small,
+.ie_6 .sprite-brand-fruit-of-the-month-small,
+.ie_6 .sprite-brand-moose-munch-small,
+.ie_6 .sprite-brand-harry-and-david-small,
+.ie_6 .sprite-brand-wolfermans-small,
+.ie_6 .sprite-brand-cushmans-small,
+.ie_6 .sprite-cart-empty,
+.ie_6 .sprite-cart-full,
+.ie_6 .sprite-icon-silk-screen,
+.ie_6 .sprite-icon-ribbon,
+.ie_6 .sprite-icon-tag,
+.ie_6 .sprite-icon-corner,
+.ie_6 .sprite-icon-customize,
+.ie_6 .sprite-icon-personalize,
+.ie_6 .sprite-icon-auto-delivery,
+.ie_6 .sprite-icon-CYO,
+.ie_6 .sprite-icon-stores,
+.ie_6 .sprite-icon-hand,
+.ie_6 .sprite-icon-envelope,
+.ie_6 .sprite-icon-phone-left,
+.ie_6 .sprite-icon-phone-right,
+.ie_6 .sprite-magnifying-glass-purple,
+.ie_6 .sprite-pear-green,
+.ie_6 .sprite-snowflake-full,
+.ie_6 .sprite-snowflake-fan,
+.ie_6 .sprite-social-facebook,
+.ie_6 .sprite-social-twitter,
+.ie_6 .sprite-leaves-red,
+.ie_6 .sprite-leaves-gold,
+.ie_6 .sprite-star-yellow,
+.ie_6 .sprite-star-yellow-left,
+.ie_6 .sprite-star-yellow-right,
+.ie_6 .sprite-verisign-normal          { background-image: url("../../../common/images/sprites/global.gif"); }
+
+
+/*********************************************************************************************************************/
+/*  End : sprites-part.css                                                                                           */
+/*********************************************************************************************************************/
+
+/*********************************************************************************************************************/
+/* Start: buttons-part.css                                                                                           */
+/*********************************************************************************************************************/
+
+.button {
+  display: inline-block;
+  margin: 0;
+  padding: 4px 6px;
+  color: #fff;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.button:hover {
+  color: #fff;
+}
+.button:visited {
+  color: #fff;
+}
+a.button:hover {
+  text-decoration: none;
+}
+
+/*********************************************************************************************************************/
+/*  End : buttons-part.css                                                                                           */
+/*********************************************************************************************************************/
+
+/*********************************************************************************************************************/
+/* Start: breadcrumb-part.css                                                                                        */
+/*********************************************************************************************************************/
+
+
+#breadcrumb              { padding: 0 0 10px; }
+#breadcrumb .start       { display: none; }
+#breadcrumb .trail       { line-height: 22px; }
+#breadcrumb .crumb,
+#breadcrumb .separator   { float: left; }
+#breadcrumb .crumb,
+#breadcrumb .crumb a     { color: #777; }
+#breadcrumb .separator   { margin: 0 10px; }
+#breadcrumb .crumb.first { display: none; }
+#breadcrumb .crumb.last  { font-size: 18px; font-weight: bold; color: #3c3c3c; }
+#breadcrumb .trail h1    { font-size: 18px; margin: 0;}
+
+
+/*********************************************************************************************************************/
+/*  End : breadcrumb-part.css                                                                                        */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: dialogs-part.css                                                                                           */
+/*********************************************************************************************************************/
+
+.dialog {
+  position: relative;
+  margin: 0 auto;
+  min-width: 8em;
+  max-width: 1240px;
+  color: #000;
+  z-index: 1024;
+  margin-left: 14px; /* default, width of left corner */
+  margin-bottom: 0; /* 0.5em; /* spacing under dialog */
+}
+
+.dialog .content,
+.dialog .t,
+.dialog .b,
+.dialog .b div {
+  background: transparent url(../../../common/images/backgrounds/dialog-background.png) no-repeat top right;
+  _background-image: url(../../../common/images/backgrounds/dialog-background.gif);
+}
+
+.dialog .content {
+ position: relative;
+ zoom: 1;
+ _overflow-y: hidden;
+ padding: 17px 24px 10px 10px;
+}
+
+.dialog .t {
+ /* top+left vertical slice */
+ position: absolute;
+ left: 0;
+ top: 0;
+ width: 14px; /* top slice width */
+ margin-left: -14px;
+ height: 100%;
+ _height: 1600px; /* arbitrary long height, IE 6 */
+ background-position: top left;
+}
+
+.dialog .b {
+ /* bottom */
+ position: relative;
+ width: 100%;
+ background-position: bottom right;
+ text-align: left;
+}
+
+.dialog .b,
+.dialog .b div {
+ height: 11px; /* height of bottom cap/shade */
+ font-size: 1px;
+}
+
+.dialog .b div {
+ position: relative;
+ margin-left: -14px; /* bottom corner offset */
+ width: 14px; /* bottom corner width */
+ background-position: bottom left;
+}
+
+.dialog .hd,
+.dialog .bd,
+.dialog .ft {
+ position: relative;
+}
+
+.dialog .wrapper {
+ position: static;
+ max-height: 1000px;
+ overflow: auto;
+}
+
+.dialog h1,
+.dialog p {
+ margin: 0; /* margins will blow out backgrounds, leaving whitespace. */
+ padding-top: 6px;
+ padding-bottom: 6px;
+}
+
+.dialog h1 {
+ padding-bottom: 0;
+}
+
+/*********************************************************************************************************************/
+/*  End : dialogs-part.css                                                                                           */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: dijit-dialog-part.css                                                                                      */
+/*********************************************************************************************************************/
+
+
+.dijitDialog { font-family: Verdana,Arial,sans-serif; font-size: 1.1em; z-index: 1024; overflow: visible; }
+
+.dijitDialog input,
+.dijitDialog select,
+.dijitDialog textarea,
+.dijitDialog button    { font-family: Verdana,Arial,sans-serif; font-size: 1em; }
+
+.dijitDialog,
+.dijitDialogPaneContent { background: transparent; }
+
+.dijitDialogPaneContent { text-align: left; }
+
+/* slightly enhanced, universal clearfix hack */
+.dijitDialogTitleBar:after  { display: block; visibility: hidden; font-size: 0; content: " "; clear: both; height: 0; }
+.dijitDialogTitleBar        { display: inline-block; }
+/* start commented backslash hack \*/
+* html .dijitDialogTitleBar { height: 1%; }
+.dijitDialogTitleBar        { display: block; }
+/* close commented backslash hack */
+
+.dijitDialogTitleBar                       { position: relative; margin: 0 0 10px 0; padding: 5px; text-align: left; border-bottom: 1px solid #000; }
+.dijitDialogTitleBar .dijitDialogTitle     { float: left; color: #000; font-size: 18px; }
+.dijitDialogTitleBar .dijitDialogCloseIcon { float: right; margin: 3px 3px 0 0; width: 13px; height: 13px; font-size: 0; cursor: pointer; }
+
+.errorDialog .dijitDialogTitle { color: #c00; }
+
+.dijitDialogTitleBar .closeText       { display: block !important; font-size: 0;
+                                        background-image: url("../../../common/images/sprites/global.png");
+                                        background-position: -119px -111px; width:  9px; height:  9px; } /* sprite */
+.ipad .dijitDialogTitleBar .closeText { background-position: -102px -109px; width: 13px; height: 13px; } /* sprite */
+
+
+/* Dijit Stuff */
+.dijitDialogUnderlayWrapper { display: none; position: absolute; left: 0; top: 0;
+                              background: transparent !important; z-index: 998; }
+.dijitDialogUnderlay        { background: #777; filter: alpha(opacity=78); opacity: .78; }
+.dj_ie .dijitDialogUnderlay { filter: alpha(opacity=78); }
+
+.popupPanel_underlay { background: #eee; filter: alpha(opacity=50); opacity: .5; }
+
+
+/* Fucntional Dialogs */
+.functionalDialog .dijitDialogTitleBar { border: none; }
+
+.functionalDialog p,
+.functionalDialog h1 { padding: 0; margin: 0; }
+
+
+/* Popups */
+.dijitPopup { z-index: 1536 !important; }
+
+
+/* Coupons */
+
+.dijitDialog .dijitDialogPaneContent .coupon      { font-weight: bold; }
+.dijitDialog .dijitDialogPaneContent .coupon span { color: #f00; }
+
+
+/* Dialog Widths */
+
+.dijitDialog                       { width: 500px; }
+
+#packageLabelSample.dijitDialog    { width: 510px; }
+#packageLabelDetails.dijitDialog,
+#giftCardPopup.dijitDialog         { width: 340px; }
+#fp-popup.dijitDialog,
+#sign-in.dijitDialog               { width: 460px; }
+#deliveryPopup.dijitDialog         { width: 570px; }
+#RememberMeDetails.dijitDialog,
+#shippingTablePopup.dijitDialog    { width: 575px; }
+#cqoFrame.dijitDialog              { width: 600px; }
+#ProductViewPopUp.dijitDialog      { width: 605px; }
+#InstructionViewPopUp.dijitDialog  { width: 645px; }
+#logon-popup.dijitDialog,
+#ProductViewPopUp.dijitDialog,
+#quickViewPopUp.dijitDialog        { width: 650px; }
+#selectAddOns.dijitDialog,
+#selectCyoItems.dijitDialog        { width: 925px; }
+
+#dialog-festive-wine-covers          { width: 550px; }
+#dialog-festive-wine-covers .group   { float: left; width: 144px; }
+#dialog-festive-wine-covers .group p { margin-top: 0; font-weight: bold; text-align: center; }
+#dialog-festive-wine-covers .spacer  { margin-left: 30px; }
+
+#dialog-FOREIGN         { width: 370px; }
+#dialog-CYOFRUIT        { width: 400px; }
+#dialog-DADSDAY,
+#dialog-ENT10,
+#dialog-ENT20,
+#dialog-ENTERTAINMENT   { width: 550px; }
+#dialog-AMEXFSD,
+#dialog-AMEXSAVE20,
+#dialog-BUYNOW,
+#dialog-holidaycutoffs,
+#dialog-ice-sweepstakes { width: 650px; }
+#dialog-EPRIZE,
+#dialog-EPRIZE2,
+#dialog-FOMCLIST        { width: 700px; }
+#dialog-WINESHIP        { width: 710px; }
+#dialog-map             { width: 760px; }
+
+#dialog-GUAR .dijitDialogPaneContent            { height: 400px !important; overflow: auto; }
+#dialog-ice-sweepstakes .dijitDialogPaneContent { position: static !important; width: auto !important; height: auto !important; overflow: auto; }
+
+
+#dialog-EPRIZE .dijitDialogPaneContent,
+#dialog-EPRIZE2 .dijitDialogPaneContent { height: 500px !important; overflow: auto; }
+
+#dialog-CYOFRUIT thead tr { background-color: #ccc; }
+#dialog-CYOFRUIT tr.alt   { background-color: #ddd; }
+
+#dialog-FOMCFRUITS .container   { margin: 0 auto; width: 403px; }
+#dialog-FOMCFRUITS .leftColumn  { float: left; width: 200px; border: #CCCCCC solid 1px; }
+#dialog-FOMCFRUITS .rightColumn { float: left; width: 200px; border: #CCCCCC solid 1px; border-left: none; }
+#dialog-FOMCFRUITS .new         { color:#CC3333; font-weight:bold; }
+#dialog-FOMCFRUITS .month       { padding:2px 3px; border-bottom:#CCCCCC solid 1px; background-color:#f8f5e5; font-weight:bold; }
+#dialog-FOMCFRUITS .fruit       { padding:1px 3px; border-bottom:#CCCCCC solid 1px; }
+
+#dialog-FOMCLIST .fomcItem    { margin-bottom: 20px; }
+#dialog-FOMCLIST .itemPic     { float: left; width: 80px; height: 75px; }
+#dialog-FOMCLIST .itemPic img { width: 75px; height: 75px; }
+#dialog-FOMCLIST .itemText    { float: right; width: 224px; }
+#dialog-FOMCLIST .itemTitle   { font-weight: bold; }
+
+#dialog-WINESHIP .dijitDialogPaneContent { height: 500px !important; overflow: auto; }
+
+#dialog-holidaycutoffs table                   { width: 100%; border-collapse: collapse; }
+#dialog-holidaycutoffs table td,
+#dialog-holidaycutoffs table th                { padding: 2px; border: 1px solid #000; }
+#dialog-holidaycutoffs table thead tr          { color: #fff; background: #363; }
+#dialog-holidaycutoffs table thead tr.sub      { color: #000; background-color: #ccc; }
+#dialog-holidaycutoffs table tbody tr.alt,
+#dialog-holidaycutoffs table tbody tr.alt th   { background: #ddd; }
+#dialog-holidaycutoffs table th.sub,
+#dialog-holidaycutoffs table th .sub           { font-weight: normal; }
+#dialog-holidaycutoffs table tbody th          { font-weight: bold; text-align: left; background: #f8f5e5; }
+#dialog-holidaycutoffs table tbody td          { text-align: center; }
+#dialog-holidaycutoffs .cutoff-dates .holidays { width: 24%; }
+#dialog-holidaycutoffs .cutoff-dates .dates    { width: 19%; }
+
+#resetPopup.dijitDialog .buttons,
+#startOverPopup.dijitDialog .buttons   { text-align: center; }
+#resetPopup.dijitDialog .buttons a,
+#startOverPopup.dijitDialog .buttons a { margin: 0 0.5em; }
+
+#productCompare.dijitDialog { width: 938px; }
+
+/* Shipping **********************************************************************************************************/
+
+/* position relative is needed so iscroll will show up in correct location - please leave. */
+#deliveryPopup .dijitDialogPaneContent .scroll { position: relative; height: 500px !important; overflow: auto; }
+
+/* Email Sign-Up *****************************************************************************************************/
+
+#emailSignUpDialog #email_signUp               { display: block; margin: 10px 0; }
+#emailSignUpDialog #email_signUp .emailInput   { float: left; }
+#emailSignUpDialog #email_signUp .label        { display: none; }
+#emailSignUpDialog #email_signUp .dijitTextBox { margin-top: 3px; width: 300px; }
+#emailSignUpDialog #email_signUp .button       { float: left; margin-left: 12px; }
+
+/* Email Sign-Up First Time ******************************************************************************************/
+
+#emailSignUpDialog #email_signUpFirstTime               { display: block; margin: 10px 0; }
+#emailSignUpDialog #email_signUpFirstTime .emailInput   { float: left; }
+#emailSignUpDialog #email_signUpFirstTime .label        { display: none; }
+#emailSignUpDialog #email_signUpFirstTime .dijitTextBox { margin-top: 3px; width: 300px; }
+#emailSignUpDialog #email_signUpFirstTime .button       { float: left; margin-left: 12px; }
+
+/* Waste of file space ***********************************************************************************************/
+
+#signInChangePopup.dijitDialog { z-index: 10000; }
+
+/* Gift Card Balance *************************************************************************************************/
+
+#GiftCardBlanace.dijitDialog                      { width: 420px; }
+#GiftCardBlanace.dijitDialog .description         { display: none; margin: 0 0 10px 0; }
+#GiftCardBlanace.dijitDialog .label               { margin: 0 0 5px 0; }
+#GiftCardBlanace.dijitDialog .scratch_off         { margin: 5px 0 0 0; }
+#GiftCardBlanace.dijitDialog .right               { width: 150px; margin-right: 10px; }
+#GiftCardBlanace.dijitDialog .right .dijitTextBox { width: 150px; }
+#GiftCardBlanace.dijitDialog .buttons             { margin: 6px 0 0 0; }
+#GiftCardBlanace.dijitDialog .submit              { float: left; }
+#GiftCardBlanace.dijitDialog .message             { float: right; margin-right: 10px; padding: 2px 4px; line-height: 20px; background: #fff7d7; }
+#GiftCardBlanace.dijitDialog .error               { color: #c00; }
+
+/* Favorites List ****************************************************************************************************/
+
+#favoriteItemAddedPopup.dijitDialog                { width: 620px; z-index:1025;}
+#favoriteItemAddedPopup.dijitDialog .error         { margin: 0 0 10px 0; }
+#favoriteItemAddedPopup.dijitDialog .group         { width: 350px; }
+#favoriteItemAddedPopup.dijitDialog .details       { float: right; width: 200px; }
+#favoriteItemAddedPopup.dijitDialog .addItem       { margin: 5px 0 0 0; }
+#favoriteItemAddedPopup.dijitDialog .sep           { display: block; margin: 0 10px; width: 1px; height: 140px;
+                                                     font-size: 0; background-color: #ccc; }
+#favoriteItemAddedPopup.dijitDialog .buttons       { width: 190px; }
+#favoriteItemAddedPopup.dijitDialog .viewFavorites { margin: 10px 0; }
+
+#favoriteItemAddedPopup.dijitDialog .favoritesSignIn        { margin: 10px 0 0 0; padding: 10px 0 0 0;
+                                                              border-top: 1px solid #999;}
+#favoriteItemAddedPopup.dijitDialog .favoritesSignIn .title { font-size: 16px; }
+
+#favoriteItemAddedPopup.dijitDialog #logonForm .error       { margin: 10px 0 0 0; font-weight: bold; }
+#favoriteItemAddedPopup.dijitDialog #logonForm .error .hint { font-weight: normal; }
+
+#favoriteItemAddedPopup.dijitDialog #logonForm         { margin: 10px 0 0 0; }
+#favoriteItemAddedPopup.dijitDialog #logonForm .left   { width: 350px; }
+#favoriteItemAddedPopup.dijitDialog #logonForm .middle { display: block; position: relative; margin: 0 10px; width: 1px; height: 140px;
+                                                         font-size: 0; background-color: #ccc; }
+#favoriteItemAddedPopup.dijitDialog #logonForm .or     { position: absolute; top: 65px; left: -20px; padding: 2px; width: 40px; font-size: 10px; text-align: center; background-color: #fff; }
+#favoriteItemAddedPopup.dijitDialog #logonForm .right  { padding: 60px 0 0 0; width: 190px; }
+
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup                 { margin: 10px 0 0 0; }
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .formSect       { margin: 30px auto 15px auto; width: 295px; }
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .loginIdWrap,
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .passwordWrap,
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .forgotPassWrap { margin: 0 0 10px 0; }
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .rememberMeDiv  { display: none; } 
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup #signInButton   { padding: 0 0 0 110px; }
+
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .label          { margin: 0 10px 0 0; width: 100px; min-height: 10px; font-weight: bold; text-align: right; }
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .field input    { width: 170px; border: 1px solid #ddd5c0; }
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .label,
+#favoriteItemAddedPopup.dijitDialog #BECLoginFormPopup .field          { float: left; }
+
+#favoriteItemAddedPopup.dijitDialog #favorite { padding-top: 7px; }
+
+/* Checkout **********************************************************************************************************/
+
+/* Login */
+#logon-popup .dijitDialogTitle { display: none; }
+
+#logon-popup .left   { width: 310px; }
+#logon-popup .middle { padding: 60px 40px 95px; background-image: url(../../images/backgrounds/dot-light-ffffff.png); background-repeat: repeat-y; background-position: center; }
+#logon-popup .right  { float: left; padding-top: 60px; width: 180px; }
+
+#logon-popup .middle .or { display: inline-block; padding: 5px 0; background-color: #fff; }
+
+#logon-popup .error               { margin-bottom: 10px; width: 310px; text-align: center; }
+#logon-popup .description         { margin-bottom: 20px; font-weight: bold; text-align: center; }
+#logon-popup .row                 { margin-bottom: 10px; }
+#logon-popup .label               { float: left; margin-right: 10px; width: 100px; font-weight: bold; text-align: right; }
+#logon-popup .field               { float: left; width: 200px; }
+#logon-popup .field .dijitTextBox { width: 200px; }
+
+#logon-popup .forgotPassWrap a { color: #809100; }
+#logon-popup .forgotPassWrap,
+#logon-popup #signInButton     { text-align: right; }
+
+/* Forgot Password */
+#fp-popup .dijitDialogTitle        {  }
+#fp-popup .title a                 { color: #809100; }
+#fp-popup .description             { margin: 10px 0; }
+#fp-popup .row                     { margin-bottom: 10px; }
+#fp-popup .label                   { float: left; margin-right: 10px; width: 200px; font-weight: bold; text-align: right; }
+#fp-popup .field                   { float: left; width: 200px; }
+#fp-popup .field .dijitTextBox     { width: 200px; }
+#fp-popup #userNameButton          { text-align: right; }
+
+/* Errors */
+#checkoutDeliveryError.dijitDialog  .dijitDialogTitle,
+#checkoutInvalidAddress.dijitDialog .dijitDialogTitle,
+#checkoutSaveAddress.dijitDialog    .dijitDialogTitle,
+#checkoutSaveDelivery.dijitDialog   .dijitDialogTitle  { color: #902c2e; }
+
+/* Coupons */
+#orderPromotionPopup.dijitDialog { width: 550px; }
+
+/* Greeting Cards */
+#greetingCardPopup.dijitDialog                         { width: 750px; }
+#greetingCardPopup.dijitDialog .dijitDialogPaneContent { position: relative; height: 435px !important; overflow: hidden; }
+
+/* Package Label */
+#shippingLabelPopup.dijitDialog { width: 518px; }
+
+/* Package Label */
+#packageLabelSample .sample { display: block; margin: 0 auto; }
+
+
+/* Wine Dialogs ******************************************************************************************************/
+
+#winepopup.dijitDialog                { width: 710px; }
+#winepopup .dijitDialogPaneContent    { padding-right: 5px; height: 400px !important; overflow: auto; }
+#winepopup .dijitDialogPaneContent h2 { font-size: 13px; }
+
+#wineConfirmPopup .zip_code,
+#wineConfirmPopup .legal_age,
+#wineConfirmPopup .message      { margin-bottom: 1em; }
+#wineConfirmPopup .label        { vertical-align: middle; }
+#wineConfirmPopup .dijitTextBox { margin-left: 1em; width: 75px; }
+#wineConfirmPopup .message,
+#wineConfirmPopup .message a    { color: #3c3c3c; }
+#wineConfirmPopup .notice       { font-weight: bold; }
+#wineConfirmPopup .buttons      { text-align: right; }
+
+.wineship { width: 655px; }
+.wineship .heading { font-size:18px; width:210px; }
+.wineship .leftColumn { float: left; padding-left: 5px; width: 320px; }
+.wineship .leftColumn .heading { color:#658528; }
+.wineship .leftColumn .copy { border-right:#999 1px solid; padding-right:10px; }
+
+.wineship .rightColumn { float: right; width: 320px; }
+.wineship .rightColumn .heading { color:#A31A1A; }
+
+.wineship  img { margin:20px 0; width:300px; height:170px; }
+.wineship .statesHeading { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; }
+.wineship .statesHeading a { text-decoration: underline; }
+.wineship .statesHeading a:hover { text-decoration: none; }
+
+.wineship table { margin:5px 0 10px 0; line-height:18px; }
+.wineship .finePrint { font-size:12px; }
+
+.wineship .clear { clear: both; }
+
+
+/*********************************************************************************************************************/
+/*  End : dijit-dialog-part.css                                                                                      */
+/*********************************************************************************************************************/
+
+#cqoFrame          { text-align: left; }
+	
+#cqoFrame .hed          { font-weight: bold; font-size: 12px; width: 100%; background-color: #eae5cf; margin: 0; border-bottom: 1px solid black; vertical-align: middle; height: 30px; display: none; }
+#cqoFrame .hed .content { float: left; vertical-align: middle; margin: 7px; }
+#cqoFrame .hed .close   { float: right; margin: 7px; }
+
+#cqoFrame div.error { font-size: 12px; font-weight: bold; color: #cc2036; margin: 15px 0 15px 8px; width: 550px; }
+
+#cqoFrame #cqoResponse { font-size: 12px; font-weight: bold; width: 300px;}
+
+#cqoFrame .success { color: #80923E; margin: 15px 0 15px 8px; }
+
+#cqoFrame .middle-content ul    { float: left; list-style-position: outside; margin: 0 0 0 5px; padding: 0 0 0 16px; width: 275px; }
+#cqoFrame .middle-content ul li { margin: 10px 0 0 0; }
+#cqoFrame .middle-content img   { float: right; }
+
+#cqoFrame #cqoAddAnother   { margin-left: 10px; clear: both; }
+#cqoFrame .cqoEnterNum     { margin-left: 10px; padding-top: 10px; clear: both; }
+#cqoFrame .cqoEnterNum .OR { padding: 5px; }
+
+#cqoFrame .numInput    { margin-top: 5px;}
+#cqoFrame .button      { width: 200px; text-align: center; }
+	
+#cqoFrame .enterNum                    { width: 518px; float:left; margin-top: 10px; }
+
+#cqoFrame .enterNum .content           { font-weight: bold; margin: 7px 0 0 19px; }	
+#cqoFrame .enterNum .content table     { margin-left: 0; }
+#cqoFrame .enterNum .content input     { vertical-align: middle; }
+#cqoFrame .enterNum .content .numInput { width: 90px; margin: 0 20px 0 10px; vertical-align: middle}
+	
+#cqoFrame .enterNum .content .recip .sendTo,
+#cqoFrame .enterNum .content .recip .newName       { margin: 5px auto; }
+#cqoFrame .enterNum .content .recip .sendTo select { width: 231px; margin-right: 5px; vertical-align: middle; }
+#cqoFrame .enterNum .content .recip .newName input { width: 162px; vertical-align: middle; }
+/*********************************************************************************************************************/
+/* Start: cyo-calendar.css                                                                                       */
+/*********************************************************************************************************************/
+
+input#selectdate      { background-image: url("../../../common/images/buttons/calendar.gif") !important; background-repeat: no-repeat; }
+div#widget_selectdate { width: 120px !important; }
+
+span.dijitA11ySideArrow{
+	display:none;
+}
+.dijitPopup .dijitCalendarMonthLabel {
+	color:#000000;
+	font-size: 1.091em;
+	display: block;
+	font-weight: bold;
+}
+.dijitPopup .dijitCalendarIncrementControl {
+	width:18px;
+	height:16px;
+	background-image: url("../../../common/images/buttons/calendarArrows.png");
+	background-repeat: no-repeat;
+}
+.dijitCalendarIncrease {
+	background-position:-18px 0;
+}
+.dijitPopup .dijitCalendarArrowHover .dijitCalendarDecrease {
+	background-position:-36px 0;
+}
+.dijitPopup .dijitCalendarArrowHover .dijitCalendarIncrease {
+	background-position:-55px 0;
+}
+.dijitPopup .dijitCalendarArrowActive .dijitCalendarDecrease {
+	background-position:-72px 0;
+}
+.dijitPopup .dijitCalendarArrowActive .dijitCalendarIncrease {
+	background-position:-91px 0;
+}
+.dijitDayLabels th {
+	padding: 0 4px 0 4px;
+	border-bottom:solid 1px #99b5cd;
+	font-weight:bold;
+	text-align:center;
+}
+.dijitPopup .dijitCalendarDayLabelTemplate {
+	padding-bottom: 0;
+	text-align:center;
+	border-bottom:1px solid #99B5CD;
+	font-size:0.909em;
+	padding: 0 3px 2px;
+}
+.dijitPopup .dijitCalendarDateTemplate {
+	text-align:center;
+	background-color:#fff;
+	background-image:url("../../../common/images/backgrounds/calendarContainerImages.png");
+	background-position: 0 0;
+	background-repeat:repeat-x;
+	border-bottom: 1px solid #dadde1;
+	padding-top: 0;
+	font-size: 0.909em;
+	font-family: Arial;
+	font-weight:bold;
+	letter-spacing:.05em;
+	text-align:center;
+}
+.dijitPopup .dijitCalendarContainer {
+	width: auto;	
+	padding-left:10px;
+}
+.dijitPopup .dijitCalendarContainer th,.dijitCalendarContainer td {
+	padding: 0;
+}
+.dijitPopup .dijitCalendarPreviousMonth,
+.dijitPopup .dijitCalendarNextMonth {
+	background-color:#ebf3f9;
+	background-image:none;
+	border-bottom:solid 1px #d2dae8;
+	color:#547da1;
+}
+.dijitPopup .dijitCalendarDateTemplate .dijitCalendarDateLabel {
+	text-decoration:none;
+	display:block;
+	padding:3px 5px 3px 4px;
+	border:solid 1px #fff;
+	color:#1e1e1e;
+	background-color:rgba(171,212,251,0);	
+	-webkit-transition-property:background-color, border;
+ 	-webkit-transition-duration:.35s;
+}
+.dijitPopup .dijitCalendarPreviousMonth .dijitCalendarDateLabel,
+.dijitPopup .dijitCalendarNextMonth .dijitCalendarDateLabel{
+	color:#547da1;
+	border-color:#ebf3f9;
+}
+.dijitCalendarYearContainer {
+	vertical-align:middle;
+}
+.dijitPopup .dijitCalendarYearControl {
+	padding: 1px 2px 2px 2px;
+}
+.dijitPopup .dijitCalendarYearLabel {
+	padding:2px 0px 0px 0px;
+	margin:0;
+}
+.dijitPopup .dijitCalendarYearLabel span {
+	vertical-align:middle;
+}
+.dijitPopup .dijitCalendarSelectedYear {
+	padding:0px 3px;
+}
+.dijitPopup .dijitCalendarNextYear,
+.dijitPopup .dijitCalendarPreviousYear {
+	padding: 10px 6px 10px 6px;
+	font-size:0.909em;
+}
+.dijitPopup .dijitCalendarSelectedYear {
+	font-size:1.091em;
+	color:#000;
+}
+.dijitPopup .dijitCalendarHoveredDate .dijitCalendarDateLabel{
+	background-color:#abd4fb;
+	border:solid 1px #729dc2;
+	color:#000;
+	-webkit-transition-duration:.2s;
+}
+.dijitPopup .dijitCalendarNextYearHover,
+.dijitPopup .dijitCalendarPreviousYearHover {
+	color:#000;
+	border:solid 1px #fefefe;
+	padding: 0 5px 0 5px;	
+	background-color:#eaf4fe;
+}
+.dijitPopup .dijitCalendarNextYearActive,
+.dijitPopup .dijitCalendarPreviousYearActive {
+	border: solid 1px #87b3d9;
+	padding: 0 5px 0 5px;	
+	background-color:#90bde6;
+}
+.dijitPopup .dijitCalendarActiveDate .dijitCalendarDateLabel {
+	background-image:url("../../../common/images/backgrounds/calendarContainerImages.png");
+	background-position:0px -300px;
+	background-color:#75b5f0;
+	border:solid 1px #ffffff;
+	-webkit-transition-duration:.1s;
+}
+.dijitPopup .dijitCalendarSelectedDate .dijitCalendarDateLabel {
+	color:#000;
+	background-color:#e7f4ff;
+	border-color:#accfed;
+}
+
+/*********************************************************************************************************************/
+/*  End : cyo-calendar.css                                                                                       */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: quick-view-part.css                                                                                        */
+/*********************************************************************************************************************/
+
+
+#quickViewPopUp .dijitDialogTitleBar     { margin: 0; }
+#quickViewPopUp .background-dot-vertical { float: left; margin: 0 0 0 10px; height: 400px; background-image: url("http://www.harryanddavid.com/content/Hand/images/backgrounds/product-dot-vertical.png"); }
+
+#quickViewPopUp .left { width: 300px; }
+
+#quickViewPopUp #productImage img { width: 300px; height: 300px; }
+
+#quickViewPopUp #productTitle                    { margin: 10px 0.5em 1em; }
+#quickViewPopUp #productTitle,
+#quickViewPopUp #productTitle .regular           { font-size: 14px; }
+#quickViewPopUp #productTitle .name a            { color: #809101; font-size: 18px; }
+#quickViewPopUp #productTitle .rating            { padding-top: 5px; }
+#quickViewPopUp #productTitle .rating img        { padding-right: 5px; }
+#quickViewPopUp #productTitle .ratingCount       { font-size: 11px; vertical-align: top; }
+#quickViewPopUp #productTitle .quickView-soldout { font-size: 18px; }
+
+#quickViewPopUp #productDetails .productContents { margin-bottom: 0; }
+#quickViewPopUp #productDetails .moreLink        { padding-left: 1.6em; }
+#quickViewPopUp #productDetails .productInfo     { margin-top: 2em; }
+
+      #quickViewPopUp .right    { margin-right: 10px; width: 272px; font-size: 13px; }
+      #quickViewPopUp .right ul { padding-left: 1.5em; }
+.ie_7 #quickViewPopUp .right ul { margin-left: 1.5em; padding-left: 0; }
+
+#quickViewPopUp #addToCartSection .left  { margin: 4px 0; width: auto; }
+#quickViewPopUp #addToCartSection .right { margin-right: 0; width: auto; }
+
+#quickViewPopUp #addToCartSection .quantity               { float: left; }
+#quickViewPopUp #addToCartSection .quantity .dijitTextBox { width: 40px; }
+#quickViewPopUp #addToCartSection .addItem                { float: right; text-align: right; }
+#quickViewPopUp #addToCartSection .unavailMsg             { font-weight: bold; color: #c00; }
+
+#quickViewPopUp .addToFavoritesLink { margin: 10px 0 0 0; text-align: right; }
+
+#quickViewPopUp #productDetails .title         { color: #809101; font-size: 16px; }
+#quickViewPopUp #productDetails .makeSelection { text-align: right; }
+
+      #quickViewPopUp .zoomText { margin: 15px 0; text-align: center; }
+.ie   #quickViewPopUp .zoomText { margin-top: 20px; }
+.ipad #quickViewPopUp .zoomText { display: none; }
+
+#quickViewPopUp .zoomText span { margin-right: 0.5em; }
+
+
+/* Image Zoomer */
+
+#quickViewPopUp #wrap,
+#quickViewPopUp #zoomer,
+#quickViewPopUp #zoomer img         { margin: 0 auto; width: 300px; height: 300px}
+#quickViewPopUp #wrap               { z-index: 512 !important; }
+#quickViewPopUp #zoomer             { display: block; font-size: 0; outline: none; }
+
+#quickViewPopUp .cloud-zoom-lens    { background-color: #fff; cursor: move; }
+#quickViewPopUp .cloud-zoom-title   { position: absolute !important; top: 0; padding: 3px; width: 100%;
+                                      color: #fff; background-color: #000;
+                                      font-weight: bold; font-size: 10px; text-align: center; }
+#cloud-zoom-big                     { overflow: hidden; z-index: 1536 !important; }
+#quickViewPopUp .cloud-zoom-loading { left: 25px !important; padding: 3px; width: 260px !important;
+                                      color: white; background: #222; border: 1px solid #fff; }
+#quickViewPopUp .cloud-zoom-gallery { display: block; float: left; font-size: 0; outline: none; }
+
+
+/* Gift List Copy */
+
+#ProductViewPopUp .dijitDialogTitleBar     { margin: 0; }
+#ProductViewPopUp .background-dot-vertical { float: left; margin: 0 0 0 10px; height: 400px; background-image: url("http://www.harryanddavid.com/content/Hand/images/backgrounds/product-dot-vertical.png"); }
+
+#ProductViewPopUp .left { width: 300px; }
+
+#ProductViewPopUp #productImage img { width: 300px; height: 300px; }
+
+#ProductViewPopUp #productTitle          { margin: 10px 0.5em 1em; }
+#ProductViewPopUp #productTitle,
+#ProductViewPopUp #productTitle .regular { font-size: 14px; }
+#ProductViewPopUp #productTitle .name a  { color: #809101; font-size: 18px; }
+
+      #ProductViewPopUp .right    { margin-right: 10px; width: 272px; font-size: 13px; }
+      #ProductViewPopUp .right ul { padding-left: 1.5em; }
+.ie_7 #ProductViewPopUp .right ul { margin-left: 1.5em; padding-left: 0; }
+
+#ProductViewPopUp #addToCartSection .left  { margin: 4px 0; width: auto; }
+#ProductViewPopUp #addToCartSection .right { margin-right: 0; width: auto; }
+
+#ProductViewPopUp #productDetails .title { color: #809101; font-size: 16px; }
+
+
+/*********************************************************************************************************************/
+/*  End : product-base.css                                                                                           */
+/*********************************************************************************************************************/
+
+
+body    { margin: 0 10px; }
+body,
+input   { font-size: 11px; font-family: Verdana; }
+a,
+input,
+select  { outline: none; }
+img     { border: none; }
+body    { text-align: center; }
+form,
+table   { margin: 0; padding: 0; }
+table   { border: none; }
+th      { font-weight: bolder; text-align: center; }
+
+a       { color: #000; text-decoration: underline; }
+a:hover { text-decoration: none; cursor: pointer;  }
+
+
+.error,
+.success,
+.important           { font-weight: bold; }
+.error,
+.success,
+.regular             { font-size: 13px; }
+.error               { color: #c00; }
+.success             { color: #363; }
+.regular             { color: #000; }
+.required,
+.important           { color: #900; }
+.left,
+.middle              { float: left; }
+.right               { float: right; }
+.clear               { clear: both; }
+.product-unavailable { margin-top: 20px; font-size: 16px; }
+.separate            { margin-top: 1em; }
+.webding             { font-family: webdings; }
+
+
+/* slightly enhanced, universal clearfix hack */
+.clearfix:before { display: block; visibility: hidden; font-size: 0; content: " "; clear: both; height: 0; }
+.clearfix:after  { display: block; visibility: hidden; font-size: 0; content: " "; clear: both; height: 0; }
+.clearfix        { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix        { display: block; }
+/* close commented backslash hack */
+
+/* Kill the number fields spinner controls */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Containers */
+#container         { margin: 0 auto; width: 960px; text-align: left; }
+#page .strip-left,
+#page .strip-right { display: none; }
+#company,
+#banner            { display: block; margin: 0 0 5px 0; }
+#content .ticketed { padding: 0 18px; width: 884px; }
+
+/* Video Player */
+#player-overlay           { display: none; }
+#player-overlay .titlebar { padding: 3px; height: 9px; background-color: #fff; text-align: right; }
+
+/* Half and Half */
+#content                     { margin-bottom: 10px; }
+#content .half-n-half .left,
+#content .half-n-half .right { width: 475px; }
+
+/* JanRain */
+#janrainEngageEmbed .janrainHeader        { padding: 0 !important; left: 0 !important }
+#janrainEngageEmbed .janrainHeader div    { color: #000 !important; font-size: 11px !important; font-weight: bold !important; }
+#janrainEngageEmbed .janrainContent       { padding-left: 0 !important; padding-right: 0 !important; width: 100% !important; border: none !important; border-radius: 0 !important; }
+#janrainEngageEmbed #janrainProviderPages { left: 19px !important; }
+#janrainEngageEmbed #attribution_footer   { padding-bottom: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+
+/*********************************************************************************************************************/
+/*  End : global-part.css                                                                                            */
+/*********************************************************************************************************************/
+
+/***************************************/
+/* Global Style Sheet for Static Pages */
+/***************************************/
+
+#content h2 { color: #363; }
+/*********************************************************************************************************************/
+/* Start: header-part.css                                                                                            */
+/*********************************************************************************************************************/
+
+#header           { position: relative; margin: 0 0 5px 0; height: 100px; overflow: visible; }
+#header a         { text-decoration: none; color: #658528; }
+#header a:hover   { text-decoration: underline; }
+
+/* Left */
+#header .utility-left              { float: left; padding: 20px 20px 10px 20px; width: 220px; height: 70px; }
+#header .search .label             { margin: 0 0 4px 0; font-weight: bold; }
+#header .search .search-input      { margin-top: 2px; width: 160px; height: 16px; vertical-align: top; border: 1px solid #ccc; }
+#header .search .button span       { display: inline-block; margin-top: 2px; width: 13px; height: 12px; line-height: 0; font-size: 0;
+                                     background-repeat: no-repeat; overflow: hidden; }
+.ie_7 #header .search .dijitButton { margin-bottom: -6px; }
+
+#header .links                     { margin: 10px 0 0 0; }
+#header .links a                   { text-decoration: none; color: #692700; }
+#header .links a:hover             { text-decoration: underline; }
+#header .links #giftlistIcon       { font-weight: bold; }
+#header .links .giftlist-link      { margin-right: 5px; text-transform: uppercase; }
+#header .links .favoriteslist-link { margin-left:  5px; }
+
+/* Right */
+#header .utility-right          { float: right; padding: 10px 15px 10px 15px; width: 230px; height: 80px; }
+#header .cart                   { line-height: 1em; float:left;}
+#header .cart a                 { display: inline-block; margin: 0 0 6px 0; padding: 5px 8px; border-radius: 3px; }
+#header .cart .inner            { padding: 0 0 0 24px; }
+#header .cart .dijitContentPane { display: inline; }
+#header .logonIncorrect         { font-size: 9px; font-weight: normal; font-style: italic; color: #999; }
+#header .cart .head,
+#header .cart .count,
+#header .sign-in,
+#header .greeting,
+#header .name,
+#header .phone                  { font-weight: bold; }
+
+#header .header-promotion-top-right  {float:right; margin: 3px 0 0 5px;}
+
+/* Logo */
+#header .logo   { float: left; width: 412px;}
+#header .logo a { display: block; width: 412px; height: 100px; }
+
+/* Tooltips */
+#tooltip-header-giftlist { width: 300px; }
+
+/* Panels */
+.panel                { background-color: #fff; border: 1px solid #808080; }
+.panel .close         { float: right; }
+.panel .close a       { display: inline-block; margin: 0;
+                        background-position: -156px -111px; width:  9px; height:  9px;
+                        background-image: url("../../../common/images/sprites/global.png");
+                        font-size: 0; overflow: hidden; }
+.ipad .panel .close a { background-position: -139px -109px; width: 13px; height: 13px; }
+.panel .content       { position: relative; padding: 10px; overflow: hidden; }
+.panel .titlebar      { padding: 5px; background-color: #88a548; }
+.panel .titleText     { float: left; color: #fff; font-weight: bold; }
+
+#emailDropDown         { position: absolute; top: 0; right: 0; width: 270px; text-align: left;  z-index: 1000; }
+#signInDropDown        { position: absolute; top: 0; right: 0; width: 270px; text-align: right; z-index: 1000; }
+#forgotPassword        { position: absolute; top: 0; right: 0; width: 270px; text-align: right; z-index: 1000; }
+#minicart              { position: absolute; top: 0; right: 0; width: 270px; text-align: left;  z-index: 9999; }
+#createAccountDropDown { position: absolute; top: 0; right: 0; width: 405px; text-align: right; z-index: 1000; }
+
+#emailDropDown .email .label { margin-top: 3px; }
+
+#userNameFormBody,
+#challengeAnswerFormBody,
+#resetPasswordFormBody,
+#rememberMeDetails        { left: 0; top: 0; width: 250px; margin-right: 2em; }
+#signInFormBody           { left: 0; top: 0; width: 250px; margin-right: 2em; }
+
+#header .dijitLayoutContainer { position: static; }
+
+/* Sign-in Panel */
+#signInDropDown .middle       { position: relative; }
+#signInDropDown .back a       { text-decoration: none; }
+#signInDropDown .back a:hover { text-decoration: underline; }
+#signInDropDown #signOn       { padding: 10px 0 }
+#signInDropDown #janrainView  { text-align: left !important; }
+
+/* Sign-In Pane */
+#signInFormBody .sprite-icon-hand    { margin-left: 1em; }
+#signInFormBody .error,
+#signInFormBody .description         { text-align: left; }
+#signInFormBody .error               { margin-bottom: 1em; }
+#signInFormBody .username,
+#signInFormBody .password,
+#signInFormBody .forgot-password,
+#signInFormBody .rememberMe,
+#signInFormBody .register            { margin-top: 1em; clear:both; }
+#signInFormBody .label               { float: left; }
+#signInFormBody .field               { float: right; width: 150px; border: 1px solid #80923f; padding-left: 2px  }
+#signInFormBody .rememberMe .details { margin-left: 65px; text-align: left; }
+#signInFormBody .dijitPlaceHolder    { text-align: left; font-size: smaller; }
+#signInFormBody #lpChatLoginButton   { float: left; width: 112px; }
+
+/* Registration */
+#createAccountDropDown .row                   { margin-bottom: 1em; }
+#createAccountDropDown .label                 { float: left; }
+#createAccountDropDown .field                 { float: right; width: 210px; }
+#createAccountDropDown #widget_customQuestion { margin-top: 1em; }
+#createAccountDropDown #createAccount         { padding: 10px 0; }
+
+/* Reset Password Pane 1 */
+#userNameFormBody .error,
+#userNameFormBody .description,
+#userNameFormBody .loginIdWrap, 
+#userNameFormBody .button              { margin-top: 1em; }
+#userNameFormBody .error,
+#userNameFormBody .description,
+#userNameFormBody .loginIdWrap         { text-align: left; }
+#userNameFormBody .label               { margin-bottom: 5px; }
+#userNameFormBody input                { width: 245px; }
+#userNameFormBody .dijitTextBox        { border: 1px solid #80923f; }
+
+/* Reset Password Pane 2 */
+#challengeAnswerFormBody .error,
+#challengeAnswerFormBody .description,
+#challengeAnswerFormBody .required-note,
+#challengeAnswerFormBody .loginLabelWrap,
+#challengeAnswerFormBody .challengeQuestionWrap,
+#challengeAnswerFormBody .button                 { margin-top: 1em; }
+#challengeAnswerFormBody .error,
+#challengeAnswerFormBody .description,
+#challengeAnswerFormBody .required-note,
+#challengeAnswerFormBody .loginLabelWrap,
+#challengeAnswerFormBody .challengeQuestionWrap,
+#challengeAnswerFormBody .challengeAnswerWrap    { text-align: left; }
+#challengeAnswerFormBody .label                  { margin-bottom: 5px; }
+#challengeAnswerFormBody input                   { width: 245px; border: 1px solid #80923f; }
+#challengeAnswerFormBody .dijitTextBox           { border: 1px solid #80923f; }
+
+/* Reset Password Pane 3 */
+#resetPasswordFormBody .error,
+#resetPasswordFormBody .description,
+#resetPasswordFormBody .message,
+#resetPasswordFormBody .password,
+#resetPasswordFormBody .verify,
+#resetPasswordFormBody .button        { margin-top: 1em; }
+#resetPasswordFormBody .error,
+#resetPasswordFormBody .description,
+#resetPasswordFormBody .message,
+#resetPasswordFormBody .password,
+#resetPasswordFormBody .verify        { text-align: left; }
+#resetPasswordFormBody .label         { margin-bottom: 5px; }
+#resetPasswordFormBody input          { width: 245px; border: 1px solid #80923f; font-family: Verdana; font-size: 11pt; }
+#resetPasswordFormBody .dijitTextBox  { border: 1px solid #80923f; }
+
+/* Remember Me Details Pane */
+#rememberMeDetails { text-align: left; }
+
+/* Email/Catalog Sign-Up Panel */
+#emailDropDown .sprite-icon-cup { margin-right: 1em; } 
+#emailDropDown .error
+#emailDropDown .button,
+#emailDropDown .requestCatalog        { margin-top: 1em; }
+#emailDropDown .label                 { float: left; margin-right:5px;}
+#emailDropDown .field                 { float: right; width: 150px; border: 1px solid #80923f;  }
+#emailDropDown .emailTextBox          { width: 150px; }
+.ie_6    #emailDropDown .emailTextBox { width: 145px; }
+.firefox #emailDropDown .emailTextBox { width: 153px; }
+
+#emailDropDown .emailInput            { float: left; padding-top: 10px; }
+#emailDropDown .email                 { float: left; }
+#emailDropDown .button                { float: right; padding-top: 10px; }
+.firefox #emailDropDown .button       { float: right; padding-top: 12px; padding-bottom: 10px; }
+#emailDropDown .requestCatalog        { text-align: right; }
+#emailDropDown .requestCatalog .right { margin-top: 10px;  }
+
+/* Mini Cart Panel */
+#minicart .close                       { text-align: right; }
+
+#minicart .add-item                    { padding: 5px; font-weight: bold; background-color: #fff; }
+
+#minicart.dijitContentPane             { overflow: visible !important; }
+#minicart .item-cart .dijitContentPane { display: inline; }
+
+#minicart .title                       { text-align: right; }
+#minicart .item-cart .text             { display: inline-block; margin: 9px 0; }
+#minicart .item-cart-icon              { display: inline-block; margin-left: 1em; background-image: url("../../../common/images/sprites/global.png"); background-position: -49px -76px; width: 26px; height: 32px; } /* sprite: cart full */
+
+#minicart .image                       { float: left;  width: 111px; }
+#minicart .details                     { float: right; width: 134px; margin-top: 8px;}
+#minicart .error,
+#minicart .details .title,
+#minicart .details .attribute,
+#minicart .details .price              { font-weight: bold; text-align: left; }
+#minicart .error,
+#minicart .details .added-msg,
+#minicart .details .title,
+#minicart .details .number             { margin-top: 1em; }
+#minicart .details .number             { margin-bottom: 1em; }
+#minicart .details .qty                { float: left; }
+#minicart .details .price              { float: right; }
+#minicart .details .error              { color: #c00 !important; }
+#minicart .details .error .title       { font-weight: bold; padding-bottom: 20px; }
+#minicart .buttons                     { text-align: right; padding-top: 10px;}
+#minicart .button                      { width: 160px; text-align: center; }
+#minicart .product-unavail-error       { color: #CC2036;}
+#minicart .continue-checkout           { display: none; }
+#minicart .spacer                      { width: 5px; height: 5px; }
+.ipad #minicart .spacer                { width: 20px; height: 20px; }
+.minicart_underlay                     { opacity: 0.0; }
+#BTN_PROCEEDTOCHECKOUT_addToCart       { margin-bottom: 5px; }
+
+/* Firefox */
+.firefox #header .giftlist-link span,
+.firefox #header .my-account span                  { margin-bottom: -6px; }
+
+/*********************************************************************************************************************/
+/* Start: header-part.css                                                                                            */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: menus-part.css                                                                                             */
+/*********************************************************************************************************************/
+
+
+/*********************************************************************************************************************/
+/*  End : menus-part.css                                                                                             */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: navigation-part.css                                                                                        */
+/*********************************************************************************************************************/
+
+
+#navigation           { float: left; width: 130px; margin: 0 0 15px;  }
+#navigation a         { display: block; padding: 5px; text-decoration: none; cursor: pointer; }
+#navigation a:hover   { color: #3c3c3c; text-decoration: none; }
+#navigation .note     { padding: 5px; }
+
+#navigation .open a,
+#navigation .close a           { font-weight: bold;   border-top: 1px solid #ccc; }
+#navigation .collapse          { display: none; }
+#navigation .expand a          { font-weight: normal; border-top: 1px solid #ccc; }
+#navigation .expand .expand  a { padding-left: 15px; border-top: none; }
+
+#navigation .toggle       { text-decoration: underline; cursor: pointer; }
+#navigation .toggle:hover { text-decoration: none; }
+
+
+/* Espot left nav */
+
+#navigation .espot               { margin-bottom: 5px; padding: 0 5px; }
+#navigation .espot img           { margin-bottom: 15px; width: 150px; }
+#navigation .category-nav-espots { padding-top: 20px; }
+
+/* Page Tweaks */
+
+#page { padding-right: 10px; width: 930px; }
+
+/* Content Tweaks */
+
+#content           { float: right; width: 784px; }
+#content .ticketed { padding: 0 18px; width: 750px; }
+
+#content           .half-n-half .left,
+#content           .half-n-half .right,
+#content .ticketed .half-n-half .left,
+#content .ticketed .half-n-half .right { width: 370px; }
+
+
+/*********************************************************************************************************************/
+/*  End : navigation-part.css                                                                                        */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: product-display-part.css                                                                                   */
+/*********************************************************************************************************************/
+
+.product-display .group,
+.product-display .spacer                     { float: left; }
+.product-display .group                      { position: relative; width: 140px; }
+.product-display .spacer                     { width: 24px; height: 24px; }
+
+.product-display .group .title               { font-size:15px; font-weight:bold; margin:10px; text-align:center; }
+
+.product-display .group .image               { position: relative; overflow: hidden; }
+.product-display .quickViewLinkX,
+.product-display .quickViewLink              { display: block; position: absolute; top: -100px; right: 0;
+                                               padding: 10px 20px; width: auto; height: auto;
+                                               font-size: 10px; font-weight: bold;
+                                               text-decoration: none; text-transform: uppercase; text-shadow: 1px 1px 0 #000;
+                                               color: #fff; background: rgb(90,90,90); background: rgba(60,60,60,.8); }
+.product-display .quickViewLinkX a,
+.product-display .quickViewLink a            { font-weight: bold;
+                                               text-decoration: none; text-transform: uppercase; text-shadow: 1px 1px 0 #000;
+                                               color: #fff; }
+
+.product-display.horizontal .group           { float: none; width: 350px; }
+.product-display.horizontal .spacer          { float: none; }
+.product-display.horizontal .image           { float: left; width: 140px; height: 140px; }
+.product-display.horizontal .details         { float: right; width: 203px; }
+
+.product-display .item-number                { color: #000; }
+
+.product-display .group .name                { margin-bottom: 5px; }
+.product-display .group .name a              { text-decoration: none; }
+.product-display .group .name a:hover        { text-decoration: underline; }
+
+.pricing .normal                             { display: inline-block; font-weight: bold; }
+.pricing .full                               { display: inline-block; padding: 0 0.6em 0 0;color: #777; text-decoration: line-through; }
+.pricing .sale                               { display: inline-block; padding: 0 0.6em 0 0; font-weight: bold; }
+.pricing .percent                            { display: inline-block; font-weight: bold; color: #CD202C; }
+
+.product-display .group .rating              { margin-top: 5px; }
+.product-display .group .rating img          { padding-right: 5px; vertical-align: middle; }
+.product-display .group .ratingCount         { vertical-align: middle; }
+.product-display .group .ratingCount a       { text-decoration: none; }
+.product-display .group .ratingCount a:hover { text-decoration: underline; }
+
+.product-display .group .compare             { margin-top: 5px; }
+.product-display .group .compare input       { margin: 0; padding: 00; vertical-align: middle; }
+.product-display .group .compare a           { display: inline-block; margin-left: 3px; text-decoration: none; vertical-align: middle; cursor: pointer; }
+.product-display .group .compare a:hover     { text-decoration: underline; }
+
+.product-display.vertical .group,
+.product-display.vertical .spacer            { float: none; }
+
+/*********************************************************************************************************************/
+/*  End : product-display-part.css                                                                                   */
+/*********************************************************************************************************************/
+/*********************************************************************************************************************/
+/* Start: footer-part.css                                                                                            */
+/*********************************************************************************************************************/
+
+#footer .button {
+  display: inline-block;
+  margin: 0;
+  padding: 4px 6px;
+  color: #fff;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#footer .button:hover {
+  color: #fff;
+}
+#footer .button:visited {
+  color: #fff;
+}
+#footer a.button:hover {
+  text-decoration: none;
+}
+
+#banners {
+  margin: 20px 0 0 0;
+}
+
+#footer {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #999;
+  font-size: 14px;
+}
+#footer .column-links {
+  float: left;
+  padding-right: 10px;
+  width: 450px;
+  border-right: 1px solid #999;
+  line-height: 22px;
+}
+#footer .column-links .left {
+  float: left;
+  width: 210px;
+}
+#footer .column-links .right {
+  float: left;
+  margin-left: 20px;
+  width: 210px;
+}
+#footer .column-links .phone {
+  margin: 0 0 5px 0;
+  color: #777;
+}
+#footer .column-links a {
+  text-decoration: none;
+  color: #777;
+}
+#footer .column-links a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+#footer .column-links .heading {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #000;
+}
+#footer .column-links a + .heading {
+  margin-top: 6px;
+}
+#footer .column-misc {
+  float: right;
+  width: 450px;
+  color: #3c3c3c;
+}
+#footer .column-misc .row {
+  padding: 0 16px;
+}
+#footer .column-misc .row + .row {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+#footer .column-misc .cell {
+  float: left;
+}
+#footer .column-misc .cell + .cell {
+  margin-left: 32px;
+  padding-left: 32px;
+  border-left: 1px solid #ccc;
+}
+#footer .column-misc .heading {
+  text-decoration: none;
+  color: #000;
+}
+#footer .column-misc b {
+  color: #000;
+}
+#footer .column-misc .description {
+  margin: 0 0 0.25em;
+  line-height: 16px;
+}
+#footer .column-misc input {
+  padding: 2px 4px;
+  height: 21px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  vertical-align: bottom;
+}
+#footer .column-misc a {
+  display: inline-block;
+  text-decoration: none;
+}
+#footer .column-misc a:hover {
+  text-decoration: underline;
+}
+#footer .column-misc .button {
+  display: inline-block;
+}
+#footer .column-misc .social .links a {
+  float: left;
+}
+#footer .column-misc .social .links a + a {
+  margin-left: 16px;
+}
+#footer .column-misc .social .links .text {
+  line-height: 32px;
+  text-decoration: underline;
+  text-transform: uppercase;
+  color: #000;
+}
+#footer .column-misc .social .links .text:hover {
+  text-decoration: none;
+}
+#footer .column-misc .social .fb-like {
+  margin-top: 16px;
+}
+#footer .column-misc .email form {
+  position: relative;
+}
+#footer .column-misc .email input {
+  padding-right: 1em;
+  width: 300px;
+}
+#footer .column-misc .email .button {
+  display: inline-block;
+  vertical-align: bottom;
+}
+#footer .guarantee {
+  display: block;
+  margin: 16px 0 0;
+  padding: 4px 0;
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: 0 1px #8a8471;
+  color: #fff;
+  background: #cbc3a2;
+}
+#footer .guarantee:hover {
+  text-decoration: underline;
+}
+#footer .footing {
+  padding: 16px 0;
+}
+#footer .footing .copyright,
+#footer .footing .copyright a {
+  color: #999;
+}
+#footer .footing .secure a {
+  display: block;
+  width: 100px;
+}
+
+/*********************************************************************************************************************/
+/*  End : footer-part.css                                                                                            */
+/*********************************************************************************************************************/
+
+
+
+#content .main { float: left; margin: 0 20px; width: 445px; }
+#content .side { float: right; width: 260px; }
+
+#content h2          { margin: 0 0 0.5em 0; color: #000; font-size: 24px; font-weight: normal; line-height: 40px; }
+#content h3          { margin: 20px 0 0 0;  color: #000; font-size: 16px; font-weight: normal; }
+#content h4          { margin: 10px 0 0 0; font-size: 11px; font-weight: bold; }
+#content p           { margin: 10px 0 0 0; }
+#content ul          { margin: 10px 0 0 2em; }
+#content li          { margin: 0 0 10px 0; }
+#content dl          { margin: 10px 0 0 0; }
+#content dt          { font-weight: bold; }
+
+#content ul.compact li { margin: 0; } 
+
+#content .table-wrap            { padding: 12px; background-color: #F6F6F6; }
+#content table                  { border-collapse: collapse; }
+#content table th               { padding: 4px 2px; }
+#content table td               { padding: 4px 2px; }
+#content table th.sub,
+#content table th .sub          { font-size: 16px; font-weight: normal; }
+#content table thead th         { font-size: 20px; line-height: 1em; text-align: left; }
+#content table thead tr + tr th { font-size: 16px; }
+#content table thead th + th    { text-align: center; }
+#content table tbody th         { font-weight: bold; text-align: left; }
+#content table tbody td         { border: 1px solid #999; border-width: 1px 0; text-align: left; }
+#content table tbody th + td,
+#content table tbody td + td    { text-align: center; }
+#content table tfoot th,
+#content table tfoot td         { text-align: left; }
+
+
+#content .side h3          { padding-bottom: 5px;
+                             font-size: 20px; font-weight: normal;
+                             line-height: 20px; border-bottom: 1px solid #000; }
+#content .side h3.first    { margin-top: 0; }
+#content .side p           { margin: 11px 0 0 0; }
+#content .side a,
+#content .side a:link,
+#content .side .link-color { color: #000; }
+
+#content .side .addthis                 { margin: 0 auto; width: 180px; }
+#content .side .addthis_label           { padding: 0 5px 0 0; font-weight: bold; }
+#content .side .addthis_toolbox         { margin: 10px 0; }
+#content .side .addthis_button_expanded { line-height: 32px; vertical-align: middle; }
+#content .side #AddThis                 { outline: none; }
+
+#content .side .product-display .group     { float: none; width: auto; }
+#content .side .product-display .image     { margin: 10px auto; padding: 10px; width: 178px; height: 178px; background: url("../../images/backgrounds/photo-border-178.png") no-repeat; }
+#content .side .product-display .image img { width: 178px; height: 178px; }
+
+/* Recipes */
+#content .file-recipes h2 { margin-top: 12px; }
+
+/* Videos for Easy Entertainging */
+#content .file-videos .episodes         { text-align: right;}
+#content .file-videos .videos,
+#content .file-videos .video            { margin-top: 20px; }
+#content .file-videos .video h4,
+#content .file-videos .video p          { margin-top: 3px; }
+#content .file-videos .video .image     { padding: 10px; width: 178px; height: 103px; background: url('../../images/backgrounds/video-border-178-103.png') no-repeat; }
+#content .file-videos .video .image img { width: 178px; height: 103px; }
+
+/* Harvest Report */
+#content .file-harvest-report .main .genericESpot { display: inline; }
+
+/* Retail Careers */
+#content .file-retail-careers .background-dot-horizontal { margin-top: 10px; }
+#content .file-retail-careers table { width:100%; margin: 20px 0; }
+#content .file-retail-careers th,
+#content .file-retail-careers td        { padding: 2px; }
+#content .file-retail-careers thead th  { border-bottom: 1px solid #000; }
+#content .file-retail-careers .name     { width: 65%; }
+#content .file-retail-careers .location { width: 35%; }
+#content .file-retail-careers tr.alt    { background: #ddd; }
+#content .file-retail-careers tfoot td  { border-top: 1px solid #000; }
+
+/* Store Locator */
+#content .file-store-locator { float: right; width: 774px; }
+
+#content .file-store-locator #errors         { display: none; color: #f00; }
+#content .file-store-locator #errors div     { padding: 3px; }
+
+#content .file-store-locator .section-top h2 { margin: 11px 0; }
+#content .file-store-locator .section-top p  { margin-top: 6px; color: #3c3c3c; }
+
+#content .file-store-locator #location { margin: 12px 0 6px; padding: 5px; width: 160px; border: 1px solid #3c3c3c; border-radius: 4px; }
+
+#content .file-store-locator .section-sub-features                 { margin: 10px 0; }
+#content .file-store-locator .section-sub-features a         { display: block; float: left; }
+#content .file-store-locator .section-sub-features a + a     { margin-left: 10px; }
+#content .file-store-locator .section-sub-features a + a + a { float: right; margin-left: 0; }
+
+#content .file-store-locator .locations                         { margin-top: 16px; }
+#content .file-store-locator .locations .column                 { float: left; width: 252px; }
+#content .file-store-locator .locations .column + .column       { margin-left: 10px; }
+#content .file-store-locator .locations .column.last            { float: right; margin-left: 0; }
+#content .file-store-locator .locations .separator              { float: left; width: 10px; height: 10px; }
+#content .file-store-locator .locations .state                  { padding: 5px 0; font-size: 13px; }
+#content .file-store-locator .locations .state span             { cursor: pointer; }
+#content .file-store-locator .locations .state a                { text-decoration: none; color: #3c3c3c; line-height: 14px; }
+#content .file-store-locator .locations .stores                 { padding: 5px 5px 5px 0; }
+#content .file-store-locator .locations .store                  { padding: 0; }
+#content .file-store-locator .locations .store + .store         { padding-top: 18px; }
+#content .file-store-locator .locations .store.holiday .message { font-weight: bold; color: #BF311A; }
+#content .file-store-locator .locations .store .name            { font-weight: bold; color: #000; }
+#content .file-store-locator .locations .store .directions      { display: block; margin: 6px 0 0 0; text-transform: uppercase; font-size: smaller; }
+
+#content .file-store-locator .icon-store-locator-expand,
+#content .file-store-locator .icon-store-locator-collapse       { display: inline-block; width: 14px; height: 14px; font-size: 0; line-height: 0; vertical-align: bottom; }
+#content .file-store-locator .icon-store-locator-expand         { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJZJREFUeNpiZEACO3fudABS+UAcwIAKNgDxRHd39wMwAUYkTf1AqoABP1gA1JwI1wjUNB9IJTAQByYANRcyQp23H13Wzc0NTO/atQubZkcmqJ9IBflMWAKCGBDAgs15uMSQnc3EQCZAsRHZRAKBA7ZxAxkWbgBpnEiGxomMJKQalNQDDhxQSgClCCJTTSJKWiU1kQMEGAD3AzIiqn8XbQAAAABJRU5ErkJggg=="); }
+#content .file-store-locator .icon-store-locator-collapse       { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAI5JREFUeNpiZEACO3fudABS+UAcwIAKNgDxRHd39wMwAUYkTf1AqoABP1gA1JwI1wjUNB9IJTAQByYANRcyQp23n4E04MgE9ROpIJ8JS0AQAwJYkHlubm54Ve/atQvOZmIgE7DgMpEQYIJGLqlgA0jjRDI0TmSCJqMJJGgCpZ4DpCY5cKpBSaukJnKAAAMAEV0sDrAFMVcAAAAASUVORK5CYII="); }
+.ie_7 #content .file-store-locator .icon-store-locator-expand   { background-image: url("../../images/icon/store-locator-expand.png"); }
+.ie_7 #content .file-store-locator .icon-store-locator-collapse { background-image: url("../../images/icon/store-locator-collapse.png"); }
+
+#dialog-map a,
+#dialog-map a:link,
+#dialog-map .link-color { color: #000; }
+
+#dialog-map #map_info                         { position: relative; float: left; width: 220px; height: 400px; text-align: left; overflow: auto; }
+#dialog-map #map_info .store + .store         { padding-top: 18px; }
+#dialog-map #map_info .name                   { margin: 0 10px 0 0; font-weight: bold; }
+#dialog-map #map_info .name a                 { color: #80923f; }
+#dialog-map #map_info .distance               { float: right; }
+#dialog-map #map_info .message,
+#dialog-map #map_info .name,
+#dialog-map #map_info .address,
+#dialog-map #map_info .phone,
+#dialog-map #map_info .hours                  { margin-bottom: 0.5em; }
+#dialog-map #map_info .store.holiday .message { font-weight: bold; color: #BF311A; }
+#dialog-map #map_info .separator              { margin: 5px 0; width: 200px; height: 10px; clear: both; }
+#dialog-map #map_canvas                       { float: left; width: 500px; height: 400px; }
+
+/* About Us */
+#content .file-about-us .videos .group { float: left; margin: 15px 3px 0 0; width: 145px; text-align: center; }
+#content .file-about-us .videos img    { margin-bottom: 5px; }
+#content .file-about-us .videos .title { font-weight: bold; }
+
+/* Green Promise */
+#content .file-green-promise .links { margin-bottom: 11px; text-align: center; }
+
+/* Tours */
+#content .file-tours .background-dot-horizontal { margin-top: 16px; }
+#content .file-tours .side img                  { margin: 0 auto; width: 198px; height: 198px; }
+#content .file-tours #map_canvas                { margin-top: 15px; width: 445px; height: 445px; }
+
+/* News */
+
+#content .file-news .main          { margin-right: 0; width: 465px; }
+#content .file-news .entries       { width: 465px; height: 950px; overflow: auto; }
+#content .file-news .entry         { padding: 5px; width: 430px; }
+#content .file-news .separator     { width: 20px; height: 20px; font-size: 0; line-height: 0; }
+#content .file-news .image         { float: left; margin-right: 10px; width: 100px; height: 100px; text-align: center; overflow: hidden; }
+#content .file-news .description   { float: left; width: 320px; }
+#content .file-news .description p { margin: 0 0 5px 0; }
+#content .file-news .highlight     { background: #f4f2ec; }
+
+#content .file-news .caret       { display: inline-block; width: 12px; height: 9px; font-size: 0; background: url("http://www.harryanddavid.com/content/Hand/images/news/sprite.png") 0 0 no-repeat; overflow: hidden; }
+#content .file-news .open .caret { background-position: 0 -10px; }
+
+#content .file-news #facebook,
+#content .file-news #twitter   { margin: 20px auto 0; width: 260px; }
+
+#content .file-news #twitter                        { border: none; }
+#content .file-news #twitter h2                     { float: none; margin: 0; width: auto; background: none; }
+#content .file-news #twitter h3                     { border-bottom: none; }
+#content .file-news #twitter ul#twitter_update_list { height: 300px; overflow: auto; }
+
+
+/* Customer Service */
+
+/* FAQ */
+#content .question       { display: inline-block; font-weight: bold; text-decoration: underline; }
+#content .question.hover { text-decoration: none; cursor: pointer; }
+#content .answer         { margin: 10px 0 0 10px; }
+#content .answer p       { margin: 0 0 10px 0; }
+
+/* Privacy Policy  */
+#content #privacyTerms h3 { border-bottom: 1px solid #000; }
+
+/* Shipping Cut Offs */
+#content .cutoff-dates th      { font-size: 14px; text-align: center; vertical-align: bottom; }
+#content .cutoff-dates th,
+#content .cutoff-dates td      { width: 24%; }
+#content .cutoff-dates th + th,
+#content .cutoff-dates td + td { width: 19%; }
+
+/* Delivery and Processing */
+#content .file-handling .table-wrap { float: left; }
+
+#content .std-delivery              { margin: 18px 0 0 0; }
+#content .std-delivery table        { width: 277px; }
+#content .std-delivery td           { width: 50%; text-align: left; }
+#content .std-delivery td + td      { text-align: center; }
+
+#content .exp-delivery              { margin: 18px 0 0 18px; }
+#content .exp-delivery table        { width: 400px; }
+#content .exp-delivery td           { width: 65%; text-align: left; }
+#content .exp-delivery td + td      { width: 35%; text-align: center; }
+
+#content .mis-delivery              { margin: 18px 0 0 18px; }
+#content .mis-delivery table        { width: 400px; }
+#content .mis-delivery td           { width: 50%; text-align: left; }
+#content .mis-delivery td + td      { width: 50%; text-align: center; }
+
+/* Shopping Services */
+
+/* Greeting Cards */
+#content .file-greeting-cards #cards            { margin: 10px 0 0 0; }
+#content .file-greeting-cards .card             { float: left; margin: 0 9px 10px; }
+#content .file-greeting-cards .card img         { border: 1px solid #fff; }
+#content .file-greeting-cards .card.last        { margin-right: 0; }
+#content .file-greeting-cards .card .consumer   { padding: 2px; text-align: center; }
+#content .file-greeting-cards .card .horizontal { margin: 28px 0; }
+
+/* B2B */
+
+/* Contact Us */
+
+#content .file-b2b-contactus table    { margin: 0; padding: 0; border: none; }
+#content .file-b2b-contactus table td { border: none; text-align: left; }
+
+
+/*********************************************************************************************************************/
+/*  End : information-base.css                                                                                       */
+/*********************************************************************************************************************/
+
 
 /*********************************************************************************************************************/
 /* Start: global-part.css                                                                                            */
@@ -498,39 +4591,81 @@ span.sprite-checkout-step-2-unset              { display: inline-block; }
 /* Start: buttons-part.css                                                                                           */
 /*********************************************************************************************************************/
 
-.btn { font-family: 'FreightSansPro Bold', helvetica; font-weight: normal; }
+.button {
+  font-family: 'FreightSansPro Bold', verdana;
+  font-size: 15px;
+}
 
-/* CSS Button Colors */
-.btn                           { background-color: #88A649; }
-.btn:hover                     { background-color: #658528; }
-.btn.btn-green                 { background-color: #88A649; }
-.btn.btn-green:hover           { background-color: #658528; }
-.btn.btn-red                   { background-color: #ac0d2b; }
-.btn.btn-red:hover             { background-color: #94001c; }
-.btn.btnAddToCart              { background-color: #ea162f; }
-.btn.btnAddToCart:hover        { background-color: #be1e29; }
-.btn.btn-disabled,
-.btn.btn_disabled:hover,
-.btn.dijitButtonDisabled,
-.btn.dijitButtonDisabled:hover { background-color: #adb09f; }
-
-/* CSS Button Border Colors for IE 6 */
-.ie_6 .btn                    { border-color: #88A649; }
-.ie_6 .btn:hover              { border-color: #658528; }
-.ie_6 .btn.btn-green          { border-color: #88A649; }
-.ie_6 .btn.btn-green:hover    { border-color: #658528; }
-.ie_6 .btn.btn-red            { border-color: #ac0d2b; }
-.ie_6 .btn.btn-red:hover      { border-color: #94001c; }
-.ie_6 .btn.btnAddToCart       { border-color: #ea162f; }
-.ie_6 .btn.btnAddToCart:hover { border-color: #be1e29; }
-.ie_6 .btn.btn-disabled,
-.ie_6 .btn.btn_disabled:hover,
-.ie_6 .btn.dijitButtonDisabled,
-.ie_6 .btn.dijitButtonDisabled:hover { border-color: #adb09f; }
+.button.CTA-primary {
+  text-decoration: none;
+  text-shadow: 0 -1px 0 #a31a1a;
+  background: #db142b;
+  background: -moz-linear-gradient(top, #db142b 0%, #a31a1a 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #db142b), color-stop(100%, #a31a1a));
+  background: -webkit-linear-gradient(top, #db142b 0%, #a31a1a 100%);
+  background: -o-linear-gradient(top, #db142b 0%, #a31a1a 100%);
+  background: -ms-linear-gradient(top, #db142b 0%, #a31a1a 100%);
+  background: linear-gradient(top, #db142b 0%, #a31a1a 100%);
+  border: 1px solid #a31a1a;
+}
+.button.CTA-primary:hover {
+  background: #BF1722;
+  background: -moz-linear-gradient(top, #BF1722 0%, #BF1722 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #BF1722), color-stop(100%, #BF1722));
+  background: -webkit-linear-gradient(top, #BF1722 0%, #BF1722 100%);
+  background: -o-linear-gradient(top, #BF1722 0%, #BF1722 100%);
+  background: -ms-linear-gradient(top, #BF1722 0%, #BF1722 100%);
+  background: linear-gradient(top, #BF1722 0%, #BF1722 100%);
+}
+.button.CTA-secondary {
+  text-decoration: none;
+  text-shadow: 0 -1px 0 #658528;
+  background: #7f9e3e;
+  background: -moz-linear-gradient(top, #9ab854 0%, #658528 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9ab854), color-stop(100%, #658528));
+  background: -webkit-linear-gradient(top, #9ab854 0%, #658528 100%);
+  background: -o-linear-gradient(top, #9ab854 0%, #658528 100%);
+  background: -ms-linear-gradient(top, #9ab854 0%, #658528 100%);
+  background: linear-gradient(top, #9ab854 0%, #658528 100%);
+  border: 1px solid #658528;
+}
+.button.CTA-secondary:hover {
+  background: #9ab854;
+  background: -moz-linear-gradient(top, #9ab854 0%, #9ab854 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9ab854), color-stop(100%, #9ab854));
+  background: -webkit-linear-gradient(top, #9ab854 0%, #9ab854 100%);
+  background: -o-linear-gradient(top, #9ab854 0%, #9ab854 100%);
+  background: -ms-linear-gradient(top, #9ab854 0%, #9ab854 100%);
+  background: linear-gradient(top, #9ab854 0%, #9ab854 100%);
+}
+.button.dijitButtonDisabled,
+.button.CTA-tertiary {
+  text-decoration: none;
+  text-shadow: 0 -1px 0 #777777;
+  background: #b9b9b9;
+  background: -moz-linear-gradient(top, #b9b9b9 0%, #777777 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b9b9b9), color-stop(100%, #777777));
+  background: -webkit-linear-gradient(top, #b9b9b9 0%, #777777 100%);
+  background: -o-linear-gradient(top, #b9b9b9 0%, #777777 100%);
+  background: -ms-linear-gradient(top, #b9b9b9 0%, #777777 100%);
+  background: linear-gradient(top, #b9b9b9 0%, #777777 100%);
+  border: 1px solid #777777;
+}
+.button.dijitButtonDisabled:hover,
+.button.CTA-tertiary:hover {
+  background: #b2b2b2;
+  background: -moz-linear-gradient(top, #b2b2b2 0%, #b2b2b2 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b2b2b2), color-stop(100%, #b2b2b2));
+  background: -webkit-linear-gradient(top, #b2b2b2 0%, #b2b2b2 100%);
+  background: -o-linear-gradient(top, #b2b2b2 0%, #b2b2b2 100%);
+  background: -ms-linear-gradient(top, #b2b2b2 0%, #b2b2b2 100%);
+  background: linear-gradient(top, #b2b2b2 0%, #b2b2b2 100%);
+}
 
 /*********************************************************************************************************************/
 /*  End : buttons-part.css                                                                                           */
 /*********************************************************************************************************************/
+
 /*********************************************************************************************************************/
 /* Start: dijit-dialog-part.css                                                                                      */
 /*********************************************************************************************************************/
@@ -659,10 +4794,6 @@ b, strong  { font-family: 'FreightSansPro Bold', helvetica; font-weight: normal;
 /* JanRain */
 #janrainEngageEmbed .janrainHeader div { font-family: 'FreightSansPro Bold', verdana !important; font-size: 14px !important; font-weight: normal !important; }
 
-/* Checkout Quick Order */
-#cqoFrame .btn       { background-color: #ea162f; }
-#cqoFrame .btn:hover { background-color: #be1e29; }
-
 /*********************************************************************************************************************/
 /*  End : global-part.css                                                                                            */
 /*********************************************************************************************************************/
@@ -711,14 +4842,14 @@ b, strong  { font-family: 'FreightSansPro Bold', helvetica; font-weight: normal;
 #header .phone          { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; }
 
 /* Left Side */
-      #header .utility-left           { border-right: 1px solid #ccc; }
-      #header .search .label          { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; color: #658528; }
-      #header .search .btn-label span { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAYAAAC5tzfZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEZDOUJERTMxOTNCMTFFMjkzMDNFREU0QjkyOUVGQkMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEZDOUJERTQxOTNCMTFFMjkzMDNFREU0QjkyOUVGQkMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4RkM5QkRFMTE5M0IxMUUyOTMwM0VERTRCOTI5RUZCQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4RkM5QkRFMjE5M0IxMUUyOTMwM0VERTRCOTI5RUZCQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgDAW8IAAACrSURBVHjajFEBEcIwDAwoQEIlVMJwgIRKmAQcIGE4mARwUBxMQnEQwvhsT+nu+Lvf9ZJ8+v2JqorxYDwbJ/3GaIyYWeiCrNsotfD9uVCzp2ZHywqWLyJHX9vAYEE/eX0vK67yi6fxgXPwIouitBFowQd23Q3XZ/YNDmQ/8Jsi+S4YrOPPdXounDbi5n82O9nNyhUdKAjgbjwZB6odpRFzi4mt/ivit6eXAAMAkt6bIfbWMwsAAAAASUVORK5CYII="); }
-.ie_7 #header .search .btn-label span { background-image: url("../../images/icon/magnify-glass.png"); }
+      #header .utility-left        { border-right: 1px solid #ccc; }
+      #header .search .label       { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; color: #658528; }
+      #header .search .button span { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAYAAAC5tzfZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OEZDOUJERTMxOTNCMTFFMjkzMDNFREU0QjkyOUVGQkMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OEZDOUJERTQxOTNCMTFFMjkzMDNFREU0QjkyOUVGQkMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4RkM5QkRFMTE5M0IxMUUyOTMwM0VERTRCOTI5RUZCQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4RkM5QkRFMjE5M0IxMUUyOTMwM0VERTRCOTI5RUZCQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgDAW8IAAACrSURBVHjajFEBEcIwDAwoQEIlVMJwgIRKmAQcIGE4mARwUBxMQnEQwvhsT+nu+Lvf9ZJ8+v2JqorxYDwbJ/3GaIyYWeiCrNsotfD9uVCzp2ZHywqWLyJHX9vAYEE/eX0vK67yi6fxgXPwIouitBFowQd23Q3XZ/YNDmQ/8Jsi+S4YrOPPdXounDbi5n82O9nNyhUdKAjgbjwZB6odpRFzi4mt/ivit6eXAAMAkt6bIfbWMwsAAAAASUVORK5CYII="); }
+.ie_7 #header .search .button span { background-image: url("../../images/icon/magnify-glass.png"); }
       #header .links,
-      #header .links a                { color: #3C3C3C; }
-      #header .giftlist-link a        { color: #4a6614; }
-      #header .links #giftlistIcon    { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; }
+      #header .links a             { color: #3C3C3C; }
+      #header .giftlist-link a     { color: #4a6614; }
+      #header .links #giftlistIcon { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; }
 
 /* Logo */
 #header .logo a { background-image: url("../../images/header/logo.png"); }
@@ -742,10 +4873,6 @@ b, strong  { font-family: 'FreightSansPro Bold', helvetica; font-weight: normal;
 #minicart .details .title,
 #minicart .details .attribute,
 #minicart .details .price                { font-family: 'FreightSansPro Bold', verdana; font-weight: normal; }
-#minicart .btn.primary                   { background-color: #ea162f; }
-#minicart .btn.primary:hover             { background-color: #be1e29; }
-#BTN_PROCEEDTOCHECKOUT_addToCart_2       { background-color: #ea162f; }
-#BTN_PROCEEDTOCHECKOUT_addToCart_2:hover { background-color: #be1e29; }
 
 /*********************************************************************************************************************/
 /*  End : header-part.css                                                                                            */
@@ -847,8 +4974,6 @@ b, strong  { font-family: 'FreightSansPro Bold', helvetica; font-weight: normal;
 #menu .recommendations .price             { margin: 5px 0 0 0; }
 #menu .recommendations .ratingCount       { display: none; }
 #menu .recommendations .buynow            { position: absolute; bottom: 0; right: 0; }
-#menu .recommendations .buynow .btn       { background-color: #ea162f; }
-#menu .recommendations .buynow .btn:hover { background-color: #be1e29; }
 
 #menu .dropdown .clearfix    { height: 0px; }
 #menu .columns.clearfix,
@@ -993,8 +5118,6 @@ b, strong  { font-family: 'FreightSansPro Bold', helvetica; font-weight: normal;
 /*********************************************************************************************************************/
 /*  End : footer-part.css                                                                                            */
 /*********************************************************************************************************************/
-
-@import url("ui-theme/jquery-ui-1.7.custom.css");
 
 #content h2 { margin: 0 0 0.5em 0; font-family: 'FreightSansPro Bold', helvetica; font-size: 30px; font-weight: normal; line-height: 33px; color: #3c3c3c; }
 #content h3 { margin: 20px 0 0 0;  font-family: 'FreightSansPro Bold', helvetica; font-size: 18px; font-weight: normal; color: #3c3c3c; }

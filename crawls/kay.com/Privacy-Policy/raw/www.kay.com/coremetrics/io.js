@@ -19,6 +19,5 @@ arrays = [p_viewed.join(),p_carted.join(),p_purchased.join(),c_viewed.join(),c_n
 var cookie_value = [group_id.join(), products.join('~'), categories.join('~'), brands.join('~'), arrays.join('|')].join('~|~'); 
 
 IORequest.set_and_check_cookie(IORequest.state_cookie, cookie_value);
-/*
 cmCreatePageviewTag('Home Page', '', '', '', cm_ClientID);
-*/
+

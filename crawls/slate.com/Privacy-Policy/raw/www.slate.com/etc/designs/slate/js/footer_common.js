@@ -76,3 +76,13 @@ if (ASL != null && ASL.cfg != null && ASL.cfg.pid != null) {
     SG_Utils.loadScript("http://js.adsonar.com/js/aslJSON.js", true);
 }
 });
+
+
+// Gravity beacon
+(function(){
+window.gravityInsightsParams = {
+  'type': 'content',
+  'action': '',
+  'site_guid': '53f49b0f6d535df0db33fd036ef0b074'
+};
+var b,c;b="https:"===document.location.protocol?"https://b-ssl.grvcdn.com/moth-min.js":"http://b.grvcdn.com/moth-min.js";window.grvMakeScript=function(d){var a;a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src=d;return a};c=document.getElementsByTagName("script")[0];b&&c.parentNode.insertBefore(window.grvMakeScript(b),c);})();

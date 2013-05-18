@@ -1,7 +1,7 @@
-/* Timestamp: Thu May 09 23:19:32 PDT 2013*/if (window["v3Lander"]==null){
+/* Timestamp: Thu May 16 17:31:54 PDT 2013*/if (window["v3Lander"]==null){
 v3Lander={
 
-    codeVersion:'1368166772562',
+    codeVersion:'1368750714980',
 	v3Frame:false,
 	domState: "defer-failed",
 	domReady: false,
@@ -47,7 +47,7 @@ v3Lander={
 
 
 	_getHostedFileURL:function(domain){
-		if (!domain) domain = top.location.host ;					/* if domain has not been supplied, use our domain */
+		if (!domain) domain = window.location.host ;				/* if domain has not been supplied, use our domain */
 		domain = domain.toUpperCase();								/* make the domain upper case */
 		if ((!v3Lander.hostToPath) || v3Lander.hostToPath=={})		/* If we have no host-to-path map, then return the default URL */
 			return v3Lander.hostedFileURL;
@@ -77,7 +77,7 @@ v3Lander={
 			return v3Lander.hostedFileURL;
 		var url = null;
 		try{
-			url = v3Lander.hostToPath[top.location.host.toUpperCase()];
+			url = v3Lander.hostToPath[window.location.host.toUpperCase()];
 		} catch (e) {
 		
 		};
@@ -673,40 +673,75 @@ v3Lander={
 	}
 };
 
-	(v3Lander).isAtHostedFileURL=(window.location.href.indexOf(v3Lander.hostedFileURL) > -1);
-	(v3Lander).assignDomain();
 
- 
-	v3Lander.hostToPath["GALAXY-S.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
 	v3Lander.hostToPath["STAGING.MOBILE-BROADBAND.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
 	v3Lander.hostToPath["UAT-SUPPORT.T-MOBILE.COM"]="/___sbsstatic___/ftp-sync/chat/touchcommerce/inqChat.html";
  
-	v3Lander.hostToPath["PREPAID-PHONES.T-MOBILE.COM"]="/resources/html/inqChat.html";
- 
 	v3Lander.hostToPath["DEV.GALAXY-S.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
-	v3Lander.hostToPath["QC.GALAXY-S.T-MOBILE.COM"]="/resources/html/inqChat.html";
- 
-	v3Lander.hostToPath["MOBILE-BROADBAND.T-MOBILE.COM"]="/resources/html/inqChat.html";
+	v3Lander.hostToPath["STAGING4.EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
 	v3Lander.hostToPath["STAGING3.PREPAID-PHONES.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
-	v3Lander.hostToPath["T-MOBILESUPPORTALCOMMUNITY2.UAT3.HOSTED.JIVESOFTWARE.COM"]="/___sbsstatic___/ftp-sync/chat/touchcommerce/inqChat.html";
+	v3Lander.hostToPath["STAGING.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING3.EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
 	v3Lander.hostToPath["STAGING.GALAXY-S.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
-	v3Lander.hostToPath["216.52.234.239"]="/Implementation/tmobile/inqChat.html";
- 
-	v3Lander.hostToPath["QC.PREPAID-PHONES.T-MOBILE.COM"]="/resources/html/inqChat.html";
+	v3Lander.hostToPath["STAGING.EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
 	v3Lander.hostToPath["QC.MOBILE-BROADBAND.T-MOBILE.COM"]="/resources/html/inqChat.html";
  
 	v3Lander.hostToPath["SUPPORT.T-MOBILE.COM"]="/___sbsstatic___/ftp-sync/chat/touchcommerce/inqChat.html";
  
+	v3Lander.hostToPath["GALAXY-S.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["QC.EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["PREPAID-PHONES.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING5.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["QC.GALAXY-S.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["MOBILE-BROADBAND.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING2.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING8.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING5.EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["T-MOBILESUPPORTALCOMMUNITY2.UAT3.HOSTED.JIVESOFTWARE.COM"]="/___sbsstatic___/ftp-sync/chat/touchcommerce/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING4.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["216.52.234.239"]="/Implementation/tmobile/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING2.EXPLORE.MY.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["QC.PREPAID-PHONES.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["QC.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING3.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING6.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
+	v3Lander.hostToPath["STAGING7.EXPLORE.T-MOBILE.COM"]="/resources/html/inqChat.html";
+ 
 	(v3Lander).establishHostedFileURL();
 
+	(v3Lander).isAtHostedFileURL=(window.location.href.indexOf(v3Lander.hostedFileURL) > -1);
+	(v3Lander).assignDomain();
+	
 	if (window.location.href.indexOf("?BLNK")!=-1) {}
 	else if (window.location.href.indexOf("?XHR")!=-1) {
 		v3Lander.xhfToIjsf() ;
@@ -741,4 +776,4 @@ v3Lander={
 		v3Lander.main();
 	}
 }
-/* Timestamp: Thu May 09 23:19:32 PDT 2013*/
+/* Timestamp: Thu May 16 17:31:54 PDT 2013*/

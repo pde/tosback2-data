@@ -230,7 +230,7 @@ function renderGlobalNav() {
 	document.write('<option id="japanese-drop" value="japanese-drop">Japanese | &#26085;&#26412;&#35486;</option>');
 	document.write('<option id="korean-drop" value="korean-drop">Korean | &#54620;&#44397;&#50612;</option>');
 	document.write('<option id="polish-drop" value="polish-drop">Polish | Polski</option>');
-	document.write('<option id="russian-drop" value="russian-drop">Russian | &#1088;&#1091;&#1089;&#1089;&#1082;&#1086;&#1084; &#1103;&#1079;&#1099;&#1082;&#1077;</option>');
+	document.write('<option id="russian-drop" value="russian-drop">Russian | &#1088;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; &#1103;&#1079;&#1099;&#1082;</option>');
 	document.write('<option id="tagalog-drop" value="tagalog-drop">Tagalog</option>');
 	document.write('<option id="vietnamese-drop" value="vietnamese-drop">Vietnamese | Ti&#7871;ng Vi&#7879;tt</option>');
 	document.write('</select>');

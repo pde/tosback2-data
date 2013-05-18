@@ -138,6 +138,38 @@
         }
     };
 
+// search eyes
+  $(function() {  
+  var searchEyeBg = "1px -163px";
+  var searchSubmit = $("div#header-search input#header-search-submit");
+
+    function searchEyes(){
+        searchSubmit.css( 'background-position', '1px 1px');
+        searchSubmit.delay(100).animate({zoom:1},0,function(){$(this).css( 'background-position', searchEyeBg);})
+      }
+    (function eyeLoop() {
+        var rand = Math.round(Math.random() * (15000 - 5000)) + 500;
+        setTimeout(function() {
+                searchEyes();
+                eyeLoop();  
+        }, rand);
+    }());
+
+    $("input#header-search-query").focus( function()
+        {
+            searchEyeBg = "1px -163px";
+            searchSubmit.css( 'background-position', searchEyeBg);
+        },
+        function(){
+          searchEyeBg = "1px -81px";
+          searchSubmit.css( 'background-position', searchEyeBg);
+        } );
+   });
+
+    
+  // end search eyes
+    
+
     // utility nav dropdown 
    
      $(function(){

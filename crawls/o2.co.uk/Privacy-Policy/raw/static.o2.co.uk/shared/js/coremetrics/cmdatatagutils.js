@@ -1,8 +1,7 @@
-<!--
 /*
  * cmdatatagutils.js 
- * $Id: cmdatatagutils-MASTER.js.txt 145310 2010-04-30 15:06:51Z astockton $
- * $Revision: 145310 $
+ * $Id: cmdatatagutils-MASTER.js.txt 206630 2012-09-27 11:01:12Z astockton $
+ * $Revision: 206630 $
  *
  * Version 4.1.0
  *
@@ -17,6 +16,9 @@
  * 10/20/2009	   	WBIRD    	Add Explore Attributes - 10003319
  * 02/18/2010		ASTOCKTON	#7468172: Libraries unified and logic built in to allow o2 to use a common version across sites without requiring code changes on their end.
  * 04/14/2010		ASTOCKTON	#10016233: Removed support for customerMobile field from registration tag. This will be now passed in explore attributes.
+ * 11/03/2011		ASTOCKTON	#10122203: Added business-shop.o2.co.uk to the domain matching list.
+ * 25/09/2012		ASTOCKTON	#10195177: Added o2.co.uk/store to the domain matching list.
+ * 26/03/2013		SFRANCIS	Removed 90174272 from the o2.co.uk logic to reduce server calls.
  */
 
 /*#7468172: This block of code gets the host domain and strips off any parameters. Because of the o2.co.uk requirements, we cannot just use window.location.hostname*/
@@ -30,21 +32,21 @@ var cm_domains=new Array();
 Amendment #7468172
 Table of domain/client id pairings
 */
-
-cm_domains[0]={domainMatch:"www.o2.co.uk",client_id:"90174277;90174272"};
-cm_domains[1]={domainMatch:"(http|https)://o2.co.uk",client_id:"90174277;90174272"};
-cm_domains[2]={domainMatch:"(/|\\.)shop.o2.co.uk",client_id:"90174277;90174273"}; //Looks for "." or "/" then "shop.o2.co.uk". Reason: "shop.co.uk" appears in "businessshop.o2.co.uk" which should not post to the same id as shop.co.uk. (/|\\.) accounts for "http://", "https://" and "www." before shop.o2.co.uk but won't match any other preceding value.
-cm_domains[3]={domainMatch:"upgrades.o2.co.uk",client_id:"90174277;90174273"};
-cm_domains[4]={domainMatch:"together-we-stand.com",client_id:"90174277;90174273"};
-cm_domains[5]={domainMatch:"shop.ref9",client_id:"90174277;90174273"};
-cm_domains[6]={domainMatch:"https://service.o2.co.uk/onlineshop",client_id:"90174277;90174273"};
-cm_domains[7]={domainMatch:"https://service.o2.co.uk/web/telesales",client_id:"90174277;90174273"};
-cm_domains[8]={domainMatch:"origin-shop.o2.co.uk",client_id:"90174277;90174273"};
-cm_domains[9]={domainMatch:"businessshop.o2.co.uk",client_id:"90174277;90176228"};
-cm_domains[10]={domainMatch:"businessmobiles.o2.co.uk",client_id:"90174277;90176228"};
-cm_domains[11]={domainMatch:"o2.com",client_id:"90175543"};
-cm_domains[12]={domainMatch:"vitalo2.pri",client_id:"90175543"};
-cm_domains[13]={domainMatch:"sales.o2.co.uk",client_id:"90175543"};
+cm_domains[0]={domainMatch:"(/|\\.)o2.co.uk/shop",client_id:"90174277;90174273"};
+cm_domains[1]={domainMatch:"www.o2.co.uk",client_id:"90174277"};
+cm_domains[2]={domainMatch:"(http|https)://o2.co.uk",client_id:"90174277"};
+cm_domains[3]={domainMatch:"(/|\\.)shop.o2.co.uk",client_id:"90174277;90174273"}; //Looks for "." or "/" then "shop.o2.co.uk". Reason: "shop.co.uk" appears in "businessshop.o2.co.uk" which should not post to the same id as shop.co.uk. (/|\\.) accounts for "http://", "https://" and "www." before shop.o2.co.uk but won't match any other preceding value.
+cm_domains[4]={domainMatch:"upgrades.o2.co.uk",client_id:"90174277;90174273"};
+cm_domains[5]={domainMatch:"together-we-stand.com",client_id:"90174277;90174273"};
+cm_domains[6]={domainMatch:"shop.ref9",client_id:"90174277;90174273"};
+cm_domains[7]={domainMatch:"https://service.o2.co.uk/onlineshop",client_id:"90174277;90174273"};
+cm_domains[8]={domainMatch:"https://service.o2.co.uk/web/telesales",client_id:"90174277;90174273"};
+cm_domains[9]={domainMatch:"origin-shop.o2.co.uk",client_id:"90174277;90174273"};
+cm_domains[10]={domainMatch:"businessshop.o2.co.uk",client_id:"90174277;90176228"};
+cm_domains[11]={domainMatch:"businessmobiles.o2.co.uk",client_id:"90174277;90176228"};
+cm_domains[12]={domainMatch:"o2.com",client_id:"90175543"};
+cm_domains[13]={domainMatch:"vitalo2.pri",client_id:"90175543"};
+cm_domains[14]={domainMatch:"sales.o2.co.uk",client_id:"90175543"};
 
 var cm_ClientID=cmClientIDLookup();
 cm_domains=null;
@@ -66,17 +68,17 @@ var cmCheckCMEMFlag = true;
 
 //Amendment #7468172
 function cmClientIDLookup(){	
-	var isMatch=false;
-	var lookup_match="";
-	for(var i=0;i<cm_domains.length;i++){
-		var domainMatch = new RegExp(cm_domains[i].domainMatch.toUpperCase());
-		isMatch = domainMatch.test(cmHostMatch.toUpperCase())
-		if(isMatch){
-			lookup_match=cm_domains[i].client_id
-			break;
-		}
-	}
-	return (lookup_match=="")?"90174277":lookup_match; //If no match then return the aggregate id only, else return the client_id value of the matched array item.
+  var isMatch=false;
+  var lookup_match="";
+  for(var i=0;i<cm_domains.length;i++){
+    var domainMatch = new RegExp(cm_domains[i].domainMatch.toUpperCase());
+    isMatch = domainMatch.test(cmHostMatch.toUpperCase())
+    if(isMatch){
+      lookup_match=cm_domains[i].client_id
+      break;
+    }
+  }
+  return (lookup_match=="")?"90174277":lookup_match; //If no match then return the aggregate id only, else return the client_id value of the matched array item.
 }
 
 /*
@@ -84,37 +86,37 @@ function cmClientIDLookup(){
  */
 
 function cmSetProduction(){
-	cm_HOST="www1.o2.co.uk/eluminate?";
+  cm_HOST="www1.o2.co.uk/eluminate?";
 }
 
 function cmCreateManualImpressionTag(pageID, trackSP, trackRE) {
-		// insert code to get pageID from cmTagControl if pageID is null
-		cmMakeTag(["tid","9","pi",pageID,"cm_sp",trackSP,"cm_re",trackRE,"st",cm_ClientTS]);
+  // insert code to get pageID from cmTagControl if pageID is null
+  cmMakeTag(["tid","9","pi",pageID,"cm_sp",trackSP,"cm_re",trackRE,"st",cm_ClientTS]);
 }
 
 function cmCreateManualLinkClickTag(href,name,pageID) {	
-	if (cmCreateLinkTag == null && cM != null) {
-		var cmCreateLinkTag = cM;
-	}
-	if (cmCreateLinkTag != null) {		
-		var dt = new Date();
-		cmLnkT3 = dt.getTime();
-		href=cG7.normalizeURL(href,true);
-		cmCreateLinkTag(cm_ClientTS, cmLnkT3, name, href, false, pageID);
-	}
+  if (cmCreateLinkTag == null && cM != null) {
+    var cmCreateLinkTag = cM;
+  }
+  if (cmCreateLinkTag != null) {		
+    var dt = new Date();
+    cmLnkT3 = dt.getTime();
+    href=cG7.normalizeURL(href,true);
+    cmCreateLinkTag(cm_ClientTS, cmLnkT3, name, href, false, pageID);
+  }
 }
 
 /* manual PageviewTag for off site page tagging.  Allows client to supply URL and Referring URL*/
 function cmCreateManualPageviewTag(pageID, categoryID,DestinationURL,ReferringURL) {
-	cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"ul",DestinationURL,"rf",ReferringURL]);
+  cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"ul",DestinationURL,"rf",ReferringURL]);
 }
 
 function cmCreatePageElementTag(elementID, elementCategory, attributes) {
-	if (attributes){
-		var cm_exAttr=new Array;
-		cm_exAttr=attributes.split("-_-");
-	}
-	cmMakeTag(["tid","15","eid",elementID,"ecat",elementCategory,"pflg","0","cm_exAttr",cm_exAttr]);
+  if (attributes){
+    var cm_exAttr=new Array;
+    cm_exAttr=attributes.split("-_-");
+  }
+  cmMakeTag(["tid","15","eid",elementID,"ecat",elementCategory,"pflg","0","cm_exAttr",cm_exAttr]);
 }
 
 /*
@@ -122,12 +124,12 @@ function cmCreatePageElementTag(elementID, elementCategory, attributes) {
  * pageID		: required. Page ID to set on this Pageview tag
  */
 function cmCreateTechPropsTag(pageID, categoryID,attributes) {
-	if(pageID == null) { pageID = cmGetDefaultPageID(); }
-	if (attributes){
-		var cm_exAttr=new Array();
-		cm_exAttr=attributes.split("-_-");
-	}	
-	cmMakeTag(["tid","6","pi",pageID,"cg",categoryID,"pc","Y","cm_exAttr",cm_exAttr]);
+  if(pageID == null) { pageID = cmGetDefaultPageID(); }
+  if (attributes){
+    var cm_exAttr=new Array();
+    cm_exAttr=attributes.split("-_-");
+  }	
+  cmMakeTag(["tid","6","pi",pageID,"cg",categoryID,"pc","Y","cm_exAttr",cm_exAttr]);
 }
 
 /*
@@ -141,12 +143,12 @@ function cmCreateTechPropsTag(pageID, categoryID,attributes) {
  * 
  */
 function cmCreatePageviewTag(pageID, categoryID, searchString, searchResults,attributes) {
-	if (pageID == null) { pageID = cmGetDefaultPageID(); }
-	if (attributes){
-		var cm_exAttr=new Array;
-		cm_exAttr=attributes.split("-_-");
-	}	
-	cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"se",searchString,"sr",searchResults,"cm_exAttr",cm_exAttr]);
+  if (pageID == null) { pageID = cmGetDefaultPageID(); }
+  if (attributes){
+    var cm_exAttr=new Array;
+    cm_exAttr=attributes.split("-_-");
+  }	
+  cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"se",searchString,"sr",searchResults,"cm_exAttr",cm_exAttr]);
 }
 
 /*
@@ -156,7 +158,7 @@ function cmCreatePageviewTag(pageID, categoryID, searchString, searchResults,att
  * 
  */
 function cmCreateDefaultPageviewTag(categoryID) {
-	cmCreatePageviewTag(cmGetDefaultPageID(), categoryID);
+  cmCreatePageviewTag(cmGetDefaultPageID(), categoryID);
 }
 
 /*
@@ -171,12 +173,12 @@ function cmCreateDefaultPageviewTag(categoryID) {
  * 
  */
 function cmCreateProductviewTag(productID, productName, categoryID,attributes) {
-	var pageID = cmGetDefaultPageID(); 
-	if (attributes){
-		var cm_exAttr=new Array;
-		cm_exAttr=attributes.split("-_-");
-	}
-cmMakeTag(["tid","5","pi",pageID,"pr",productID,"pm",productName,"cg",categoryID,"pc","N","cm_vc",cmExtractParameter("cm_vc",document.location.href),"cm_exAttr",cm_exAttr]);
+  var pageID = cmGetDefaultPageID(); 
+  if (attributes){
+    var cm_exAttr=new Array;
+    cm_exAttr=attributes.split("-_-");
+  }
+  cmMakeTag(["tid","5","pi",pageID,"pr",productID,"pm",productName,"cg",categoryID,"pc","N","cm_vc",cmExtractParameter("cm_vc",document.location.href),"cm_exAttr",cm_exAttr]);
 }
 
 
@@ -188,47 +190,47 @@ var __skuString = "";
 var __ex=new Array();
 
 function __cmGetPIPC(__pr,__cg) {
-	var __pI, i;
-	var cmAttr1=new Array();
-	var cmAttr2=new Array();
-	for (i=0;i<__ex.length;++i){
-		cmAttr1=cmAttr1+__ex[i];
-	}		
-	for (__pI = 0; __pI < __sArray.length; ++__pI) {
-		if (__ex.length>0){
-			cmAttr2=new Array();		
-			for (i=__sArray[__pI].length-__ex.length*2+1;i<__sArray[__pI].length;i=i+2){
-				cmAttr2=cmAttr2+__sArray[__pI][i];
-			}
+  var __pI, i;
+  var cmAttr1=new Array();
+  var cmAttr2=new Array();
+  for (i=0;i<__ex.length;++i){
+    cmAttr1=cmAttr1+__ex[i];
+  }		
+  for (__pI = 0; __pI < __sArray.length; ++__pI) {
+    if (__ex.length>0){
+      cmAttr2=new Array();		
+      for (i=__sArray[__pI].length-__ex.length*2+1;i<__sArray[__pI].length;i=i+2){
+        cmAttr2=cmAttr2+__sArray[__pI][i];
+      }
 	
-			if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9] && cmAttr1==cmAttr2){
-				return __pI;
-			}
-		} else {
-		if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9]) return __pI;
-	}
-	}	
-	return -1;
+      if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9] && cmAttr1==cmAttr2){
+        return __pI;
+      }
+    } else {
+      if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9]) return __pI;
+    }
+  }	
+  return -1;
 }
 
 function cmAddShop(__v) {
 
-	var __i = __cmGetPIPC(__v[1],__v[9]);
-	if (__i == -1) {
-		if (__ex.length>0){
-			for (var i=0; i<__ex.length; ++i){
-				__v[__v.length]="s_a"+(i+1);
-				__v[__v.length]=__ex[i];
-			}
-		}
-		__sArray[__sArray.length] = __v;
-	}
-	else {
-		var __oQ = __sArray[__i][5];
-		var __oP = __sArray[__i][7];
-		__sArray[__i][5] = parseInt(__sArray[__i][5]) + parseInt(__v[5]);
-		__sArray[__i][7] = (((__v[7]*__v[5])+(__oP*__oQ))/__sArray[__i][5]);
-	}
+  var __i = __cmGetPIPC(__v[1],__v[9]);
+  if (__i == -1) {
+    if (__ex.length>0){
+      for (var i=0; i<__ex.length; ++i){
+        __v[__v.length]="s_a"+(i+1);
+        __v[__v.length]=__ex[i];
+      }
+    }
+    __sArray[__sArray.length] = __v;
+  }
+  else {
+    var __oQ = __sArray[__i][5];
+    var __oP = __sArray[__i][7];
+    __sArray[__i][5] = parseInt(__sArray[__i][5]) + parseInt(__v[5]);
+    __sArray[__i][7] = (((__v[7]*__v[5])+(__oP*__oQ))/__sArray[__i][5]);
+  }
 }
 
 /*
@@ -242,16 +244,16 @@ function cmAddShop(__v) {
  * 
  */
 function cmCreateShopAction5Tag(productID,productName,productQuantity,productPrice,categoryID,attributes) {
-	var pattern = /[^\-0-9\.]/gi;
-    productPrice = productPrice.toString().replace(pattern, "");
+  var pattern = /[^\-0-9\.]/gi;
+  productPrice = productPrice.toString().replace(pattern, "");
 
-	if (attributes){
-		__ex=attributes.split("-_-");
-	} else {
-	__ex=new Array();
-	}	
+  if (attributes){
+    __ex=attributes.split("-_-");
+  } else {
+    __ex=new Array();
+  }	
 
-	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"ha1",attributes ? cm_hex_sha1(attributes) : null,"at","5","tid","4","pc","N"]);
+  cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"ha1",attributes ? cm_hex_sha1(attributes) : null,"at","5","tid","4","pc","N"]);
 }
 
 /*
@@ -268,69 +270,69 @@ function cmCreateShopAction5Tag(productID,productName,productQuantity,productPri
  *
  */
 function cmCreateShopAction9Tag(productID,productName,productQuantity,productPrice,customerID,orderID,orderTotal,categoryID,attributes) {
-	var cm_slotNum;
-	var pattern = /[^\-0-9\.]/gi;
-	var pattern1 = /^\s+|\s+$/gi;
-    productPrice = productPrice.toString().replace(pattern, "");
-	orderTotal = orderTotal.toString().replace(pattern, "");
-	productID = productID.toString().replace(pattern1, "");
-	if (attributes){
-		__ex=attributes.split("-_-");
-	} else {
-	__ex=new Array();
-	}
+  var cm_slotNum;
+  var pattern = /[^\-0-9\.]/gi;
+  var pattern1 = /^\s+|\s+$/gi;
+  productPrice = productPrice.toString().replace(pattern, "");
+  orderTotal = orderTotal.toString().replace(pattern, "");
+  productID = productID.toString().replace(pattern1, "");
+  if (attributes){
+    __ex=attributes.split("-_-");
+  } else {
+    __ex=new Array();
+  }
 	
-	cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"ha1",attributes ? cm_hex_sha1(attributes) : null,"cd",customerID,"on",orderID,"tr",orderTotal,"at","9","tid","4","pc","N"]);
-	cmCalcSKUString();
+  cmAddShop(["pr",productID,"pm",productName,"qt",productQuantity,"bp",productPrice,"cg",categoryID,"ha1",attributes ? cm_hex_sha1(attributes) : null,"cd",customerID,"on",orderID,"tr",orderTotal,"at","9","tid","4","pc","N"]);
+  cmCalcSKUString();
 }
 
 function cmDisplayShop5s() {
-	cmDisplayShops();
+  cmDisplayShops();
 }
 
 function cmDisplayShop9s() {
-	cmCalcSKUString();
-	cmDisplayShops();
+  cmCalcSKUString();
+  cmDisplayShops();
 }
 
 function cmCalcSKUString() {
-	__skuString = "";
-	var __skuStringArray = new Array();
-	for (var i = 0; i < __sArray.length; ++i) {
-		// aggregate
-		var __skuStringArrayIndex = -1;
-		for (var y = 0; y < __skuStringArray.length; ++y) {
-			if (__sArray[i][1] == __skuStringArray[y][0] ) {
-				__skuStringArrayIndex = y;
-			}
-		}
-		if (__skuStringArrayIndex == -1) {
-			// it doesn't exist, so add it
-			var newArrayIndex = __skuStringArray.length;
-			__skuStringArray[newArrayIndex] = new Array();
-			__skuStringArray[newArrayIndex][0] = __sArray[i][1];
-			__skuStringArray[newArrayIndex][1] = __sArray[i][7];
-			__skuStringArray[newArrayIndex][2] = __sArray[i][5];
-		}
-		else {
-			// it exists, so update it
-			var __oP = __skuStringArray[__skuStringArrayIndex][1];
-			var __oQ = __skuStringArray[__skuStringArrayIndex][2];
-			__skuStringArray[__skuStringArrayIndex][2] = parseInt(__sArray[i][5]) + __oQ;
-			__skuStringArray[__skuStringArrayIndex][1] = (__oP*__oQ+__sArray[i][7]*__sArray[i][5])/(parseInt(__sArray[i][5])+parseInt(__oQ));
-		}
-	}
-	for (var x = 0; x < __skuStringArray.length; ++x) {
-		__skuString += "|"+__skuStringArray[x][0]+"|"+__skuStringArray[x][1]+"|"+__skuStringArray[x][2]+"|";
-	}
+  __skuString = "";
+  var __skuStringArray = new Array();
+  for (var i = 0; i < __sArray.length; ++i) {
+    // aggregate
+    var __skuStringArrayIndex = -1;
+    for (var y = 0; y < __skuStringArray.length; ++y) {
+      if (__sArray[i][1] == __skuStringArray[y][0] ) {
+        __skuStringArrayIndex = y;
+      }
+    }
+    if (__skuStringArrayIndex == -1) {
+      // it doesn't exist, so add it
+      var newArrayIndex = __skuStringArray.length;
+      __skuStringArray[newArrayIndex] = new Array();
+      __skuStringArray[newArrayIndex][0] = __sArray[i][1];
+      __skuStringArray[newArrayIndex][1] = __sArray[i][7];
+      __skuStringArray[newArrayIndex][2] = __sArray[i][5];
+    }
+    else {
+      // it exists, so update it
+      var __oP = __skuStringArray[__skuStringArrayIndex][1];
+      var __oQ = __skuStringArray[__skuStringArrayIndex][2];
+      __skuStringArray[__skuStringArrayIndex][2] = parseInt(__sArray[i][5]) + __oQ;
+      __skuStringArray[__skuStringArrayIndex][1] = (__oP*__oQ+__sArray[i][7]*__sArray[i][5])/(parseInt(__sArray[i][5])+parseInt(__oQ));
+    }
+  }
+  for (var x = 0; x < __skuStringArray.length; ++x) {
+    __skuString += "|"+__skuStringArray[x][0]+"|"+__skuStringArray[x][1]+"|"+__skuStringArray[x][2]+"|";
+  }
 }
 
 function cmDisplayShops() {
-	var i;
-	for (i = 0; i < __sArray.length; ++i) {
-		cmMakeTag(__sArray[i]);
-	}
-	__sArray = new Array();
+  var i;
+  for (i = 0; i < __sArray.length; ++i) {
+    cmMakeTag(__sArray[i]);
+  }
+  __sArray = new Array();
 }
 
 
@@ -347,15 +349,15 @@ function cmDisplayShops() {
  *
  */
 function cmCreateOrderTag(orderID,orderTotal,orderShipping,customerID,customerCity,customerState,customerZIP,attributes) {
-	var pattern = /[^\-0-9\.]/gi;
-    orderShipping = orderShipping.toString().replace(pattern, "");
-	orderTotal = orderTotal.toString().replace(pattern, "");
-	if (attributes){
-		var cm_exAttr=new Array;
-		cm_exAttr=attributes.split("-_-");
-	}	
-	cmMakeTag(["tid","3","osk",__skuString,"on",orderID,"tr",orderTotal,"sg",orderShipping,"cd",customerID,"ct",customerCity,"sa",customerState,"zp",customerZIP,"cm_exAttr",cm_exAttr]);
-	__skuString = "";
+  var pattern = /[^\-0-9\.]/gi;
+  orderShipping = orderShipping.toString().replace(pattern, "");
+  orderTotal = orderTotal.toString().replace(pattern, "");
+  if (attributes){
+    var cm_exAttr=new Array;
+    cm_exAttr=attributes.split("-_-");
+  }	
+  cmMakeTag(["tid","3","osk",__skuString,"on",orderID,"tr",orderTotal,"sg",orderShipping,"cd",customerID,"ct",customerCity,"sa",customerState,"zp",customerZIP,"cm_exAttr",cm_exAttr]);
+  __skuString = "";
 }
 
 /*
@@ -366,13 +368,13 @@ function cmCreateOrderTag(orderID,orderTotal,orderShipping,customerID,customerCi
  * categoryID		: optional. Category for the event
  * points			: optional. Point value to assign to conversion.
  */
- function cmCreateConversionEventTag(eventID, actionType, categoryID, points,attributes) {
- 	if (attributes){
-		var cm_exAttr=new Array;
-		cm_exAttr=attributes.split("-_-");
-	}
-	cmMakeTag(["tid","14","cid",eventID,"cat",actionType,"ccid",categoryID,"cpt",points,"cm_exAttr",cm_exAttr]);
- }
+function cmCreateConversionEventTag(eventID, actionType, categoryID, points,attributes) {
+  if (attributes){
+    var cm_exAttr=new Array;
+    cm_exAttr=attributes.split("-_-");
+  }
+  cmMakeTag(["tid","14","cid",eventID,"cat",actionType,"ccid",categoryID,"cpt",points,"cm_exAttr",cm_exAttr]);
+}
 
 /*
  * Creates a Registration tag and/or a Newsletter tag
@@ -389,140 +391,140 @@ function cmCreateOrderTag(orderID,orderTotal,orderShipping,customerID,customerCi
 function cmCreateRegistrationTag(customerID, customerEmail, customerCity,
 				customerState, customerZIP, newsletterName, 
 				subscribe, attributes) {
-   	if (attributes){
-		var cm_exAttr=new Array;
-		cm_exAttr=attributes.split("-_-");
-	}
-	cmMakeTag(["tid","2","cd",customerID,"em",customerEmail,"ct",customerCity,"sa",customerState,"zp",customerZIP,"nl",newsletterName,"sd",subscribe,"cm_exAttr",cm_exAttr]);
+  if (attributes){
+    var cm_exAttr=new Array;
+    cm_exAttr=attributes.split("-_-");
+  }
+  cmMakeTag(["tid","2","cd",customerID,"em",customerEmail,"ct",customerCity,"sa",customerState,"zp",customerZIP,"nl",newsletterName,"sd",subscribe,"cm_exAttr",cm_exAttr]);
 }
 
 /* Creates an Error Tag
  *
  */
 function cmCreateErrorTag(pageID, categoryID) {
-	if(pageID == null) {
-		pageID = cmGetDefaultPageID();
-	}
-	cmMakeTag(["tid","404","pi",pageID,"cg",categoryID,"pc","Y"]);
+  if(pageID == null) {
+    pageID = cmGetDefaultPageID();
+  }
+  cmMakeTag(["tid","404","pi",pageID,"cg",categoryID,"pc","Y"]);
 }
 
 function cmMakeTag(__v) {
-	var cm = new _cm("vn2", "e4.0");
-	var i;
-	for (i = 0; i < __v.length; i += 2) {
-		var _n = __v[i];
-		var _v = __v[i + 1];
-		cm[_n] = _v;
-	}
+  var cm = new _cm("vn2", "e4.0");
+  var i;
+  for (i = 0; i < __v.length; i += 2) {
+    var _n = __v[i];
+    var _v = __v[i + 1];
+    cm[_n] = _v;
+  }
 
-	var datestamp = new Date();	
-	var stamp = (Math.floor(Math.random() * 11111111)) + datestamp.valueOf();	
-	cm.rnd = stamp;
+  var datestamp = new Date();	
+  var stamp = (Math.floor(Math.random() * 11111111)) + datestamp.valueOf();	
+  cm.rnd = stamp;
 	
-	if (cm.tid == "6") {
-		cm.addTP();
-		document.cookie = "cmTPSet=Y; path=/";
-	}
+  if (cm.tid == "6") {
+    cm.addTP();
+    document.cookie = "cmTPSet=Y; path=/";
+  }
 
-	if (cm.tid == "1") {
-		if (cI("cmTPSet") != 'Y') {
-			cm.tid = "6";
-			cm.pc = "Y";
-			cm.addTP();
-			document.cookie = "cmTPSet=Y; path=/";
-		}
-	}
+  if (cm.tid == "1") {
+    if (cI("cmTPSet") != 'Y') {
+      cm.tid = "6";
+      cm.pc = "Y";
+      cm.addTP();
+      document.cookie = "cmTPSet=Y; path=/";
+    }
+  }
 	
-	if (cm.tid != "4" && typeof(cm.cm_exAttr)!="undefined"){
-		switch(cm.tid){
-			case "6":
-				prefix="pv";
-				break;
-			case "1":
-				prefix="pv";
-				break;
-			case "2":
-				prefix="rg";
-				break;
-			case "5":
-				prefix="pr";
-				break;
-			case "3":
-				prefix="o";
-				break;
-			case "14":
-				prefix="c";
-				break;
-			case "15":
-				prefix="e";
-				break;
-			default:
-				break;
-		}		
-		var attrNum=cm.cm_exAttr.length;
-		if (attrNum>15){
-			attrNum=15;
-		}
-		for (i=0;i<attrNum;i++){
-			if (cm.tid=="2"){
-				Attval=prefix+(i+1);
-			} else {
-				Attval=prefix+"_a"+(i+1);
-			}
-			cm[Attval]=cm.cm_exAttr[i];
-		}
-		cm.cm_exAttr=null;
-	}	
-	if ((cm.pi == null) && (cm.pc == "Y")) {
-		cm.pi = cmGetDefaultPageID();
-	}
+  if (cm.tid != "4" && typeof(cm.cm_exAttr)!="undefined"){
+    switch(cm.tid){
+      case "6":
+        prefix="pv";
+        break;
+      case "1":
+        prefix="pv";
+        break;
+      case "2":
+        prefix="rg";
+        break;
+      case "5":
+        prefix="pr";
+        break;
+      case "3":
+        prefix="o";
+        break;
+      case "14":
+        prefix="c";
+        break;
+      case "15":
+        prefix="e";
+        break;
+      default:
+        break;
+    }		
+    var attrNum=cm.cm_exAttr.length;
+    if (attrNum>15){
+      attrNum=15;
+    }
+    for (i=0;i<attrNum;i++){
+      if (cm.tid=="2"){
+        Attval=prefix+(i+1);
+      } else {
+        Attval=prefix+"_a"+(i+1);
+      }
+      cm[Attval]=cm.cm_exAttr[i];
+    }
+    cm.cm_exAttr=null;
+  }	
+  if ((cm.pi == null) && (cm.pc == "Y")) {
+    cm.pi = cmGetDefaultPageID();
+  }
 
-	try{
-	if (parent.cm_ref != null) {
-		cm.rf = parent.cm_ref;
-		if (cm.pc == "Y") {
-			parent.cm_ref = document.URL;
-		}
-	}
+  try{
+    if (parent.cm_ref != null) {
+      cm.rf = parent.cm_ref;
+      if (cm.pc == "Y") {
+        parent.cm_ref = document.URL;
+      }
+    }
 
-	// if parent had mmc variables and this is the first pageview, add mmc to this url
-	if(parent.cm_set_mmc) {
-		cm.ul = document.location.href + 
-				((document.location.href.indexOf("?") < 0) ? "?" : "&") + 
-				parent.cm_mmc_params; 
-		if (cm.pc == "Y") {
-			parent.cm_ref = cm.ul;
-			parent.cm_set_mmc = false;
-		}
-	}
-	}
-	catch(err){}
+    // if parent had mmc variables and this is the first pageview, add mmc to this url
+    if(parent.cm_set_mmc) {
+      cm.ul = document.location.href + 
+          ((document.location.href.indexOf("?") < 0) ? "?" : "&") + 
+          parent.cm_mmc_params; 
+      if (cm.pc == "Y") {
+        parent.cm_ref = cm.ul;
+        parent.cm_set_mmc = false;
+      }
+    }
+  }
+  catch(err){}
 
-	if (cm.ul == null) {
-		cm.ul = window.location.href;
-	}
+  if (cm.ul == null) {
+    cm.ul = window.location.href;
+  }
 
-	//check for zero price and zero quantity
-	cmSafeZero(cm,["qt","bp","tr","sg"]);
+  //check for zero price and zero quantity
+  cmSafeZero(cm,["qt","bp","tr","sg"]);
 
-	//check for manual_cm_mmc parameter;
-	if (this.manual_cm_mmc != null) {
-		cm.ul = cm.ul + ((cm.ul.indexOf("&") == -1) ? ((cm.ul.indexOf("?") == -1) ? "?" : "&") : "&") + "cm_mmc=" + this.manual_cm_mmc;
-	}
+  //check for manual_cm_mmc parameter;
+  if (this.manual_cm_mmc != null) {
+    cm.ul = cm.ul + ((cm.ul.indexOf("&") == -1) ? ((cm.ul.indexOf("?") == -1) ? "?" : "&") : "&") + "cm_mmc=" + this.manual_cm_mmc;
+  }
 
-	// convert MMC parameters to lowercase;
-	cm.ul = cm.ul.replace(/cm_mmc/gi,"cm_mmc");
-	cm.ul = cm.ul.replace(/cm_ven/gi,"cm_ven");
-	cm.ul = cm.ul.replace(/cm_cat/gi,"cm_cat");
-	cm.ul = cm.ul.replace(/cm_pla/gi,"cm_pla");
-	cm.ul = cm.ul.replace(/cm_ite/gi,"cm_ite");
-	if (cmCheckCMEMFlag){cmStartTagSet();}
-    cm.writeImg();
-	if (cmCheckCMEMFlag) {
-		cmCheckCMEMFlag = false;
-		cmCheckCMEM();
-		cmSendTagSet();		
-	}
+  // convert MMC parameters to lowercase;
+  cm.ul = cm.ul.replace(/cm_mmc/gi,"cm_mmc");
+  cm.ul = cm.ul.replace(/cm_ven/gi,"cm_ven");
+  cm.ul = cm.ul.replace(/cm_cat/gi,"cm_cat");
+  cm.ul = cm.ul.replace(/cm_pla/gi,"cm_pla");
+  cm.ul = cm.ul.replace(/cm_ite/gi,"cm_ite");
+  if (cmCheckCMEMFlag){cmStartTagSet();}
+  cm.writeImg();
+  if (cmCheckCMEMFlag) {
+    cmCheckCMEMFlag = false;
+    cmCheckCMEM();
+    cmSendTagSet();		
+  }
 	
 }
 
@@ -540,116 +542,116 @@ function cmMakeTag(__v) {
  * returns "x/y/MyPage.asp" for the URL http://www.mysite.com/x/y/MyPage.asp
  */
 function cmGetDefaultPageID() { 
-	var pageName = window.location.pathname; 
+  var pageName = window.location.pathname; 
 
-	// eliminates everything after "?" (for Opera browswers)
-	var tempIndex1 = pageName.indexOf("?");
-	if (tempIndex1 != -1) {
-		pageName = pageName.substr(0, tempIndex1);
-	}
-	// eliminates everything after "#" (for Opera browswers)
-	var tempIndex2 = pageName.indexOf("#");
-	if (tempIndex2 != -1) {
-		pageName = pageName.substr(0, tempIndex2);
-	}
-	// eliminates everything after ";"
-	var tempIndex3 = pageName.indexOf(";");
-	if (tempIndex3 != -1) {
-		pageName = pageName.substr(0, tempIndex3);
-	}
+  // eliminates everything after "?" (for Opera browswers)
+  var tempIndex1 = pageName.indexOf("?");
+  if (tempIndex1 != -1) {
+    pageName = pageName.substr(0, tempIndex1);
+  }
+  // eliminates everything after "#" (for Opera browswers)
+  var tempIndex2 = pageName.indexOf("#");
+  if (tempIndex2 != -1) {
+    pageName = pageName.substr(0, tempIndex2);
+  }
+  // eliminates everything after ";"
+  var tempIndex3 = pageName.indexOf(";");
+  if (tempIndex3 != -1) {
+    pageName = pageName.substr(0, tempIndex3);
+  }
 
-	var slashPos = pageName.lastIndexOf("/");
-	if (slashPos == pageName.length - 1) {
-		pageName = pageName + "default.asp"; /****************** SET TO DEFAULT DOC NAME */
-	}
+  var slashPos = pageName.lastIndexOf("/");
+  if (slashPos == pageName.length - 1) {
+    pageName = pageName + "default.asp"; /****************** SET TO DEFAULT DOC NAME */
+  }
 
-	while (pageName.indexOf("/") == 0) {
-		pageName = pageName.substr(1,pageName.length);
-	}
+  while (pageName.indexOf("/") == 0) {
+    pageName = pageName.substr(1,pageName.length);
+  }
 
-	return(pageName); 
+  return(pageName); 
 } 
 
 function cmIndexOfParameter (parameter, inString) {
-	return inString.indexOf(parameter);
+  return inString.indexOf(parameter);
 }
 
 function cmExtractParameter (parameter, inString) {
-    if (cmIndexOfParameter(parameter, inString) == -1) {
-        return null;
-    }
-	var s = inString;
-	var begin = s.indexOf(parameter);
-	var end = s.indexOf("&", begin);
-	if (end == -1) {
-		end = s.length;
-	}
-	var middle = s.indexOf("=", begin);
-	return s.substring(middle + 1, end);
+  if (cmIndexOfParameter(parameter, inString) == -1) {
+    return null;
+  }
+  var s = inString;
+  var begin = s.indexOf(parameter);
+  var end = s.indexOf("&", begin);
+  if (end == -1) {
+    end = s.length;
+  }
+  var middle = s.indexOf("=", begin);
+  return s.substring(middle + 1, end);
 }
 
 function cmRemoveParameter (parameter, inString) {
-    if (cmIndexOfParameter(parameter, inString) == -1) {
-        return inString;
-    }
-	var s = inString;
-	var begin = s.indexOf(parameter);
-	var start = (begin - 1);
-	var end = s.indexOf("&", begin);
-	if (end == -1) {
-		end = s.length;
-	}
-	if (s.substring(start, begin) == "?") {    // retain leading "?"
-		start = (start + 1);
-		end = (end + 1);
-	}
-	return s.substring(0, start) + s.substring(end, s.length);
+  if (cmIndexOfParameter(parameter, inString) == -1) {
+    return inString;
+  }
+  var s = inString;
+  var begin = s.indexOf(parameter);
+  var start = (begin - 1);
+  var end = s.indexOf("&", begin);
+  if (end == -1) {
+    end = s.length;
+  }
+  if (s.substring(start, begin) == "?") {    // retain leading "?"
+    start = (start + 1);
+    end = (end + 1);
+  }
+  return s.substring(0, start) + s.substring(end, s.length);
 }
 
 function cmCheckCMEM() {
-	if (cmIndexOfParameter("cm_em",document.location.href) != -1){
-		var emailAddress = cmExtractParameter("cm_em",document.location.href);
-		if (emailAddress.indexOf(":")>-1){
-			emailAddress=emailAddress.substring(emailAddress.indexOf(":")+1);
-		}
-		cmCreateRegistrationTag(emailAddress,emailAddress);
-	}
-	if (cmIndexOfParameter("cm_lm",document.location.href) != -1){
-		var emailAddress = cmExtractParameter("cm_lm",document.location.href);
-		if (emailAddress.indexOf(":")>-1){
-			emailAddress=emailAddress.substring(emailAddress.indexOf(":")+1);
-		}		
-		cmCreateRegistrationTag(emailAddress,emailAddress);
-	}
+  if (cmIndexOfParameter("cm_em",document.location.href) != -1){
+    var emailAddress = cmExtractParameter("cm_em",document.location.href);
+    if (emailAddress.indexOf(":")>-1){
+      emailAddress=emailAddress.substring(emailAddress.indexOf(":")+1);
+    }
+    cmCreateRegistrationTag(emailAddress,emailAddress);
+  }
+  if (cmIndexOfParameter("cm_lm",document.location.href) != -1){
+    var emailAddress = cmExtractParameter("cm_lm",document.location.href);
+    if (emailAddress.indexOf(":")>-1){
+      emailAddress=emailAddress.substring(emailAddress.indexOf(":")+1);
+    }		
+    cmCreateRegistrationTag(emailAddress,emailAddress);
+  }
 }
 
 function cmSafeZero(cm, checkArray) {
-	// put logic here to convert number 0 to string "0"
-	for (var i = 0; i < checkArray.length; ++i) {
-		if ((cm[checkArray[i]] != null) && (cm[checkArray[i]] == 0)) {
-			cm[checkArray[i]] = "0";
-		}
-	}
+  // put logic here to convert number 0 to string "0"
+  for (var i = 0; i < checkArray.length; ++i) {
+    if ((cm[checkArray[i]] != null) && (cm[checkArray[i]] == 0)) {
+      cm[checkArray[i]] = "0";
+    }
+  }
 }
 
 if (defaultNormalize == null) { var defaultNormalize = null; }
 
 function myNormalizeURL(url, isHref) {
-    var newURL = url;
-    // ... transform newURL here ...
-    if (defaultNormalize != null) {
-        newURL = defaultNormalize(newURL, isHref);
-    }
-    return newURL;
+  var newURL = url;
+  // ... transform newURL here ...
+  if (defaultNormalize != null) {
+    newURL = defaultNormalize(newURL, isHref);
+  }
+  return newURL;
 }
 
 // install normalization
 if (document.cmTagCtl != null) {
-    var func = "" + document.cmTagCtl.normalizeURL;
-    if (func.indexOf('myNormalizeURL') == -1) {
-        defaultNormalize = document.cmTagCtl.normalizeURL;
-        document.cmTagCtl.normalizeURL = myNormalizeURL;
-    }
+  var func = "" + document.cmTagCtl.normalizeURL;
+  if (func.indexOf('myNormalizeURL') == -1) {
+    defaultNormalize = document.cmTagCtl.normalizeURL;
+    document.cmTagCtl.normalizeURL = myNormalizeURL;
+  }
 }
 
 /*  hash functions that support shop aggregation with attributes */
